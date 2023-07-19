@@ -2,11 +2,10 @@ package com.wangxy.teinchin.common.constant;
 
 /**
  * 返回状态码
- * 
+ *
  * @author teinchin
  */
-public class HttpStatus
-{
+public class HttpStatus {
     /**
      * 操作成功
      */

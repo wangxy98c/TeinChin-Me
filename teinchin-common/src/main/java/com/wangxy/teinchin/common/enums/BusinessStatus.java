@@ -2,12 +2,10 @@ package com.wangxy.teinchin.common.enums;
 
 /**
  * 操作状态
- * 
- * @author teinchin
  *
+ * @author teinchin
  */
-public enum BusinessStatus
-{
+public enum BusinessStatus {
     /**
      * 成功
      */

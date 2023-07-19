@@ -6,8 +6,7 @@ package com.wangxy.teinchin.common.enums;
  * @author teinchin
  */
 
-public enum LimitType
-{
+public enum LimitType {
     /**
      * 默认策略全局限流
      */

@@ -2,11 +2,10 @@ package com.wangxy.teinchin.common.enums;
 
 /**
  * 数据源
- * 
+ *
  * @author teinchin
  */
-public enum DataSourceType
-{
+public enum DataSourceType {
     /**
      * 主库
      */

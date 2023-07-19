@@ -2,11 +2,10 @@ package com.wangxy.teinchin.common.enums;
 
 /**
  * 操作人类别
- * 
+ *
  * @author teinchin
  */
-public enum OperatorType
-{
+public enum OperatorType {
     /**
      * 其它
      */

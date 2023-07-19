@@ -9,17 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 服务器监控
- * 
+ *
  * @author teinchin
  */
 @RestController
 @RequestMapping("/monitor/server")
-public class ServerController
-{
-    @PreAuthorize("@ss.hasPermi('monitor:server:list')")
+public class ServerController {
+    @PreAuthorize("hasPermission('monitor:server:list')")
     @GetMapping()
-    public AjaxResult getInfo() throws Exception
-    {
+    public AjaxResult getInfo() throws Exception {
         Server server = new Server();
         server.copyTo();
         return AjaxResult.success(server);

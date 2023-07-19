@@ -25,33 +25,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 参数配置 信息操作处理
- * 
+ *
  * @author teinchin
  */
 @RestController
 @RequestMapping("/system/config")
-public class SysConfigController extends BaseController
-{
+public class SysConfigController extends BaseController {
     @Autowired
     private ISysConfigService configService;
 
     /**
      * 获取参数配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:config:list')")
+    @PreAuthorize("hasPermission('system:config:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysConfig config)
-    {
+    public TableDataInfo list(SysConfig config) {
         startPage();
         List<SysConfig> list = configService.selectConfigList(config);
         return getDataTable(list);
     }
 
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:config:export')")
+    @PreAuthorize("hasPermission('system:config:export')")
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysConfig config)
-    {
+    public void export(HttpServletResponse response, SysConfig config) {
         List<SysConfig> list = configService.selectConfigList(config);
         ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
         util.exportExcel(response, list, "参数数据");
@@ -60,10 +57,9 @@ public class SysConfigController extends BaseController
     /**
      * 根据参数编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:config:query')")
+    @PreAuthorize("hasPermission('system:config:query')")
     @GetMapping(value = "/{configId}")
-    public AjaxResult getInfo(@PathVariable Long configId)
-    {
+    public AjaxResult getInfo(@PathVariable Long configId) {
         return success(configService.selectConfigById(configId));
     }
 
@@ -71,21 +67,18 @@ public class SysConfigController extends BaseController
      * 根据参数键名查询参数值
      */
     @GetMapping(value = "/configKey/{configKey}")
-    public AjaxResult getConfigKey(@PathVariable String configKey)
-    {
+    public AjaxResult getConfigKey(@PathVariable String configKey) {
         return success(configService.selectConfigByKey(configKey));
     }
 
     /**
      * 新增参数配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:add')")
+    @PreAuthorize("hasPermission('system:config:add')")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysConfig config)
-    {
-        if (!configService.checkConfigKeyUnique(config))
-        {
+    public AjaxResult add(@Validated @RequestBody SysConfig config) {
+        if (!configService.checkConfigKeyUnique(config)) {
             return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
         config.setCreateBy(getUsername());
@@ -95,13 +88,11 @@ public class SysConfigController extends BaseController
     /**
      * 修改参数配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:edit')")
+    @PreAuthorize("hasPermission('system:config:edit')")
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysConfig config)
-    {
-        if (!configService.checkConfigKeyUnique(config))
-        {
+    public AjaxResult edit(@Validated @RequestBody SysConfig config) {
+        if (!configService.checkConfigKeyUnique(config)) {
             return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
         config.setUpdateBy(getUsername());
@@ -111,11 +102,10 @@ public class SysConfigController extends BaseController
     /**
      * 删除参数配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:remove')")
+    @PreAuthorize("hasPermission('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{configIds}")
-    public AjaxResult remove(@PathVariable Long[] configIds)
-    {
+    public AjaxResult remove(@PathVariable Long[] configIds) {
         configService.deleteConfigByIds(configIds);
         return success();
     }
@@ -123,11 +113,10 @@ public class SysConfigController extends BaseController
     /**
      * 刷新参数缓存
      */
-    @PreAuthorize("@ss.hasPermi('system:config:remove')")
+    @PreAuthorize("hasPermission('system:config:remove')")
     @Log(title = "参数管理", businessType = BusinessType.CLEAN)
     @DeleteMapping("/refreshCache")
-    public AjaxResult refreshCache()
-    {
+    public AjaxResult refreshCache() {
         configService.resetConfigCache();
         return success();
     }

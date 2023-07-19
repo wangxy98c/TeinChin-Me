@@ -23,12 +23,11 @@ import com.google.code.kaptcha.Producer;
 
 /**
  * 验证码操作处理
- * 
+ *
  * @author teinchin
  */
 @RestController
-public class CaptchaController
-{
+public class CaptchaController {
     @Resource(name = "captchaProducer")
     private Producer captchaProducer;
 
@@ -37,24 +36,24 @@ public class CaptchaController
 
     @Autowired
     private RedisCache redisCache;
-    
+
     @Autowired
     private ISysConfigService configService;
+
     /**
      * 生成验证码
      */
     @GetMapping("/captchaImage")
-    public AjaxResult getCode(HttpServletResponse response) throws IOException
-    {
+    public AjaxResult getCode(HttpServletResponse response) throws IOException {
         AjaxResult ajax = AjaxResult.success();
+        //去数据库中查询验证码服务是否打开
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         ajax.put("captchaEnabled", captchaEnabled);
-        if (!captchaEnabled)
-        {
+        if (!captchaEnabled) {
             return ajax;
         }
 
-        // 保存验证码信息
+        // 保存验证码信息，自己写的工具。生成uuid
         String uuid = IdUtils.simpleUUID();
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
 
@@ -62,29 +61,23 @@ public class CaptchaController
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = TeinchinConfig.getCaptchaType();
-        if ("math".equals(captchaType))
-        {
-            String capText = captchaProducerMath.createText();
+        String captchaType = TeinchinConfig.getCaptchaType();//获取验证码类型，从配置文件里拿到。
+        if ("math".equals(captchaType)) {
+            String capText = captchaProducerMath.createText();//拿到如1+1=?@2
             capStr = capText.substring(0, capText.lastIndexOf("@"));
-            code = capText.substring(capText.lastIndexOf("@") + 1);
+            code = capText.substring(capText.lastIndexOf("@") + 1);//截取成两部分，分别用于式子和结果
             image = captchaProducerMath.createImage(capStr);
-        }
-        else if ("char".equals(captchaType))
-        {
+        } else if ("char".equals(captchaType)) {
             capStr = code = captchaProducer.createText();
             image = captchaProducer.createImage(capStr);
         }
 
-        redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+        redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);//把结果存到Redis中，过期时间2分钟
         // 转换流信息写出
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-        try
-        {
+        try {
             ImageIO.write(image, "jpg", os);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             return AjaxResult.error(e.getMessage());
         }
 
