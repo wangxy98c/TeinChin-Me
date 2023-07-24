@@ -232,11 +232,11 @@ public class LoginUser implements UserDetails {
     }
 
     @Override
-    @JSONField(serialize = false)
+    @JSONField(serialize = false)//使用自定义的权限Root不能少
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(permissions!=null && permissions.size()>0){
             List<SimpleGrantedAuthority> collect = permissions.stream().map(p -> new SimpleGrantedAuthority(p)).collect(Collectors.toList());
-            System.out.println("=====>>>LoginUser/getAuthorities:"+collect);
+            //System.out.println("=====>>>LoginUser/getAuthorities:"+collect);
             return collect;
             //##note p其实就是permission中的每一项。作为参数构造。然后全部弄成一个集合
         }

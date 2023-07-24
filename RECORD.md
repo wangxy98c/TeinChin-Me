@@ -12,6 +12,15 @@
 
 [图片和base64互转](https://tool.jisuapi.com/pic2base64.html)
 
+### 一个语法： ...
+
+```javascript
+this.onlyOneChild = {...parent, path: '', noShowingChildren: true}
+//表示把parent展开（parent里有很多属性）
+```
+
+
+
 # 项目初始化
 
 ### format code
@@ -173,7 +182,7 @@ SOURCE\****
 
 ### 设计思路
 
-可参考[多数据源实现](https://github.com/wangxy98c/RuoyiLearnDemo/tree/715fa25750da60e173801051adfd9f403b8b10fd/datasources)
+可参考[多数据源实现](https://github.com/wangxy98c/TienChinLearnDemo/tree/715fa25750da60e173801051adfd9f403b8b10fd/datasources)
 
 ```mermaid
 flowchart TD
@@ -194,13 +203,13 @@ F["LoadDataSource"]
 
 ### 网页上修改数据源
 
-由上面的流程可知，我们修改数据源时，修改存入DynamicDataSourceContextHolder的源即可。需要注意的是，两个前面的优先级。参见[多数据源实现](https://github.com/wangxy98c/RuoyiLearnDemo/tree/715fa25750da60e173801051adfd9f403b8b10fd/datasources)
+由上面的流程可知，我们修改数据源时，修改存入DynamicDataSourceContextHolder的源即可。需要注意的是，两个前面的优先级。参见[多数据源实现](https://github.com/wangxy98c/TienChinLearnDemo/tree/715fa25750da60e173801051adfd9f403b8b10fd/datasources)
 
 ## 限流注解
 
 自定义注解：利用Redis来实现。每次请求都会通过IP以及接口拼接的字符串作为key。到Redis中查询。根据查询结果的数值来判断是否超出了窗口阈值。（使用了LUA脚本）
 
-参见[RuoYi限流实现](https://github.com/wangxy98c/RuoyiLearnDemo/tree/e836762058516ef8578f45879d65883faf9b3f07/ratelimiter)
+参见[RuoYi限流实现](https://github.com/wangxy98c/TienChinLearnDemo/tree/e836762058516ef8578f45879d65883faf9b3f07/ratelimiter)
 
 ## 防止重复提交注解
 
@@ -256,7 +265,7 @@ F["LoadDataSource"]
 
 ### RuoYi实现的思路（不同于以上四种）
 
-[参见submitrepeat](https://github.com/wangxy98c/RuoyiLearnDemo/tree/99afece18efa57d7993112ad55121bf49d1555c6/submitrepeat)
+[参见submitrepeat](https://github.com/wangxy98c/TienChinLearnDemo/tree/99afece18efa57d7993112ad55121bf49d1555c6/submitrepeat)
 
 1. 使用拦截器拦截解释repeatsubmit注解。
 2. 判断是否是重复提交
@@ -279,7 +288,7 @@ F--提供请求信息-->G--从Rdis中取相关信息并判断合法性--> H(业�
 
 ## 数据权限注解
 
-[参见demo-datascope](https://github.com/wangxy98c/RuoyiLearnDemo/tree/b25c1df057c8a518416d124cd258b08eef39f9b2/datascope)
+[参见demo-datascope](https://github.com/wangxy98c/TienChinLearnDemo/tree/b25c1df057c8a518416d124cd258b08eef39f9b2/datascope)
 
 SpringSecurity 通过PostFilter注解：数据全部从sql中查出来，查出来以后再过滤。这样会导致效率较低
 
@@ -341,7 +350,7 @@ AOP就是基于**动态代理**的，但动态代理有两种实现方式
 
 实现思路类似于Vhr的动态菜单栏（vhr理论上可以无限层级）
 
-Ruoyi的实现，在数据库表sys_menu中的menu_type分三级：
+TienChin的实现，在数据库表sys_menu中的menu_type分三级：
 
 1. M表示是一个目录
 2. C表示是一个菜单项
@@ -354,7 +363,7 @@ user_id--user_role-->role_id--role_menu-->menu_id
 
 RuoYi使用了LoginUser类来实现UserDetails。但它的getAuthorities返回的为空（因为它的**权限判断实际上自己比对的，压根没调用此方法**。`@PreAuthorize("@ss.hasPermi('system:menu:list')")`的含义是找到名为`ss`的Bean并调用`hasPermi`方法，返回的结果（通过menu表中的perms字段切割后的要求进行判断）即此注解是否放行）
 
-其中`@PreAuthorize("@ss.hasPermi('system:menu:list')")`的SPringExpressionLanguage作用及使用方法可[参见demo-sepl](https://github.com/wangxy98c/RuoyiLearnDemo/tree/8a7992a184ec10b4108d52193f61f0d991a6b39f/springexpressionlanguage)
+其中`@PreAuthorize("@ss.hasPermi('system:menu:list')")`的SPringExpressionLanguage作用及使用方法可[参见demo-sepl](https://github.com/wangxy98c/TienChinLearnDemo/tree/8a7992a184ec10b4108d52193f61f0d991a6b39f/springexpressionlanguage)
 
 ### 权限中的概念树梳理
 
@@ -382,7 +391,7 @@ D(CustomUrlDecisionManager)--重载decide方法-->
 E(在decide方法中进行允许通过的判断)
 ```
 
-#### Ruoyi
+#### TienChin
 
 需要进行权限限制的方法上使用`@PreAuthorize("hasPermission('/add','sys:user:add')")`注解（注意要开启：`@EnableGlobalMethodSecurity(prePostEnabled = true)`）。我们需要自己实现权限评估器。
 
@@ -390,7 +399,7 @@ E(在decide方法中进行允许通过的判断)
 
 
 
-## RuoYi权限改造
+### RuoYi权限改造
 
 1. 复制Demo中的Handler和Root到Tienchin。并在com.wangxy.teinchin.framework.config.ResourcesConfig中注册Handler。**注意不是SecurityConfig中**
 
@@ -405,3 +414,184 @@ E(在decide方法中进行允许通过的判断)
 ​		修复方法：在LoginUser的getAuthoritis上加`@JSONField(serialize = false)`
 
 ​		区别在于：加了注解后的getAuthorities的输出结果是
+
+## 登陆、鉴权流程梳理
+
+### 登陆流程
+
+1. 登陆请求，直接发送给登陆接口`/login`。方法位于`com.wangxy.teinchin.web.controller.system.SysLoginController#login`
+   1. 调用`authenticationManager.authenticate`执行登陆操作。这个操作最终会调用`com.wangxy.teinchin.framework.web.service.UserDetailsServiceImpl#loadUserByUsername`方法进行登陆用户的认证，并返回一个LoginUser（包括根据用户Id从数据库中查询到的用户权限和基本信息）
+   2. 创建登陆令牌（实际上是JWT字符串）。
+      1. 先生成一个经过处理后的uuid
+      2. 以uuid为key。登陆成功的用户LoginUser为value存储到Redis中
+      3. 生成一个JWT字符串，这个JWT字符串内容（解析后）只有uuid。
+
+2. 其他请求
+
+   所有需要认证的其他请求都会经过`com.wangxy.teinchin.framework.security.filter.JwtAuthenticationTokenFilter#doFilterInternal`类。它的核心功能是根据JWT字符串去Redis中查询登陆用户对象，并存入`SecurityContextHolder`中。
+
+   1. 携带方式就是将JWT字符串放入到请求头中，不携带不通过
+   2. 在`JwtAuthenticationTokenFilter`过滤器中会进行Jwt字符串的处理。根据Jwt字符串解析出当前登陆的用户。具体的获取逻辑在`com.wangxy.teinchin.framework.web.service.TokenService#getLoginUser`中
+      1. 先从请求头中提取出JWT
+      2. 根据JWT字符串解析并处理得到uuid
+      3. 从Redis中查询到用户对象并其它处理（Redis过期时间刷新等）
+      4. 最后将登陆用户存储到SecurityContextHolder中（某些服务需要时会取，比如权限的getAuthorities）
+
+### 鉴权流程
+
+1. 用户登陆成功时就已经把用户权限信息保存到了LoginUser中了。每次请求到达的时候，都会在`JwtAuthenticationTokenFilter`过滤器中，重新获取到用户的基本信息（包括权限）存入SecurityContextHolder中（每次请求都是）。
+
+2. 访问某个需要权限控制的接口时，加@PreAuthorize注解即可（过程参见上面）。注解中，会获取到当前用户信息并和需要的角色信息进行比对。
+
+## 动态菜单实现
+
+### 整体思路
+
+不同的人登陆看到的菜单不同，实现思路和vhr思路中一模一样（细节肯定有一些小小的差异）
+
+1. 用户登陆成功之后，前端会自动发送请求到后端查询登陆用户的动态菜单。根据当前登陆成功的用户id去sys_user_role表中查询到这个用户的角色id。然后根据角色id去sys_role_menu表中查询到菜单id。再根据菜单id去sys_menu表中查询到具体的菜单数据
+2. 前端定义了一个前置路由导航守卫，页面跳转的时候，路由导航守卫会监听到所有页面跳转。需要动态菜单时就去服务端加载，拿到之后渲染并存入router中。
+
+### sys_menu表细节
+
+1. is_frame：1表示不是外部链接，会在Teinchin里打开。0表示新建一个标签页打开。
+
++ 当为0时返回的JSON
+
+```json
+{
+    "name": "Https://github.com/wangxy98c",
+    "path": "https://github.com/wangxy98c",
+    "hidden": false,
+    "component": "Layout",
+    "meta": {
+        "title": "TeinChin健身官网",
+        "icon": "guide",
+        "noCache": false,
+        "link": "https://github.com/wangxy98c"
+    }
+}
+```
+
++ 当为1时返回的JSON
+
+```json
+{
+    "name": "Tool",
+    "path": "/tool",
+    "hidden": false,
+    "redirect": "noRedirect",
+    "component": "Layout",
+    "alwaysShow": true,
+    "meta": {
+        "title": "系统工具",
+        "icon": "tool",
+        "noCache": false,
+        "link": null
+    },
+    "children": [
+        {
+            "name": "Build",
+            "path": "build",
+            "hidden": false,
+            "component": "tool/build/index",
+            "meta": {
+                "title": "表单构建",
+                "icon": "build",
+                "noCache": false,
+                "link": null
+            }
+        },
+        //多个 ，但略去
+    ]
+}
+```
+
++ 区别主要在于：
+  + 是否有children项。（因为需要在当前系统中展示内容，用于Router）
+  + ~~component项一个是`Layout`，一个是`InnerLink`~~（老版本才是）
+
+2. menu_type：M表示目录、C表示具体菜单。但有一些特殊情况M、C都可以。
+   1. 一个C类型必须有一个parent，如果没有系统就会自动添加一个Layout作为其parent。
+   2. M类型没有parent，但此时如果不是外链可能会有一些问题（只渲染自己且点击后填满整个页面）
+   3. 且前端在渲染时如果只有一个children则不会渲染parent。
+
+### 服务端
+
+1. 查询菜单
+
+   1. 当前用户是admin，则查询所有菜单（但暂时没有层级关系，需要后续处理）
+   2. 不是admin，则根据用户id查询菜单
+
+2. 通过递归操作将菜单的层级关系建立起来
+
+3. com.wangxy.teinchin.system.service.impl.SysMenuServiceImpl#buildMenus **构建菜单**的核心
+
+   1. visiable：可见性
+
+   2. name：一般是path首字母大写。（类型为C、是一级菜单、是系统内页面）时会自动生成一个parent，这个parent的name为空
+
+   3. path：（M-目录、C-菜单）
+
+      1. 不是一级菜单、是一个系统内外链：去掉path中的http或https即可。
+      2. 非外链、一级目录、M类型：path在数据库查询到dath前加斜杠/
+      3. 非外链、一级目录、C类型：path就是/
+      4. 其他情况直接返回菜单项即可
+
+      + 对于正常菜单数据而言，parent实际上走第二个if。children实际上不会进入任何分支直接返回
+
+   4. component：
+
+      1. 默认的component是Layout：主页面
+      2. Inner_link：选项卡、在系统内展示外部网页
+      3. parent_view：如果菜单还有子菜单，这个菜单对应的component就是parent_view
+
+   5. query、meta没什么特殊的
+
+   6. children：如果当前菜单有children，递归处理
+
+#### 总结
+
+整体上，菜单分为四种情况
+
+1. 有父有子的情况
+
+2. 只有一个一级菜单
+
+   1. 普通菜单：点击后在右边打开新的选项卡，展示系统内网页
+
+   2. 非外链的超链接：menu_type =M、is_frame=1，系统内选项卡展示外部网页
+
+      parent的component是Layout，但会自动生成children且component是innerLink
+
+   3. 外链的超链接：点击后浏览器新标签页打开
+
+      1. menu_type=C、is_frame=1。它有children项（但children没有component）
+      2. menu_type=M/C、is_frame=0。它没有children项
+
+### 前端
+
+#### 菜单渲染
+
+1. 判断是不是只有一个子菜单。对应一种渲染方式（用v-if控制）。多个菜单则用下面的那种（v-else）
+2. 多次菜单会**递归**调用**本渲染页面**（SiderbarItem）来实现多级目录（所有的末端使用的是v-if那条线）
+
+#### 路由
+
+##### 公共路由
+
+无论身份权限如何，都需要加进来的路由。包括login、register、用户个人中心等。hidden表示是否在菜单中隐藏（比如login不需要出现在菜单项中）。公共路由中仅仅Layout需要渲染
+
+Layout是页面的整体框架（包括菜单，头部，以及内容的部分）
+
+##### 动态路由（不是vhr里的那种从后端动态）
+
+一部分页面不通过菜单进入，而是通过表单每行后面的按钮进入，且这些页面需要权限。
+
+这些路由都在前端router中写好了。并不是从后端获取后得到
+
+## 前端的数据加载
+
+### 请求封装
+
+封装的请求都在src/api下。login.js和menu.js
