@@ -4,6 +4,8 @@
 
 ### npm run dev
 
+某个版本的RuoYi-ui会出现此问题（此学习项目现在使用的版本不会出现）
+
 ![image-20230704133315622](./RECORD.assets/image-20230704133315622-8448973.png '错误信息')
 
 每次都需要:`export NODE_OPTIONS=--openssl-legacy-provider`后再`npm run dev`
@@ -18,6 +20,362 @@
 this.onlyOneChild = {...parent, path: '', noShowingChildren: true}
 //表示把parent展开（parent里有很多属性）
 ```
+
+## Promise
+
+参见[PromiseTest]()
+
+Promise执行成功就将resolve抛出，失败用reject。只管抛出结果即可。
+
+### then方法
+
+then其实可以传递两个参数，第一个是成功的回调函数，第二个是失败的回调函数。如果没有传递第二个可以在catch中处理失败。
+
+then的返回值有三种：
+
+1. Promise：下一个then的主语其实就是返回的这个Promiese
+
+2. 字符串：返回一个字符串，**此时可以一直then下去**，所有的then都是同一个主语
+
+   + 成功与否条件根据Promise，但data是return的字符串
+
+   ```javascript
+   new Promise(login).then(data=>{
+       console.log('then1:',data)
+       return data+'1';
+   }).then(data=>{
+       console.log('then2:',data)
+       return data+'2'
+   }).then(data=>{
+       console.log('then3:',data)
+       return data+'3'
+   }).catch(err=>{
+       console.log('error:',err)
+       return err+'4'
+   })
+   //一个成功的测试输出
+   // login===>  0.759378843878912
+   // then1: login success
+   // then2: login success1
+   // then3: login success12
+   //一个失败的测试输出
+   // login===>  0.33134505946441895
+   // error: login error
+   ```
+
+3. 异常：抛出异常后即立刻转入失败的catch
+
+   ```javascript
+   new Promise(login).then(data=>{
+       console.log('then1:',data)
+       return data+'1';
+   }).then(data=>{
+       console.log('then2:',data)
+       throw new Error('出错了2')
+   }).then(data=>{
+       console.log('then3:',data)
+   }).catch(err=>{
+       console.log('error:',err)
+   }).finally(()=>{
+       console.log('执行finally')
+   }).then(()=>{
+       console.log('finally 后面的then 代码')
+   })
+   //一个测试
+   // login===>  0.5963416081378934
+   // then1: login success
+   // then2: login success1
+   // error: Error: 出错了2
+   //     at /Users/wangxy/code/RuoyiLearnDemo/SomethingTest/PromiseT.js:103:11
+   //     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+   // 执行finally
+   // finally 后面的then 代码
+   ```
+
+### catch方法
+
+不是必须的，也可以直接在then中写两个回调函数，第二个回调函数就是用来处理catch情况的。不过大多数情况下都是单独写出来
+
+进入catch的情况
+
+1. Promise中通过reject返回
+2. then中抛出异常
+
++ 进入catch都是进入最近的一个，不会一直进入（then的话是会一直往后进入）
+
+### finally方法
+
+和java中类似，出错也会执行finally代码。**但是finally执行完之后还可以继续then**
+
+### 静态方法
+
+1. Promise.resolve()：返回一个带给定值解析后的Promise对象，此对象只会进入then
+
+2. Promise.reject()：返回的对象只会进入catch
+
+   ```javascript
+   let p1=Promise.resolve('成功了！')//只会进入then
+   p1.then(data=>{
+       console.log('data',data)
+   }).catch(err=>{
+       //除非在then中抛出异常，否则不会进入
+   })
+   function resolved(){
+       console.log('resolved')
+   }
+   function rejected(err){
+       console.log('rejected:',err)
+   }
+   p1=Promise.reject('出错了!')//只会进入reject
+   //p1.then(resolved,rejected) 或如下方式
+   p1.then(resolved).catch(rejected)
+   ```
+
+   
+
+3. Promise.all()：**接受多个Promise对象**，返回一个Promise实例。所有的Promise都resolve后才会进入then中，**只要有一个返回reject就进入catch**。它能够确保多个任务同时执行成功
+
+   ```javascript
+   //let p1=Promise.resolve('resolve1')
+   let p1=Promise.reject('reject!')
+   //let p2=88
+   let p2=Promise.reject('reject2')
+   let p3=new Promise((resolve,reject)=>{
+       setTimeout(resolve,3000,"hello javaboy")
+   })
+   Promise.all([p1,p2,p3]).then(data=>{
+       //三个都是resolve，会进入then。数据是所有的返回组成的数组
+       console.log('data:',data)
+       //输出数据：   data: [ 'resolve1', 88, 'hello javaboy' ] 
+   }).catch(err=>{
+       //只要有一个失败的情况，数据是第一个失败的数据
+       console.log('error:',err)
+       //输出数据：  error: reject!
+   })
+
+4. Promise.race()：接受多个Promise对象，参数中只要有一个执行成功或者失败就可以确定了，**不会等其他执行慢的Promise**。慢的那些Promise会直接被抛弃
+
+   ```javascript
+   let p1=new Promise((resolve,reject)=>{
+       setTimeout(resolve,100,"one")
+   })
+   let p2=new Promise((resolve,reject)=>{
+       setTimeout(resolve,1000,"two")
+   })
+   Promise.race([p1,p2]).then(data=>{
+       console.log('data:',data)
+   }).catch(err=>{
+       console.log('err:',err)
+   })
+   //测试输出,输出非常迅速，不会等10s（two）
+   // data: one
+   ```
+
+
+## vue3
+
+### 变量
+
+```javascript
+const book=reactive({
+  name: '三国演义'
+  author: '罗贯中'
+})//为了直接使用name和author而不是book.name这种。
+const{name,author}=toRefs(book)
+```
+
+### 全局方法
+
+利用[插件](https://cn.vuejs.org/guide/reusability/plugins.html)  但不能用this了，一般在频繁使用全局方法的页面使用吧（如果只有少量可以直接import方法）
+
+定义：`const app = createApp(App);app.config.globalProperties.myfunc = myfunc`
+
+引用：
+
+```javascript
+import {getCurrentInstance} from 'vue'
+const { proxy } = getCurrentInstance();
+const { sys_yes_no } = proxy.myfunc("sys_yes_no");
+```
+
+### 自定义[插件](https://cn.vuejs.org/guide/reusability/plugins.html)
+
+插件 (Plugins) 是一种能为 Vue 添加全局功能的工具代码。（其实`.use(store).use(router)`都是插件)
+
+```javascript
+// ./plugins/index.js
+import MyBanner from '@/components/MyBanner' 
+export default{
+  install:(app,options)=>{
+    //插件代码
+    console.log("自定义插件-传入的参数是：",options)
+    app.component("my-banner",MyBanner)//在插件中使用组件并全局注册
+  }
+}
+
+//main.js
+import plugins from './plugins'
+app.use(plugins,参数)//项目启动插件会自动执行
+```
+
+app：就是vue对象
+
+options：一个可选参数，可以是各种类型
+
+#### 自定义插件中的provide和inject
+
+通过provide定义一个方法，需要使用的时候通过inject注入这个方法然后使用
+
+```javascript
+// plugins/i18n.js
+export default {
+  install: (app, options) => {
+    const clickMe=()=>{
+      console.log("clicked me")
+    }
+    app.provide('clickMe', clickMe)
+  }
+}
+```
+
+```javascript
+import { inject } from 'vue'
+const clickMe = inject('clickMe')//inject() can only be used inside setup
+clickMe()//执行
+```
+
+
+
+### 自定义[组件component](https://cn.vuejs.org/guide/components/registration.html)
+
+```javascript
+import MyBanner from '@/components/MyBanner'//自己写的
+//全局挂载
+app.component('my-banner', MyBanner)
+```
+
+当然也可以在插件中引入组件并注册（全局），参见自定义插件
+
+### [自定义指令](https://cn.vuejs.org/guide/reusability/custom-directives.html)
+
+vhr中的messge.vue中有使用指令(实现自动滚动到底部)，但没有全局挂载等
+
+> 在 `<script setup>` 中，任何以 `v` 开头的驼峰式命名的变量都可以被用作一个自定义指令。在上面的例子中，`vFocus` 即可以在模板中以 `v-focus` 的形式使用。
+
+```vue
+<script setup>
+// 在模板中启用 v-focus
+const vFocus = {
+  mounted: (el) => el.focus()
+}
+</script>
+
+<template>
+  <input v-focus />
+</template>
+```
+
++ 过 `directives` 选项注册可以通过`app.directive('focus', {  })` 挂载到全局（选项式API即便不挂载全局也要在directive中定义）
+
+> 指令的钩子会传递以下几种参数：
+
++ `el`：指令绑定到的元素。这可以用于直接操作 DOM。
++ `binding`：一个对象，包含以下属性。(好几种不同的传递方式，如= : )
+  + **`value`：传递给指令的值。例如在 `v-my-directive="1 + 1"` 中，值是 `2`**。
+  + `oldValue`：之前的值，仅在 `beforeUpdate` 和 `updated` 中可用。无论值是否更改，它都可用。
+  + **`arg`：传递给指令的参数 (如果有的话)。例如在 `v-my-directive:foo` 中，参数是 `"foo"`。**
+  + `modifiers`：一个包含修饰符的对象 (如果有的话)。例如在 `v-my-directive.foo.bar`中，修饰符对象是 `{ foo: true, bar: true }`。
+  + `instance`：使用该指令的组件实例。
+  + `dir`：指令的定义对象。
++ `vnode`：代表绑定元素的底层 VNode。
++ `prevNode`：代表之前的渲染中指令所绑定元素的 VNode。仅在 `beforeUpdate` 和 `updated` 钩子中可用。
+
+#### 传递多个参数、动态参数
+
+1. 多个参数：在指令定义里可以正常使用`binding.value  binding.arg`。
+
+​		在使用的地方`<button v-onceClick:s="3"/>`  即`:` 和`=` 一起用就行了。
+
+2. 动态参数：`const dynamicArg=ref('s')`
+
+   `<button v-onceClick:[dynamicArg]="3"/>`
+
+#### 简化形式
+
+对于自定义指令来说，一个很常见的情况是仅仅需要在 `mounted` 和 `updated` 上实现相同的行为，除此之外并不需要其他钩子。这种情况下我们可以直接用一个函数来定义指令
+
+```javascript
+<div v-color="color"></div>
+
+app.directive('color', (el, binding) => {
+  // 这会在 `mounted` 和 `updated` 时都调用
+  el.style.color = binding.value
+})
+```
+
+#### 在Ruoyi中的应用
+
+```html
+<el-button
+     type="primary"
+     plain
+     icon="Plus"
+     @click="handleAdd"
+     v-hasPermi="['system:dept:add']"
+  >新增</el-button>
+```
+
+如果具备后面的权限，这个按钮就展示出来。否则隐藏
+
+## Vite
+
+前端构建工具，类似webpack。速度更快
+
+SpringBoot的热加载，提供了两个类加载器
+
+1. baseClassloader：加载第三方类（这些类是不会变的）
+2. restartClassloader：加载自己写的类
+   + 加载时只需要加载restartClassloader
+
+Vite的思路和SpringBoot热加载基本一致。
+
+1. 依赖：变化很小
+2. 源码：经常变化
+
+### 自动导入方法的插件以及其他工具
+
++ 不需要每个地方都import。它是一个开发工具，上线不需要
+
+1. 安装插件`npm install unplugin-auto-import -D`
+
+2. 配置插件：vite.config.js
+
+   ```javascript
+   import AutoImport from 'unplugin-auto-import/vite'
+   import VueSetupExtend from 'vite-plugin-vue-setup-extend'
+   export default defineConfig({
+     plugins: 
+     [	 vue(),//默认的vue
+        AutoImport({
+          imports:['vue','vue-router']
+          //凡事vue\vue-router中提供的方法，不需要导入就可以直接使用
+          dts:'src/xxx/xxx'//指定代码生成的位置
+        }),
+        VueSetupExtend()//可以直接在script中定义组件名称
+     ]
+     resolve:{
+     	extensions: ['.vue','.js']//导入文件可以不带这些文件的后缀
+   	}
+   })
+   ```
+
+   一般使用频率很高的组件中的方法可以通过这种方法导入。
+
+> Vite的import导入 默认不能省略'.vue'后缀
+
+>  配置组件名`npm install vite-plugin-vue-setup-extend -D`  
+>
+> `<script setup name="ComponentName">`
 
 
 
@@ -452,7 +810,7 @@ E(在decide方法中进行允许通过的判断)
 1. 用户登陆成功之后，前端会自动发送请求到后端查询登陆用户的动态菜单。根据当前登陆成功的用户id去sys_user_role表中查询到这个用户的角色id。然后根据角色id去sys_role_menu表中查询到菜单id。再根据菜单id去sys_menu表中查询到具体的菜单数据
 2. 前端定义了一个前置路由导航守卫，页面跳转的时候，路由导航守卫会监听到所有页面跳转。需要动态菜单时就去服务端加载，拿到之后渲染并存入router中。
 
-### sys_menu表细节
+#### sys_menu表细节
 
 1. is_frame：1表示不是外部链接，会在Teinchin里打开。0表示新建一个标签页打开。
 
@@ -584,14 +942,62 @@ E(在decide方法中进行允许通过的判断)
 
 Layout是页面的整体框架（包括菜单，头部，以及内容的部分）
 
-##### 动态路由（不是vhr里的那种从后端动态）
+##### 本地动态路由（不是vhr里的那种从后端字符串处理后再引入，而是本地定义好，需要时直接引入）
 
 一部分页面不通过菜单进入，而是通过表单每行后面的按钮进入，且这些页面需要权限。
 
 这些路由都在前端router中写好了。并不是从后端获取后得到
 
+### 为什么不能存在LocalStorage中
+
+存在pinia中刷新后会丢失数据。在LocalStorage中刷新后仍然有，但为什么不能呢？
+
+服务端返回的数据有两个作用
+
+1. 渲染左侧菜单：对于这个功能，不管存储在哪里都可以。SessionStorage、LocalStorage、Cookie都可以
+2. 添加到路由中：路由其实是一个内存对象，从后端加载到数据后，会讲菜单数据动态添加到router中（`permission.js/#router.addRoute(route)`）。这样，点击左边的菜单项，右边才会跳转（否则404）。但是这个router中的数据保存在内存里。**这就意味着**，如果用户点击浏览器刷新按钮就会导致router中的数据丢失（无法进行页面跳转）。**router是个对象，没有办法存入各种Storage中的。**于是它要求必须在刷新后重新加载一次动态菜单。
+   + 理论上来说也可以从Storage中读去后，重新加载到router中，但一般不这么干。但什么时候拿？
+     + 监听浏览器的刷新事件：刷新后直接404（router还没加载上）
+     + 在导航守卫里去处理：router总是有数据的，不能根据router判断是否需要加载动态的页面。且不能根据不确定的长度去判断。（用pinia的话router和pinia数据丢失是一起的。pinia为空则直接动态加载就行）
+
+### 路由导航守卫
+
+`src/permissionjs` 中前置导航守卫中使用了pinia`store/modules/permission.js`中的generateRoutes方法
+
+![image-20230728140354408](./RECORD.assets/image-20230728140354408.png)
+
+未划去的是`asyncRoutes.forEach(route => { router.addRoute(route) })`添加上的动态路由。由于addRoutes函数是支持自动添加children的。故而不单单是一级的那几个router
+
+### 回调地狱
+
+>  还记得vhr中的前置路由守卫中的问题（没使用next参数，遇到了不少问题。虽然解决了，但似乎不是太好的办法。可以参考这里的写法）
+
+```mermaid
+flowchart LR
+
+登陆--成功-->获取用户信息--成功-->获取用户菜单
+```
+
+在整个过程中，由于多个请求存在依赖关系，需要不断地嵌套（`.success:function(data){.success:....}`）从而造成回调地狱。我们希望能将异步任务执行的代码和处理的代码分离开，能实现这一需求的工具就是Promise
+
+
+
 ## 前端的数据加载
 
-### 请求封装
+### 登陆流程
 
-封装的请求都在src/api下。login.js和menu.js
+1. view/login.vue文件
+2. 登陆方法在`src/api/login.js`中封装好了
+3. 因为登陆后需要保存一些信息（token），于是在pinia（`src/store/modules/user.js中`）二次封装。
+
++ 其实单纯就登陆来说，只保存了token
+
+## 前端自定义权限指令
+
+1. 用户登陆后，从服务端拿到了自己的权限以及角色信息。
+
+2. 比较权限。如果不具备权限，则把el从DOM中移除
+
+   `el.parentNode&&parentNode.removeChild(el)`
+
+   另外，遍历数组时可以用some函数
