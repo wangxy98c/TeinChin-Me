@@ -203,7 +203,7 @@ insert into sys_menu
 values ('3', '系统工具', '0', '3', 'tool', null, '', 1, 0, 'M', '0', '0', '', 'tool', 'admin', sysdate(), '', null,
         '系统工具目录');
 insert into sys_menu
-values ('4', 'TeinChin健身官网', '0', '4', 'http://teinchin.vip', null, '', 0, 0, 'M', '0', '0', '', 'guide', 'admin',
+values ('4', 'TeinChin健身官网', '0', '4', 'http://tienchin.vip', null, '', 0, 0, 'M', '0', '0', '', 'guide', 'admin',
         sysdate(), '', null, 'TeinChin健身官网地址');
 -- 二级菜单
 insert into sys_menu

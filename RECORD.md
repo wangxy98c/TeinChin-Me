@@ -387,18 +387,18 @@ Vite的思路和SpringBoot热加载基本一致。
 
 ### 项目全局替换
 
-1. 包名: com.ruoyi => com.wangxy.teinchin
+1. 包名: com.ruoyi => com.wangxy.tienchin
 1. com.ruoyi => com.wangxy
 1. 版本号: 3.8.6 => 0.0.1
-1. ruoyi => teinchin
+1. ruoyi => tienchin
 1. 若依 => 天勤
 1. 模块名：rename and directory
 1. 项目名
 1. com.wangxy.framework.config.CaptchaConfig 中修改KaptchaTextCreator地址
-1. common 中 config 的ruoyiconfig => teinchinconfig
+1. common 中 config 的ruoyiconfig => tienchinconfig
 1. 重新打开项目
-1. 前端 src/utils/ruoyi.js => teinchin.js
-1. src/assets/styles/ruoyi.scss => teinchin.scss
+1. 前端 src/utils/ruoyi.js => tienchin.js
+1. src/assets/styles/ruoyi.scss => tienchin.scss
 
 ### SpringBoot 启动字符图
 
@@ -447,7 +447,7 @@ com.ruoyi
 
 ## 全局异常处理
 
-com.wangxy.teinchin.framework.web.exception.GlobalExceptionHandler
+com.wangxy.tienchin.framework.web.exception.GlobalExceptionHandler
 
 ## 身份认证
 
@@ -467,11 +467,11 @@ com.wangxy.teinchin.framework.web.exception.GlobalExceptionHandler
 
 #### 相关类
 
-com.wangxy.teinchin.web.controller.common.CaptchaController
+com.wangxy.tienchin.web.controller.common.CaptchaController
 
-com.wangxy.teinchin.framework.config.CaptchaConfig 相关配置并生成
+com.wangxy.tienchin.framework.config.CaptchaConfig 相关配置并生成
 
-com.wangxy.teinchin.framework.config.KaptchaTextCreator 生成数学式
+com.wangxy.tienchin.framework.config.KaptchaTextCreator 生成数学式
 
 ### 登陆
 
@@ -494,9 +494,9 @@ com.wangxy.teinchin.framework.config.KaptchaTextCreator 生成数学式
 
 #### 相关类
 
-com.wangxy.teinchin.web.controller.system.SysLoginController
+com.wangxy.tienchin.web.controller.system.SysLoginController
 
-com.wangxy.teinchin.framework.web.service.SysLoginService
+com.wangxy.tienchin.framework.web.service.SysLoginService
 
 ### JWT校验
 
@@ -508,9 +508,9 @@ com.wangxy.teinchin.framework.web.service.SysLoginService
 
 #### 相关类
 
-com.wangxy.teinchin.framework.security.filter.JwtAuthenticationTokenFilter
+com.wangxy.tienchin.framework.security.filter.JwtAuthenticationTokenFilter
 
-com.wangxy.teinchin.framework.web.service.TokenService
+com.wangxy.tienchin.framework.web.service.TokenService
 
 ### Security配置
 
@@ -521,15 +521,15 @@ com.wangxy.teinchin.framework.web.service.TokenService
 
 #### 相关类
 
-com.wangxy.teinchin.framework.config.SecurityConfig
+com.wangxy.tienchin.framework.config.SecurityConfig
 
 ## 多数据源注解
 
 [参见RuoYiLearnDemo/datasources]()
 
-com.wangxy.teinchin.common.annotation.DataScope 自定义注解
+com.wangxy.tienchin.common.annotation.DataScope 自定义注解
 
-com.wangxy.teinchin.framework.aspectj.DataScopeAspect 使用注解
+com.wangxy.tienchin.framework.aspectj.DataScopeAspect 使用注解
 
 **@Target**用来定义你的注解将应用于什么地方(例如是一个方法或者一个域)。
 
@@ -657,11 +657,11 @@ mapper的SQL语句写好基础的语句后，通过对不同data_scope的不同�
 
 ## 日志注解
 
-com.wangxy.teinchin.framework.aspectj.LogAspect  切面（核心代码）
+com.wangxy.tienchin.framework.aspectj.LogAspect  切面（核心代码）
 
-com.wangxy.teinchin.framework.manager.AsyncManager 异步管理类，日志插入数据库时使用。（使用了定时任务，线程池相关知识）
+com.wangxy.tienchin.framework.manager.AsyncManager 异步管理类，日志插入数据库时使用。（使用了定时任务，线程池相关知识）
 
-com.wangxy.teinchin.framework.config.ThreadPoolConfig
+com.wangxy.tienchin.framework.config.ThreadPoolConfig
 
 ### Aware接口
 
@@ -759,7 +759,7 @@ E(在decide方法中进行允许通过的判断)
 
 ### RuoYi权限改造
 
-1. 复制Demo中的Handler和Root到Tienchin。并在com.wangxy.teinchin.framework.config.ResourcesConfig中注册Handler。**注意不是SecurityConfig中**
+1. 复制Demo中的Handler和Root到Tienchin。并在com.wangxy.tienchin.framework.config.ResourcesConfig中注册Handler。**注意不是SecurityConfig中**
 
 2. 全局替换hasPermission为hasPermission
 
@@ -777,8 +777,8 @@ E(在decide方法中进行允许通过的判断)
 
 ### 登陆流程
 
-1. 登陆请求，直接发送给登陆接口`/login`。方法位于`com.wangxy.teinchin.web.controller.system.SysLoginController#login`
-   1. 调用`authenticationManager.authenticate`执行登陆操作。这个操作最终会调用`com.wangxy.teinchin.framework.web.service.UserDetailsServiceImpl#loadUserByUsername`方法进行登陆用户的认证，并返回一个LoginUser（包括根据用户Id从数据库中查询到的用户权限和基本信息）
+1. 登陆请求，直接发送给登陆接口`/login`。方法位于`com.wangxy.tienchin.web.controller.system.SysLoginController#login`
+   1. 调用`authenticationManager.authenticate`执行登陆操作。这个操作最终会调用`com.wangxy.tienchin.framework.web.service.UserDetailsServiceImpl#loadUserByUsername`方法进行登陆用户的认证，并返回一个LoginUser（包括根据用户Id从数据库中查询到的用户权限和基本信息）
    2. 创建登陆令牌（实际上是JWT字符串）。
       1. 先生成一个经过处理后的uuid
       2. 以uuid为key。登陆成功的用户LoginUser为value存储到Redis中
@@ -786,10 +786,10 @@ E(在decide方法中进行允许通过的判断)
 
 2. 其他请求
 
-   所有需要认证的其他请求都会经过`com.wangxy.teinchin.framework.security.filter.JwtAuthenticationTokenFilter#doFilterInternal`类。它的核心功能是根据JWT字符串去Redis中查询登陆用户对象，并存入`SecurityContextHolder`中。
+   所有需要认证的其他请求都会经过`com.wangxy.tienchin.framework.security.filter.JwtAuthenticationTokenFilter#doFilterInternal`类。它的核心功能是根据JWT字符串去Redis中查询登陆用户对象，并存入`SecurityContextHolder`中。
 
    1. 携带方式就是将JWT字符串放入到请求头中，不携带不通过
-   2. 在`JwtAuthenticationTokenFilter`过滤器中会进行Jwt字符串的处理。根据Jwt字符串解析出当前登陆的用户。具体的获取逻辑在`com.wangxy.teinchin.framework.web.service.TokenService#getLoginUser`中
+   2. 在`JwtAuthenticationTokenFilter`过滤器中会进行Jwt字符串的处理。根据Jwt字符串解析出当前登陆的用户。具体的获取逻辑在`com.wangxy.tienchin.framework.web.service.TokenService#getLoginUser`中
       1. 先从请求头中提取出JWT
       2. 根据JWT字符串解析并处理得到uuid
       3. 从Redis中查询到用户对象并其它处理（Redis过期时间刷新等）
@@ -883,7 +883,7 @@ E(在decide方法中进行允许通过的判断)
 
 2. 通过递归操作将菜单的层级关系建立起来
 
-3. com.wangxy.teinchin.system.service.impl.SysMenuServiceImpl#buildMenus **构建菜单**的核心
+3. com.wangxy.tienchin.system.service.impl.SysMenuServiceImpl#buildMenus **构建菜单**的核心
 
    1. visiable：可见性
 

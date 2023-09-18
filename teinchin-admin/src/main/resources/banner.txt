@@ -1,7 +1,0 @@
-Application Version: ${teinchin.version}
-Spring Boot Version: ${spring-boot.version}
- /__  ___/                     //   ) )
-   / /   ___     ( )   __     //        / __     ( )   __
-  / /  //___) ) / / //   ) ) //        //   ) ) / / //   ) )
- / /  //       / / //   / / //        //   / / / / //   / /
-/ /  ((____   / / //   / / ((____/ / //   / / / / //   / /

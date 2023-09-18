@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wangxy</groupId>
-    <artifactId>teinchin</artifactId>
+    <artifactId>tienchin</artifactId>
     <version>0.0.1</version>
 
-    <name>teinchin</name>
-    <url>http://www.teinchin.vip</url>
+    <name>tienchin</name>
+    <url>http://www.tienchin.vip</url>
     <description>TeinChin健身管理系统</description>
 
     <properties>
-        <teinchin.version>0.0.1</teinchin.version>
+        <tienchin.version>0.0.1</tienchin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -138,48 +138,48 @@
             <!-- 定时任务-->
             <dependency>
                 <groupId>com.wangxy</groupId>
-                <artifactId>teinchin-quartz</artifactId>
-                <version>${teinchin.version}</version>
+                <artifactId>tienchin-quartz</artifactId>
+                <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
                 <groupId>com.wangxy</groupId>
-                <artifactId>teinchin-generator</artifactId>
-                <version>${teinchin.version}</version>
+                <artifactId>tienchin-generator</artifactId>
+                <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.wangxy</groupId>
-                <artifactId>teinchin-framework</artifactId>
-                <version>${teinchin.version}</version>
+                <artifactId>tienchin-framework</artifactId>
+                <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
                 <groupId>com.wangxy</groupId>
-                <artifactId>teinchin-system</artifactId>
-                <version>${teinchin.version}</version>
+                <artifactId>tienchin-system</artifactId>
+                <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
                 <groupId>com.wangxy</groupId>
-                <artifactId>teinchin-common</artifactId>
-                <version>${teinchin.version}</version>
+                <artifactId>tienchin-common</artifactId>
+                <version>${tienchin.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>teinchin-admin</module>
-        <module>teinchin-framework</module>
-        <module>teinchin-system</module>
-        <module>teinchin-quartz</module>
-        <module>teinchin-generator</module>
-        <module>teinchin-common</module>
+        <module>tienchin-admin</module>
+        <module>tienchin-framework</module>
+        <module>tienchin-system</module>
+        <module>tienchin-quartz</module>
+        <module>tienchin-generator</module>
+        <module>tienchin-common</module>
     </modules>
     <packaging>pom</packaging>
 
