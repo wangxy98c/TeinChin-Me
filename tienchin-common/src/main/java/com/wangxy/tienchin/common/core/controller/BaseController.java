@@ -27,7 +27,7 @@ import com.wangxy.tienchin.common.core.page.TableSupport;
  *
  * @author tienchin
  */
-public class BaseController {
+public class  BaseController {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**

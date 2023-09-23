@@ -1,7 +1,11 @@
 package com.wangxy.tienchin.channel.service;
 
-import com.wangxy.tienchin.channel.entity.Channel;
+import com.wangxy.tienchin.channel.domain.Channel;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wangxy.tienchin.channel.domain.vo.ChannelVO;
+import com.wangxy.tienchin.common.core.domain.AjaxResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IChannelService extends IService<Channel> {
 
+    List<Channel> selectChannelList();
+
+    AjaxResult addChannel(ChannelVO channelVO);
 }

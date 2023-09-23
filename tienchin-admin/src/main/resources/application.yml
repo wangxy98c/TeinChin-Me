@@ -105,7 +105,8 @@ mybatis:
   typeAliasesPackage: com.wangxy.**.domain
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
-  # 加载全局的配置文件
+  # 加载全局的配置文件,
+  # 如果使用了全局配置文件，则map-underscore-to-camel-case不应该写在此文件中（应写在其配置文件中）
   configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件

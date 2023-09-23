@@ -1,6 +1,44 @@
-# 后端相关问题
+# RuoYi后端
 
-# 前端相关问题
+1. 小问题：mybatis的xml里写sql不要加分号。总习惯加上，出错
+1. 
+
+# RuoYi前端
+
+1. 数据库中的`0/1`状态不需要自己去写代码转化为`正常/异常` 。可以直接在字典管理中添加字段，再在字段中添加不同值代表的信息，以及所展示出来的样式。但是在表格的展示页面需要根据此字典来配置。从这里可以直接添加字段。其实就是将原本会写死的0/1通过请求的方式拿到字典数组使其变为动态可配置的。另外：这些字段包含了较多信息：包括但不限于0/1对应的展示信息，类型颜色(primary)等。
+2. `getCurrentInstance()`获得当前Vue组件实例，类似于vue2中的this。但是官方极不推荐使用
+3. 组件中的**自定义指令**定义在`src/directive`中（实际是调用`src/directive/permission/hasRole`的方法）
+
+   ```javascript
+   export default function directive(app){
+     app.directive('hasRole', hasRole)
+     app.directive('hasPermi', hasPermi)
+     app.directive('copyText', copyText)
+   }
+   ```
+
+   > 1. `export default function directive(app) { ... }`: 这是一个导出默认函数的语句。这个函数接受一个参数 `app`，它用于注册自定义指令到 Vue 应用中。
+   > 2. `app.directive('hasRole', hasRole)`: 这行代码使用 `app` 对象的 `directive` 方法注册一个名为 `'hasRole'` 的自定义指令，并且该指令的实现是由名为 `hasRole` 的函数来提供。自定义指令允许你在 Vue 模板中添加额外的行为或逻辑，通常是与 DOM 元素的操作或显示相关的。
+
+## 接口请求
+
+Ruoyi的后端接口请求是将每个页面的方法单独封装在`src/api/stsytem`中的。每个页面一个文件（包含了若干需要用到的请求方法），需要时在视图页面中调用。
+
+同时：实际调用各种类型的请求方法也进行了封装 （其实是拦截器，进行了处理）`src/utils/request.js`。另外它还封装了一个`下载`方法。
+
+拦截器的作用主要是：携带上令牌。
+
+```js
+// 是否需要设置 token
+const isToken = (config.headers || {}).isToken === false
+// 是否需要防止数据重复提交
+const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
+if (getToken() && !isToken) {
+  config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+}
+```
+
+
 
 ### npm run dev
 

@@ -1,6 +1,7 @@
-package com.wangxy.tienchin.channel.entity;
+package com.wangxy.tienchin.channel.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @since 2023-09-19
  */
 @TableName("tienchin_channel")
-@ApiModel(value = "Channel对象", description = "")
+//@ApiModel(value = "Channel对象", description = "")
 public class Channel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +29,7 @@ public class Channel implements Serializable {
     @ApiModelProperty("创建人")
     private String createBy;
 
-    @ApiModelProperty("渠道状态：Ruoyi中1表示false。0表示true")
+    @ApiModelProperty("渠道状态：Ruoyi中1表示可用。0表示禁用")
     private Byte status;
 
     @ApiModelProperty("渠道名称")
