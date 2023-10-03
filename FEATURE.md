@@ -20,15 +20,13 @@ mindmap
 
 
 
-# 真正的业务
-
-## 添加自己的页面
+# 添加自己的页面
 
 ![image-20230916155909450](../../.Trash/TeinChin/FEATURE.assets/image-20230916155909450.png)
 
 然后在前端/views/tienchin/下添加应有的目录以及vue文件即可。他们会通过动态路由自动导入
 
-## 导入MyBatisPlus
+# 导入MyBatisPlus
 
 + 最好装上IDEA插件--MybatisX。会方便很多
 
@@ -64,7 +62,7 @@ mindmap
 > 3. 生成的controller记得改成@RestController。另外Controller都在admin中集中处理。把生成controller的换个位置
 > 4. 生成的模型类在entity下，但是application.xml中的mybatis配置是搜索`com.wangxy.**.domain`。故而将entity修改为domain。
 
-### 在MybatisPlus生成代码下的结构（以Channel为例）
+## 在MybatisPlus生成代码下的结构（以Channel为例）
 
 ```mermaid
 flowchart 
@@ -92,6 +90,10 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
    >
    > 不知道为什么命名引入了依赖，但是需要自己`import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;`且需要处理红线来引入（可能与之前文档中说的什么`当前包未传递依赖 MP 包，需要自己引入`有关?)
 
+## MybatisPlus相关
+
+1. lambda
+
 ## 渠道
 
 ![image-20230920213748863](./FEATURE.assets/image-20230920213748863.png)
@@ -100,9 +102,21 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
 
 上表中添加了一些字段，这些字段使用不同的值来代表不同的状态。Ruoyi提供了这些字段的配置,分别是字典管理和字典数据（字典数据页面从字典管理中进入）
 
+# 模型类使用统一的校验配置文件
 
++ 新建`resources/ValidationMessages.properties`文件（名字不能随意变。由`LocalValidatorFactoryBean`来完成默认名，但我没搜到此类）。
 
++ 定义格式如下
 
+  ```properties
+  # 不用必须对应domain，只是为了方便辨认
+  channel.name.notnull=渠道名称不能为空呢
+  # domain模型类
+  @NotBlank(message = "{channel.name.notnull}")
+  private String channelName;
+  ```
+
+  
 
 ## RuoYi使用中遇到的小Bug记录
 

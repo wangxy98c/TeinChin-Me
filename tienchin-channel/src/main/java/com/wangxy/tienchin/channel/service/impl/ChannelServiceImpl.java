@@ -1,6 +1,7 @@
 package com.wangxy.tienchin.channel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.wangxy.tienchin.channel.domain.Channel;
 import com.wangxy.tienchin.channel.domain.vo.ChannelVO;
 import com.wangxy.tienchin.channel.mapper.ChannelMapper;
@@ -31,7 +32,8 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Autowired
     ChannelMapper channelMapper;
 
-    //用MybatisPlus，不需要再自己写mapper了
+    //##note 示例代码
+    //用MybatisPlus，不需要再自己写mapper了。
     @Override
     public AjaxResult addChannel(ChannelVO channelVO) {
         QueryWrapper<Channel> qw = new QueryWrapper<>();
@@ -51,14 +53,35 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
         return save(channel)?AjaxResult.success("添加成功"):AjaxResult.error("添加失败");//save也是MyBatisPlus的接口
     }
 
+    @Override
+    public AjaxResult updateChannel(ChannelVO channelVO) {
+        Channel channel=new Channel();
+        BeanUtils.copyProperties(channelVO,channel);
+        channel.setUpdateBy(SecurityUtils.getUsername());
+        logger.debug("=====>接下来是日期类型转换");
+        channel.setUpdateTime(LocalDateTime.now());
+        //更新
+        return updateById(channel)?AjaxResult.success("更新成功"):AjaxResult.error("更新失败");
+    }
+
+    @Override
+    public boolean deleteChannelByIds(Long[] channelIds) {
+        //逻辑删除,本质上是更新操作
+        UpdateWrapper<Channel> uw = new UpdateWrapper<>();
+        uw.lambda().set(Channel::getDelFlag,1).in(Channel::getChannelId,channelIds);//把delFlag设为1（where）所有channelIds
+        return update(uw);
+    }
+
     //使用传统的Mybatis（需要mapper）
     @Override
-    public List<Channel> selectChannelList(){
-        List<Channel> channels = channelMapper.selectChannelList();
+    public List<Channel> selectChannelList(ChannelVO channelVO){
+        List<Channel> channels = channelMapper.selectChannelList(channelVO);
         for (Channel channel : channels) {
             logger.info("===>: {}",channel);
         }
         return channels;
     }
+
+
 
 }

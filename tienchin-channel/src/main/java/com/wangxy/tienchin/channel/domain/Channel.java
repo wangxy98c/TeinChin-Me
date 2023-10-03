@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.wangxy.tienchin.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,21 +26,27 @@ public class Channel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "channel_id", type = IdType.AUTO)
+    @Excel(name = "渠道编号",cellType = Excel.ColumnType.NUMERIC)//这是Ruoyi自定义的注解
     private Integer channelId;
 
     @ApiModelProperty("创建人")
+    @Excel(name = "创建人")
     private String createBy;
 
     @ApiModelProperty("渠道状态：Ruoyi中1表示可用。0表示禁用")
+    @Excel(name = "渠道状态",readConverterExp = "0=禁用,1=正常")
     private Byte status;
 
     @ApiModelProperty("渠道名称")
+    @Excel(name = "渠道名称")
     private String channelName;
 
     @ApiModelProperty("备注信息")
+    @Excel(name = "渠道备注")
     private String remark;
 
     @ApiModelProperty("渠道类型：1线上渠道2线下渠道")
+    @Excel(name = "渠道类型",readConverterExp = "1=线上渠道,2=线下渠道")
     private Integer type;
 
     @ApiModelProperty("删除标志")

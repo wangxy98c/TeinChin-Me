@@ -17,7 +17,11 @@ import java.util.List;
  */
 public interface IChannelService extends IService<Channel> {
 
-    List<Channel> selectChannelList();
+    List<Channel> selectChannelList(ChannelVO channelVO);
 
     AjaxResult addChannel(ChannelVO channelVO);
+
+    AjaxResult updateChannel(ChannelVO channelVO);
+
+    boolean deleteChannelByIds(Long[] channelIds);
 }

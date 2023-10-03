@@ -1,13 +1,21 @@
 # RuoYi后端
 
 1. 小问题：mybatis的xml里写sql不要加分号。总习惯加上，出错
-1. 
+1. 后端时间格式ERROR:`Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type java.util.Date from String "2023-09-29T15:46:06": expected format "yyyy-MM-dd HH:mm:ss"; nested exception is com.fasterxml.jackson.databind.exc.`
+
+   > 可以看出前端传送的数据是带`T`的，而后端接受类型不是。把`BaseEntity`中的修改`@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")`。但是感觉不是很好的解决方式。
+   >
+   > (或者在前端把createTime字段删掉？。`delete form.value.updateTime`)
+
+3. 
 
 # RuoYi前端
 
 1. 数据库中的`0/1`状态不需要自己去写代码转化为`正常/异常` 。可以直接在字典管理中添加字段，再在字段中添加不同值代表的信息，以及所展示出来的样式。但是在表格的展示页面需要根据此字典来配置。从这里可以直接添加字段。其实就是将原本会写死的0/1通过请求的方式拿到字典数组使其变为动态可配置的。另外：这些字段包含了较多信息：包括但不限于0/1对应的展示信息，类型颜色(primary)等。
+
 2. `getCurrentInstance()`获得当前Vue组件实例，类似于vue2中的this。但是官方极不推荐使用
-3. 组件中的**自定义指令**定义在`src/directive`中（实际是调用`src/directive/permission/hasRole`的方法）
+
+3. 组件中的**自定义指令**`haspermission[]`定义在`src/directive`中（实际是调用`src/directive/permission/hasRole`的方法）
 
    ```javascript
    export default function directive(app){
@@ -17,8 +25,31 @@
    }
    ```
 
-   > 1. `export default function directive(app) { ... }`: 这是一个导出默认函数的语句。这个函数接受一个参数 `app`，它用于注册自定义指令到 Vue 应用中。
-   > 2. `app.directive('hasRole', hasRole)`: 这行代码使用 `app` 对象的 `directive` 方法注册一个名为 `'hasRole'` 的自定义指令，并且该指令的实现是由名为 `hasRole` 的函数来提供。自定义指令允许你在 Vue 模板中添加额外的行为或逻辑，通常是与 DOM 元素的操作或显示相关的。
+
+> 1. `export default function directive(app) { ... }`: 这是一个导出默认函数的语句。这个函数接受一个参数 `app`，它用于注册自定义指令到 Vue 应用中。
+> 2. `app.directive('hasRole', hasRole)`: 这行代码使用 `app` 对象的 `directive` 方法注册一个名为 `'hasRole'` 的自定义指令，并且该指令的实现是由名为 `hasRole` 的函数来提供。自定义指令允许你在 Vue 模板中添加额外的行为或逻辑，通常是与 DOM 元素的操作或显示相关的。
+
+4. 关于`proxy.$modal.msgSuccess("删除成功");`：`.$modal`配置在`src/plugins/index.js`
+
+   ```javascript
+   ....
+   import modal from './modal'
+   import download from './download'
+   
+   export default function installPlugins(app){
+     ....
+     // 模态框对象
+     app.config.globalProperties.$modal = modal
+     // 下载文件
+     app.config.globalProperties.$download = download
+   }
+   ```
+
+5. 封装的下载方法dowanload：`src/utils/request.js`
+
+   
+
+   
 
 ## 接口请求
 

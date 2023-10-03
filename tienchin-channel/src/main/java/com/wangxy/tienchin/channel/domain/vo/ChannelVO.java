@@ -6,7 +6,10 @@ import com.wangxy.tienchin.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /*删掉了createby、updateby、createtime、createtime字段，因为它继承自BaseEntity，而BaseEntity中有这些字段，故不需要
@@ -15,12 +18,16 @@ import java.time.LocalDateTime;
  */
 public class ChannelVO extends BaseEntity {
     private Integer channelId;
-    @Range(min = 0,max=1,message = "渠道状态只能是0或1,代表禁用和正常")
+    //@Range(min = 0,max=1,message = "渠道状态只能是0或1,代表禁用和正常")//这个注解在值为null时并不会拦截
+    @Max(value=1,message = "渠道状态值非法，最大为1")
+    @Min(value=0,message = "渠道状态值非法，最小为0")
+    @NotNull(message = "渠道状态码不能为空")//Range和Max、Min都可以。
     private Byte status;//Byte类型不能使用@NotBlank
-    @NotBlank(message = "渠道名不能为空")//@NotBlank是给字符串类型的注解
+    @NotBlank(message = "{channel.name.notnull}")//@NotBlank是给字符串类型的注解。此处引用ValidationMessages.properties配置文件内容
     private String channelName;
     private String remark;
     @Range(min = 1,max=2,message = "渠道类型只能是1或2,代表线上和线下")
+    @NotNull(message = "渠道类型码不能为空")
     private Integer type;
     private Integer delFlag;
 

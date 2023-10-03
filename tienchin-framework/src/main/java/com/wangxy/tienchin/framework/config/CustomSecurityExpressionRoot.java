@@ -20,7 +20,6 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
 
     //写自己的判断
     public boolean hasPermission(String permission){
-        System.out.println("====>hasPermission");
         if(permission==null||permission.length()==0){
         }
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();//来自父类

@@ -2,6 +2,7 @@ package com.wangxy.tienchin.channel.mapper;
 
 import com.wangxy.tienchin.channel.domain.Channel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wangxy.tienchin.channel.domain.vo.ChannelVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,5 +17,5 @@ import java.util.List;
  */
 @Mapper
 public interface ChannelMapper extends BaseMapper<Channel> {
-    List<Channel> selectChannelList();
+    List<Channel> selectChannelList(ChannelVO channelVO);
 }
