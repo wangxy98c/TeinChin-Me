@@ -9,14 +9,12 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>tienchin-channel</artifactId>
-
+    <artifactId>tienchin-activity</artifactId>
     <description>
-        渠道模块
+        活动模块
     </description>
 
     <dependencies>
-
         <!-- 通用工具-->
         <dependency>
             <groupId>com.wangxy</groupId>
@@ -34,7 +32,6 @@
             <version>1.6.2</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
 </project>

@@ -37,10 +37,16 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-
+            <!--渠道管理-->
             <dependency>
                 <groupId>com.wangxy</groupId>
                 <artifactId>tienchin-channel</artifactId>
+                <version>${tienchin.version}</version>
+            </dependency>
+            <!--活动管理-->
+            <dependency>
+                <groupId>com.wangxy</groupId>
+                <artifactId>tienchin-activity</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>
 
@@ -195,6 +201,7 @@
         <module>tienchin-generator</module>
         <module>tienchin-common</module>
         <module>tienchin-channel</module>
+        <module>tienchin-activity</module>
     </modules>
     <packaging>pom</packaging>
 

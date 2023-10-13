@@ -57,7 +57,7 @@ const usePermissionStore = defineStore(
             //console.log("====>asyncRoutes:",asyncRoutes);
             //其实这里的是已经在前端定义好的那些动态路由（为什么动态呢？因为需要根据权限来决定是否要显示出来）
             //后端传过来的路由的add在另一个permission中（/src/）
-            asyncRoutes.forEach(route => {console.log(route);router.addRoute(route) })
+            asyncRoutes.forEach(route => {router.addRoute(route) })
             //console.log("generateRoutes===>getAllRoutes:",router.getRoutes())
             this.setRoutes(rewriteRoutes)
             this.setSidebarRouters(constantRoutes.concat(sidebarRoutes))

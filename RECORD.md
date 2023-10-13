@@ -1,13 +1,32 @@
 # RuoYi后端
 
 1. 小问题：mybatis的xml里写sql不要加分号。总习惯加上，出错
-1. 后端时间格式ERROR:`Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type java.util.Date from String "2023-09-29T15:46:06": expected format "yyyy-MM-dd HH:mm:ss"; nested exception is com.fasterxml.jackson.databind.exc.`
+2. 后端时间格式ERROR:`Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type java.util.Date from String "2023-09-29T15:46:06": expected format "yyyy-MM-dd HH:mm:ss"; nested exception is com.fasterxml.jackson.databind.exc.`
 
    > 可以看出前端传送的数据是带`T`的，而后端接受类型不是。把`BaseEntity`中的修改`@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")`。但是感觉不是很好的解决方式。
    >
    > (或者在前端把createTime字段删掉？。`delete form.value.updateTime`)
+   >
+   > 确实不太行：添加T以后。其他也main（postman测试会难用）
 
-3. 
+3. 使用`BeanUtils.copyProperties`时，一定要注意两个对应变量的类型，如果不同则无法拷贝。
+
+4. 对于不同的操作，需要验证的字段不同。@注解使用 **分组校验** 
+
+   ```java
+   public interface EditGroup {
+   }
+   
+   @NotNull(message = "活动Id不能为空",groups = EditGroup.class)
+   
+   public AjaxResult edit(@Validated(EditGroup.class) @RequestBody ActivityVO activityVO){
+       return activityService.updateActivity(activityVO);
+   }
+   
+   ```
+
+   
+
 
 # RuoYi前端
 
@@ -29,7 +48,7 @@
 > 1. `export default function directive(app) { ... }`: 这是一个导出默认函数的语句。这个函数接受一个参数 `app`，它用于注册自定义指令到 Vue 应用中。
 > 2. `app.directive('hasRole', hasRole)`: 这行代码使用 `app` 对象的 `directive` 方法注册一个名为 `'hasRole'` 的自定义指令，并且该指令的实现是由名为 `hasRole` 的函数来提供。自定义指令允许你在 Vue 模板中添加额外的行为或逻辑，通常是与 DOM 元素的操作或显示相关的。
 
-4. 关于`proxy.$modal.msgSuccess("删除成功");`：`.$modal`配置在`src/plugins/index.js`
+4. 关于`proxy.$modal.msgSuccess("删除成功");`：`.$modal`配置在`src/plugins/index.js`。
 
    ```javascript
    ....
@@ -47,9 +66,14 @@
 
 5. 封装的下载方法dowanload：`src/utils/request.js`
 
-   
+6. Ruoyi的前端封装了关于字典的自动转换，不需要自己再写（自己写的方法方式可参见`views/tienchin/channel`）。使用Ruoyi自带转换组件的可以参见`views/system/post`
 
+7. 时间选择器组件，Ruoyi在`src/utils/`中定义了`addDateRange`函数并挂载`app.config.globalProperties.addDateRange = addDateRange`
+
+   调用：`const { proxy } = getCurrentInstance();` `proxy.addDateRange`
    
+8. 开发建议：一般来说，修改东西时建议再从后端请求一次数据，以避免前端页面长时间未刷新而数据实际已经更新从而带来的混乱
+
 
 ## 接口请求
 

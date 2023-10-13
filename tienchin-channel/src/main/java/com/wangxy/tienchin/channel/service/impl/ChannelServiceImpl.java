@@ -58,8 +58,10 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
         Channel channel=new Channel();
         BeanUtils.copyProperties(channelVO,channel);
         channel.setUpdateBy(SecurityUtils.getUsername());
-        logger.debug("=====>接下来是日期类型转换");
         channel.setUpdateTime(LocalDateTime.now());
+        channel.setCreateBy(null);
+        channel.setCreateTime(null);
+        channel.setDelFlag(null);
         //更新
         return updateById(channel)?AjaxResult.success("更新成功"):AjaxResult.error("更新失败");
     }
@@ -72,7 +74,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
         return update(uw);
     }
 
-    //使用传统的Mybatis（需要mapper）
+    //使用传统的Mybatis（需要mapper），因为需要分页。
     @Override
     public List<Channel> selectChannelList(ChannelVO channelVO){
         List<Channel> channels = channelMapper.selectChannelList(channelVO);

@@ -55,6 +55,7 @@ export function resetForm(refName) {
 
 // 添加日期范围
 export function addDateRange(params, dateRange, propName) {
+  console.log("时间选择器时间处理")
   let search = params;
   search.params = typeof (search.params) === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {};
   dateRange = Array.isArray(dateRange) ? dateRange : [];
@@ -65,6 +66,7 @@ export function addDateRange(params, dateRange, propName) {
     search.params['begin' + propName] = dateRange[0];
     search.params['end' + propName] = dateRange[1];
   }
+  console.log("addDateRange:-=-=-=->",search)
   return search;
 }
 

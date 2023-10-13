@@ -56,7 +56,7 @@ public class ChannelController extends BaseController {
         return channelService.updateChannel(channelVO);
     }
 
-    @PreAuthorize("hasPermission('tienchin:channel:list')")
+    @PreAuthorize("hasPermission('tienchin:channel:edit')")
     @GetMapping("/{channelId}")
     public AjaxResult getInfo(@PathVariable Long channelId){//根据渠道Id查询
         return AjaxResult.success(channelService.getById(channelId));//##note getById是IService提供的

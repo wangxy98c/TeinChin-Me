@@ -1,4 +1,10 @@
- # 系统结构
+# 待处理
+
+- [ ] channel的更新操作，修改了时间格式（删掉了T。微微处理了，但没验证是否正确）
+- [ ] 对于活动的添加等操作，后端并没有验证channnelId是否存在（或者说这个活动是否被逻辑删除了）
+- [x] 活动状态，有可能是未开始。
+
+# 系统结构
 
 ```mermaid
 mindmap
@@ -13,18 +19,8 @@ mindmap
     tienchin-quartz
     tienchin-system
 	tienchin-channel
-  tienchin
+	tienchin-activity
 ```
-
-
-
-
-
-# 添加自己的页面
-
-![image-20230916155909450](../../.Trash/TeinChin/FEATURE.assets/image-20230916155909450.png)
-
-然后在前端/views/tienchin/下添加应有的目录以及vue文件即可。他们会通过动态路由自动导入
 
 # 导入MyBatisPlus
 
@@ -94,13 +90,61 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
 
 1. lambda
 
-## 渠道
+# 添加自己的菜单、页面、数据库等
 
-![image-20230920213748863](./FEATURE.assets/image-20230920213748863.png)
+## 添加菜单
+
+<img src="./FEATURE.assets/image-20230920213748863.png" alt="image-20230920213748863" style="zoom:40%;" />
+
+然后在前端/views/tienchin/下添加应有的目录以及vue文件即可。他们会通过动态路由自动导入
+
+## 按钮配置
+
+![image-20231003163528385](./FEATURE.assets/image-20231003163528385.png)
+
+## 添加用户角色
+
+### 添加角色
+
+<img src="./FEATURE.assets/image-20231013105302525.png" alt="image-20231013105302525" style="zoom:40%;" />
+
+### 添加用户
+
+<img src="./FEATURE.assets/image-20231013105340665.png" alt="image-20231013105340665" style="zoom:50%;" />
 
 ## 数据库字段字典
 
+![image-20231003165847963](./FEATURE.assets/image-20231003165847963.png) 
+
 上表中添加了一些字段，这些字段使用不同的值来代表不同的状态。Ruoyi提供了这些字段的配置,分别是字典管理和字典数据（字典数据页面从字典管理中进入）
+
+## 添加数据库
+
+<img src="./FEATURE.assets/image-20231003173210048.png" alt="image-20231003173210048" style="zoom:50%;" />
+
+## 后端模块创建
+
+<img src="./FEATURE.assets/image-20231003173138418.png" alt="image-20231003173138418" style="zoom:50%;" />
+
+然后：修改如下几个模块的`pom.xml` ：`tienchin-activity` `tienchin` `tienchin-admin`
+
+## mybatisPlus代码生成
+
+之前写在了`tienchin-admin`的`/test`下。修改一点运行即可。
+
+**Controller的注解：修改为`@ResController`，以及@RequestMapping的路径修改为tienchin/xxx**
+
+`Controller extends BaseController`
+
+移动生成的`controller`到`tienchin-admin`下。
+
+修改`entity`为`domain`使得项目整体是统一的（且和mybatis配置有关系）
+
+如果需要vo，则`vo extends BaseEntity`。且有些字段不需要再额外定义
+
+---
+
+以上。就可以开始开发一个页面了
 
 # 模型类使用统一的校验配置文件
 
@@ -123,4 +167,6 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
 1. 添加菜单时，点击《路由参数》后未填写任何东西。添加后导致系统崩溃。在mysql/tienchin.sys_menu/的`query`字段是空 而不是 NULL（正常添加应该为NULL）
 
    > 未经过严格测试，只是遇到了此状况记录了一下。
+
+2. 
 

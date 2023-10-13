@@ -151,6 +151,7 @@
             </template>
           </el-table-column>
           <el-table-column label="渠道状态" prop="status" width="100" >
+            <!-- 其实这里ruoyi框架有定义好的组件，dict-tag可以直接进行转换，而不用自己去for循环判断。参见views/post -->
             <template #default="scope">
                 <template v-for="(type,indexi) in channel_status">
                     <el-tag :key="indexi" v-if="type.value==scope.row.status" :type="type.elTagType">{{ type.label }}</el-tag>
@@ -382,6 +383,7 @@ function importTemplate() {
    proxy.$refs["channelRef"].validate(valid => {
      if (valid) {
        if (form.value.channelId != undefined) {//用于更新
+        delete form.value.updateTime
          updateChannel(form.value).then(response => {
            proxy.$modal.msgSuccess("修改成功");
            open.value = false;
