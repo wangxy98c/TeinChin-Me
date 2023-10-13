@@ -32,6 +32,7 @@ public class BaseEntity implements Serializable {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Asia/Shanghai")
+    //这里的配置有问题且找不到问题所在，先从Controller的返回处处理一下吧。
     private Date createTime;
 
     /**
