@@ -2,6 +2,7 @@ package com.wangxy.tienchin.activity.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wangxy.tienchin.activity.validator.EditGroup;
+import com.wangxy.tienchin.common.annotation.Excel;
 import com.wangxy.tienchin.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.*;
@@ -9,12 +10,16 @@ import java.util.Date;
 
 public class ActivityVO extends BaseEntity {
     @NotNull(message = "活动Id不能为空",groups = EditGroup.class)//添加操作不加注解，而修改操作必须有注解。矛盾了，使用分组校验group来解决
+    @Excel(name = "活动编号",cellType = Excel.ColumnType.NUMERIC)
     private Integer activityId;
     @NotBlank(message = "{activity.name.notblank}")
     @Size(min=0,max=20,message = "${activity.name.size}")
+    @Excel(name = "活动名称")
     private String name;
     @NotNull(message = "{activity.channelid.notnull}")
+    @Excel(name = "渠道编号")
     private Integer channelId;
+    @Excel(name = "渠道名称")
     private String channelName;
     @Size(min=0,max=255,message = "{activity.info.size}")
     private String info;
@@ -27,6 +32,7 @@ public class ActivityVO extends BaseEntity {
     private Double voucher;
     @Max(value = 1,message = "状态1代表活动中，0代表已过期")
     @Min(value = 0,message = "状态1代表活动中，0代表已过期")
+    @Excel(name = "渠道状态",readConverterExp = "0=尚未开始,1=只在进行,2已过期")
     private Integer status;
     private  Integer delFlag;
     @NotNull(message = "活动开始时间不能为空")

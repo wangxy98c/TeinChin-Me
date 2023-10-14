@@ -8,7 +8,7 @@ export function listActivity(query) {
     params: query
   })
 }
-// 查询新活动的可选渠道
+// 查询渠道（活动页需要渠道相关信息）
 export function listChannel(query) {
   return request({
     url: '/tienchin/activity/channel/list',
@@ -17,7 +17,7 @@ export function listChannel(query) {
   })
 }
 
-// 查询岗位详细
+// 查询活动详细
 export function getActivity(activityId) {
   return request({
     url: '/tienchin/activity/' + activityId,
@@ -43,10 +43,10 @@ export function updateActivity(data) {
   })
 }
 
-// 删除岗位
-export function delPost(postId) {
+// 删除活动
+export function delActivity(activityId) {
   return request({
-    url: '/system/post/' + postId,
+    url: '/tienchin/activity/' + activityId,
     method: 'delete'
   })
 }

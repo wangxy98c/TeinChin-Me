@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 2023-10-03
  */
 @TableName("tienchin_activity")
-@ApiModel(value = "Activity对象", description = "")
 public class Activity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,6 +52,7 @@ public class Activity implements Serializable {
 
     @ApiModelProperty("活动开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Asia/Shanghai")
+    //上一行的格式设置还是要加的，否则返回出来的是Activity类而不是VO，且不加格式的话，会和BaseEntity中一样带'T'
     private Date beginTime;
 
     @ApiModelProperty("活动结束时间")

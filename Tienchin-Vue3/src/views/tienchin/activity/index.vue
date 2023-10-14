@@ -1,28 +1,39 @@
 <template>
     <div class="app-container">
        <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
-          <el-form-item label="岗位编码" prop="postCode">
+          <el-form-item label="活动名称" prop="name">
              <el-input
-                v-model="queryParams.postCode"
-                placeholder="请输入岗位编码"
+                v-model="queryParams.name"
+                placeholder="请输入活动名称"
                 clearable
                 style="width: 200px"
                 @keyup.enter="handleQuery"
              />
           </el-form-item>
-          <el-form-item label="岗位名称" prop="postName">
-             <el-input
-                v-model="queryParams.postName"
-                placeholder="请输入岗位名称"
-                clearable
-                style="width: 200px"
-                @keyup.enter="handleQuery"
-             />
+          <el-form-item label="所属渠道" prop="channelId">
+            <el-select v-model="queryParams.channelId" class="m-2" style="width: 200px;" placeholder="请选择所属渠道">
+                  <el-option
+                     v-for="item in channelList"
+                     :key="item.channelId"
+                     :label="item.channelName"
+                     :value="item.channelId"
+                  />
+               </el-select>
           </el-form-item>
-          <el-form-item label="状态" prop="status">
-             <el-select v-model="queryParams.status" placeholder="岗位状态" clearable style="width: 200px">
+          <el-form-item label="活动状态" prop="status">
+             <el-select v-model="queryParams.status" placeholder="请选择活动处于的状态" clearable style="width: 200px">
                 <el-option
-                   v-for="dict in sys_normal_disable"
+                   v-for="dict in activity_status"
+                   :key="dict.value"
+                   :label="dict.label"
+                   :value="dict.value"
+                />
+             </el-select>
+          </el-form-item>
+          <el-form-item label="活动类型" prop="type">
+             <el-select v-model="queryParams.type" placeholder="请选择活动的类型" clearable style="width: 200px">
+                <el-option
+                   v-for="dict in activity_type"
                    :key="dict.value"
                    :label="dict.label"
                    :value="dict.value"
@@ -128,11 +139,11 @@
           @pagination="getList"
        />
  
-       <!-- 添加或修改岗位对话框 -->
+       <!-- 添加或修改活动对话框 -->
        <el-dialog :title="title" v-model="open" width="500px" append-to-body>
           <el-form ref="activityRef" :model="form" :rules="rules" label-width="100px">
              <el-form-item label="活动名称" prop="name">
-                <el-input v-model="form.name" placeholder="请输入岗位名称" />
+                <el-input v-model="form.name" placeholder="请输入活动名称" />
              </el-form-item>
              <el-form-item label="活动渠道" prop="channelId">
                <el-select v-model="form.channelId" class="m-2" placeholder="请选择活动的渠道">
@@ -156,7 +167,12 @@
                    >{{ dict.label }}</el-radio>
                 </el-radio-group>
              </el-form-item>
-             <!-- 根据上面选择的类型，显示对应的框 -->
+             <!-- 根据上面选择的类型，显示对应的框。词典方式赞时没有测试。先注释掉-->
+             <!-- <template v-for="dict in activity_type">
+               <el-form-item :label="dict.label" v-show="form.type==dict.value">
+                  <el-input-number :v-model="form.label"/>
+               </el-form-item>
+             </template> -->
              <el-form-item label="折扣" prop="discount" v-show="form.type==1">
                   <el-input-number v-model="form.discount" :min="0" :max="10" :precision="1" :step="0.1"/>
              </el-form-item>
@@ -167,7 +183,7 @@
                 <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
              </el-form-item>
              
-             <el-form-item label="活动时间" style="width: 400px" prop="activityTime">
+             <el-form-item label="活动时间" style="width: 100%" prop="activityTime">
                <el-date-picker
                   v-model="form.activityTime"
                   value-format="YYYY-MM-DD hh:mm:ss"
@@ -189,11 +205,10 @@
     </div>
  </template>
  
- <script setup name="Post">
- import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/post";
- import {listActivity,addActivity,listChannel,updateActivity,getActivity} from "@/api/tienchin/activity.js"
+ <script setup name="Activity">
+ import {listActivity,addActivity,listChannel,updateActivity,getActivity,delActivity} from "@/api/tienchin/activity.js"
  const { proxy } = getCurrentInstance();
- const { sys_normal_disable,activity_type,activity_status } = proxy.useDict("sys_normal_disable","activity_type","activity_status");
+ const {activity_type,activity_status } = proxy.useDict("activity_type","activity_status");
  
  const activityList = ref([]);
  const open = ref(false);
@@ -204,20 +219,21 @@
  const multiple = ref(true);
  const total = ref(0);
  const title = ref("");
- const dateRange=ref([]);
 const channelList=ref([]);
  
  const data = reactive({
    form: {},
    queryParams: {
-     activityId: undefined,
+     //activityId: undefined,
      channelId: undefined,
      name: undefined,
-     beginTime:undefined,
-     endTime:undefined,
-     type: 0,
-     status: null,
-     remark: undefined
+     //beginTime:undefined,
+     //endTime:undefined,
+     type: undefined,
+     status: undefined,
+     pageNum: 1,
+     pageSize: 10
+     //remark: undefined
    },
    rules: {
      name: [{ required: true, message: "活动名称不能为空", trigger: "blur" }],
@@ -243,6 +259,7 @@ const channelList=ref([]);
    open.value = false;
    reset();
  }
+ getChannelList()
  /** 表单重置 */
  function reset() {
    form.value = {
@@ -252,8 +269,8 @@ const channelList=ref([]);
      activityTime:undefined,
      beginTime:undefined,
      endTime:undefined,
-     type: 0,
-     status: 1,
+     type: undefined,
+     status: undefined,
      remark: undefined,
      info:undefined
    };
@@ -287,9 +304,10 @@ const channelList=ref([]);
    open.value = true;
    title.value = "添加活动";
  }
+
  /** 修改按钮操作 */
  function handleUpdate(row) {
-   console.log("*****handleUpdate*****")
+   getChannelList()
    reset();
    const activityId = row.activityId || ids.value;
    console.log("activityId===>:",activityId);
@@ -297,11 +315,15 @@ const channelList=ref([]);
    getActivity(activityId).then(response => {
      form.value = response.data;
      console.log(form.value)
-     open.value = true;
      title.value = "修改活动信息";
+     form.value.type=String(form.value.type)
+     form.value.activityTime=new Array()
+     form.value.activityTime[0]=form.value.beginTime
+      form.value.activityTime[1]=form.value.endTime
+     console.log("form-activityTime",form.value.activityTime)
+     open.value = true;
    });
  }
- //把时间选择器的dateRange[]放入对应的begin、endtime
 
  /** 提交按钮 */
  function submitForm() {
@@ -333,11 +355,12 @@ const channelList=ref([]);
      }
    });
  }
+
  /** 删除按钮操作 */
  function handleDelete(row) {
-   const postIds = row.postId || ids.value;
-   proxy.$modal.confirm('是否确认删除岗位编号为"' + postIds + '"的数据项？').then(function() {
-     return delPost(postIds);
+   const activityIds = row.activityId || ids.value;
+   proxy.$modal.confirm('是否确认删除活动编号为"' + activityIds + '"的数据项？').then(function() {
+     return delActivity(activityIds);
    }).then(() => {
      getList();
      proxy.$modal.msgSuccess("删除成功");
@@ -345,9 +368,10 @@ const channelList=ref([]);
  }
  /** 导出按钮操作 */
  function handleExport() {
-   proxy.download("system/post/export", {
+   
+   proxy.download("tienchin/activity/export", {
      ...queryParams.value
-   }, `post_${new Date().getTime()}.xlsx`);
+   }, `activity_${new Date().getTime()}.xlsx`);
  }
  
  getList();

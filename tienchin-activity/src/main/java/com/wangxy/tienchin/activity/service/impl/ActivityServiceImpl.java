@@ -8,10 +8,8 @@ import com.wangxy.tienchin.activity.service.IActivityService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wangxy.tienchin.common.core.domain.AjaxResult;
 import com.wangxy.tienchin.common.utils.SecurityUtils;
-import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,13 +25,21 @@ import java.util.List;
  */
 @Service
 public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> implements IActivityService {
+
     //因为要分页，不实用mybatisPlus的QueryMapper
     @Autowired
     ActivityMapper activityMapper;
     @Override
-    public List<ActivityVO> selectActivityList() {
+    public boolean deleteActivityByIds(Long[] activityIds) {
+        UpdateWrapper<Activity> uw = new UpdateWrapper<>();
+        uw.lambda().set(Activity::getDelFlag,1).in(Activity::getActivityId,activityIds);//把delFlag设为1（where）所有channelIds
+        return update(uw);
+    }
+    @Override
+    public List<ActivityVO> selectActivityList(ActivityVO activityVO) {
         verifyActivity();//每次查询前都先判断处理可能过期的活动。
-        return activityMapper.selectActivityList();
+        List<ActivityVO> activities = activityMapper.selectActivityList(activityVO);
+        return activities;
     }
 
     @Override

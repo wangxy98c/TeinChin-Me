@@ -14,6 +14,7 @@ import com.wangxy.tienchin.common.core.controller.BaseController;
 import com.wangxy.tienchin.common.core.domain.AjaxResult;
 import com.wangxy.tienchin.common.core.page.TableDataInfo;
 import com.wangxy.tienchin.common.enums.BusinessType;
+import com.wangxy.tienchin.common.utils.poi.ExcelUtil;
 import org.aspectj.weaver.loadtime.Aj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static com.wangxy.tienchin.common.utils.PageUtils.startPage;
@@ -50,9 +52,9 @@ public class ActivityController extends BaseController {
     }
     @PreAuthorize("hasPermission('tienchin:activity:list')")//菜单管理，按钮级别权限
     @GetMapping("/list")
-    public TableDataInfo list(){
+    public TableDataInfo list(ActivityVO activityVO){
         startPage();//继承自BaseController，自动从 前端的请求 里提取出来相关信息，其实不需要自己再传。来自github的分页插件
-        List<ActivityVO> list=activityService.selectActivityList();
+        List<ActivityVO> list=activityService.selectActivityList(activityVO);
         return getDataTable(list);//也是分页插件的用法。
         //总之就是用分页工具把查询出来的结果用进行分页处理后返回（但是否会引发性能问题？因为要全查出来？）
     }
@@ -80,6 +82,22 @@ public class ActivityController extends BaseController {
     public AjaxResult edit(@Validated(EditGroup.class) @RequestBody ActivityVO activityVO){
         logger.info("====activity:edit");
         return activityService.updateActivity(activityVO);
+    }
+    @PreAuthorize("hasPermission('tienchin:activity:remove')")
+    @Log(title = "活动管理", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{activityIds}")
+    public AjaxResult remove(@PathVariable Long[] activityIds) {
+        return toAjax(activityService.deleteActivityByIds(activityIds));
+    }
+
+    @Log(title = "活动导出", businessType = BusinessType.EXPORT)
+    @PreAuthorize("hasPermission('tienchin:activity:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, ActivityVO activityVO) {
+        List<ActivityVO> list = activityService.selectActivityList(activityVO);
+        ExcelUtil<ActivityVO> util = new ExcelUtil<ActivityVO>(ActivityVO.class);
+        //??? 已经测试过传入的list数据是正确的，但不知为何下载到的文件是没有数据的（包括postman测试也是）
+        util.exportExcel(response, list, "活动数据");//封装好（EasyUI那套）的导出工具
     }
 
 }

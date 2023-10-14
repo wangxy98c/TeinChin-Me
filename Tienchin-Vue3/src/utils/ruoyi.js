@@ -53,7 +53,7 @@ export function resetForm(refName) {
   }
 }
 
-// 添加日期范围
+// 添加日期范围,注意：是添加到params参数里。而不是直接key-value形式。即 {key:value , params:{beginTiem,endTime}}
 export function addDateRange(params, dateRange, propName) {
   console.log("时间选择器时间处理")
   let search = params;
@@ -66,7 +66,6 @@ export function addDateRange(params, dateRange, propName) {
     search.params['begin' + propName] = dateRange[0];
     search.params['end' + propName] = dateRange[1];
   }
-  console.log("addDateRange:-=-=-=->",search)
   return search;
 }
 

@@ -78,9 +78,6 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Override
     public List<Channel> selectChannelList(ChannelVO channelVO){
         List<Channel> channels = channelMapper.selectChannelList(channelVO);
-        for (Channel channel : channels) {
-            logger.info("===>: {}",channel);
-        }
         return channels;
     }
 
