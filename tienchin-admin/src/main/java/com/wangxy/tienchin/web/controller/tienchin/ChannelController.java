@@ -35,7 +35,7 @@ public class ChannelController extends BaseController {
     public static final Logger logger= LoggerFactory.getLogger(ChannelController.class);
     @PreAuthorize("hasPermission('tienchin:channel:list')")//菜单管理，按钮级别权限
     @GetMapping("/list")
-    public TableDataInfo list(ChannelVO channelVO){
+    public TableDataInfo list(ChannelVO channelVO){//##note: 注意，此处不加@RequestBody
         startPage();//继承自BaseController，自动从 前端的请求 里提取出来相关信息，其实不需要自己再传。来自github的分页插件
         List<Channel> list=channelService.selectChannelList(channelVO);
         logger.debug("list:{}",list);

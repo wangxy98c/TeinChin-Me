@@ -92,8 +92,7 @@
           <el-table-column type="selection" width="35" align="center" />
           <el-table-column label="活动编号" align="center" prop="activityId" />
           <el-table-column label="活动名称" align="center" prop="name" />
-          <el-table-column label="活动渠道名称" align="center" prop="channelName" />
-          <el-table-column label="活动简介" align="center" prop="info" :show-overflow-tooltip="true" width="10%"/>
+          <el-table-column label="所属渠道" align="center" prop="channelName" />
           <el-table-column label="活动类型" align="center">
              <template #default="scope">
                 <dict-tag :options="activity_type" :value="scope.row.type" />
@@ -124,6 +123,7 @@
                 <span>{{ parseTime(scope.row.endTime) }}</span>
              </template>
           </el-table-column>
+          <el-table-column label="活动简介" align="center" prop="info" :show-overflow-tooltip="true" width="100px"/>
           <el-table-column label="操作" width="180" align="center" class-name="small-padding fixed-width">
              <template #default="scope">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['tienchin:activity:edit']">修改</el-button>

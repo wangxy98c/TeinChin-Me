@@ -1,6 +1,8 @@
 # RuoYi后端
 
-1. 小问题：mybatis的xml里写sql不要加分号。总习惯加上，出错
+1. 小问题：mybatis的xml里写sql不要加分号。
+
+   原因：分页插件（原理：在sql后追加语句，如果有了分号就出错了）
 2. 后端时间格式ERROR:`Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type java.util.Date from String "2023-09-29T15:46:06": expected format "yyyy-MM-dd HH:mm:ss"; nested exception is com.fasterxml.jackson.databind.exc.`
 
    > 可以看出前端传送的数据是带`T`的，而后端接受类型不是。把`BaseEntity`中的修改`@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")`。但是感觉不是很好的解决方式。
@@ -27,6 +29,11 @@
 
 5. 导出功能，记得在domin类上加@Excel注解
 
+6. 关于domin和dominVO。其实都无所谓，能完成业务即可。一般是domin不满足需求时再添加一个VO
+
+   如果不涉及到其他表（比如活动里需要渠道信息）都是一些具体的值，一般不需要额外的VO
+
+7. 关于list方法（查询列表）。Controller接口参数是不能写@RequestBody的（它在不筛选的情况下参数是空的，加了会报错）
 
 # RuoYi前端
 

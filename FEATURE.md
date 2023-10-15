@@ -134,7 +134,9 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
 
 之前写在了`tienchin-admin`的`/test`下。修改一点运行即可。
 
-**Controller的注解：修改为`@ResController`，以及@RequestMapping的路径修改为tienchin/xxx**
+**Controller的注解：修改为`@ResController`，以及**
+
+**@RequestMapping的路径修改为tienchin/xxx**
 
 `Controller extends BaseController`
 
@@ -170,5 +172,8 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
 
    > 未经过严格测试，只是遇到了此状况记录了一下。
 
-2. 
+2. 有一个很奇怪的事：
+
+   ![image-20231015205316284](./FEATURE.assets/image-20231015205316284.png)
+
 

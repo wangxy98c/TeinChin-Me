@@ -19,6 +19,10 @@
         <!-- tienchin各个模块引入-->
         <dependency>
             <groupId>com.wangxy</groupId>
+            <artifactId>tienchin-course</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wangxy</groupId>
             <artifactId>tienchin-activity</artifactId>
         </dependency>
         <dependency>
