@@ -8,7 +8,7 @@ export function listActivity(query) {
     params: query
   })
 }
-// 查询渠道（活动页需要渠道相关信息）
+// 查询渠道（活动页需要渠道相关信息）：为什么后端要再写一个，因为涉及到不同用户的权限问题。未必有渠道查询的权限
 export function listChannel(query) {
   return request({
     url: '/tienchin/activity/channel/list',

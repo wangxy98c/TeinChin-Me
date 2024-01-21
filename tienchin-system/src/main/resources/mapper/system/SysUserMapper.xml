@@ -180,6 +180,9 @@
         where email = #{email}
           and del_flag = '0' limit 1
     </select>
+    <select id="getUsersByDeptId" resultType="com.wangxy.tienchin.common.core.domain.entity.SysUser">
+        select su.user_id ,su.nick_name,su.user_name,su.dept_id  from sys_user su,sys_dept sd where su.dept_id=sd.dept_id and (find_in_set(#{deptId},ancestors) or su.dept_id=#{deptId})
+    </select>
 
     <insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
         insert into sys_user(

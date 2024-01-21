@@ -37,6 +37,11 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.wangxy</groupId>
+                <artifactId>tienchin-clue</artifactId>
+                <version>${tienchin.version}</version>
+            </dependency>
             <!--课程管理-->
             <dependency>
                 <groupId>com.wangxy</groupId>
@@ -209,6 +214,7 @@
         <module>tienchin-channel</module>
         <module>tienchin-activity</module>
         <module>tienchin-course</module>
+        <module>tienchin-clue</module>
     </modules>
     <packaging>pom</packaging>
 

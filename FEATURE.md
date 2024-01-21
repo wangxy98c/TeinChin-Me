@@ -5,6 +5,8 @@
 - [x] 活动状态，有可能是未开始。
 - [ ] BaseEntity中的JsonFormat不生效问题，导致了从后端获取然后更新提交到后端导致的时间格式无法转换问题
 - [x] 活动页面渠道信息未验证（比如渠道已经逻辑删除了，但对应活动却没有处理，可以连带活动一起删掉；或者判断还有没有对应活动，没有才让删；或者本demo采用的活动不删但不返回前端）
+- [ ] 线索页面，可以根据所选渠道动态请求此渠道的活动（而不是活动全部展示出来）。
+- [ ] 添加用户的时候最好验证一下nickname以避免重复。因为分配用户可能会需要选择（重复后没办法区分了），或者用Id来区别也可以
 
 # 系统结构
 
@@ -16,6 +18,7 @@ mindmap
     	项目启动（Springboot）
     	MyBaitsPlus代码生成
     tienchin-common
+    	BaseController
     tienchin-framework
     tienchin-generator
     tienchin-quartz
@@ -138,13 +141,15 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
 
 **@RequestMapping的路径修改为tienchin/xxx**
 
-`Controller extends BaseController`
+`Controller extends BaseController` 注意：BaseController是`tienchin-common`中的
 
 移动生成的`controller`到`tienchin-admin`下。
 
 修改`entity`为`domain`使得项目整体是统一的（且和mybatis配置有关系）
 
-如果需要vo，则`vo extends BaseEntity`。且有些字段不需要再额外定义
+​	如果需要vo，则`vo extends BaseEntity`。且有些字段不需要再额外定义
+
+另外：注意生成domain中是否有Object类型，需要修改
 
 ---
 
@@ -175,5 +180,4 @@ CM-->CMX{{ChannelMapper.xml}}-->DB[(数据库)]
 2. 有一个很奇怪的事：
 
    ![image-20231015205316284](./FEATURE.assets/image-20231015205316284.png)
-
 

@@ -32,8 +32,6 @@ public class CourseController extends BaseController {
     @PreAuthorize("hasPermission('tienchin:course:list')")//菜单管理，按钮级别权限
     @GetMapping("/list")
     public TableDataInfo list(Course course){
-        System.out.println("=====>controller");
-        System.out.println(course.toString());
         startPage();//继承自BaseController，自动从 前端的请求 里提取出来相关信息，其实不需要自己再传。来自github的分页插件
         List<Course> list=courseService.selectCourseList(course);
         return getDataTable(list);

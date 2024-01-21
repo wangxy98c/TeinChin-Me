@@ -1,3 +1,10 @@
+# 一些环境版本
+
+1. mysql5.7
+2. spring版本可参见项目内
+3. redis6.2
+4. Node18
+
 # RuoYi后端
 
 1. 小问题：mybatis的xml里写sql不要加分号。
@@ -10,6 +17,8 @@
    > (或者在前端把createTime字段删掉？。`delete form.value.updateTime`)
    >
    > 确实不太行：添加T以后。其他也main（postman测试会难用）
+
+   + 懒得研究了，用Date而不是LocalDateTime来定义时间
 
 3. 使用`BeanUtils.copyProperties`时，一定要注意两个对应变量的类型，如果不同则无法拷贝。
 
@@ -32,6 +41,8 @@
 6. 关于domin和dominVO。其实都无所谓，能完成业务即可。一般是domin不满足需求时再添加一个VO
 
    如果不涉及到其他表（比如活动里需要渠道信息）都是一些具体的值，一般不需要额外的VO
+   
+   > 实际上，课程页面也是需要VO的，因为应该有筛选价格区间的条件查询，而domin/Course并没有区间参数，不能满足需要。但由于我没做价格区间筛选，course就够用了
 
 7. 关于list方法（查询列表）。Controller接口参数是不能写@RequestBody的（它在不筛选的情况下参数是空的，加了会报错）
 
@@ -78,8 +89,33 @@
 7. 时间选择器组件，Ruoyi在`src/utils/`中定义了`addDateRange`函数并挂载`app.config.globalProperties.addDateRange = addDateRange`
 
    调用：`const { proxy } = getCurrentInstance();` `proxy.addDateRange`
-   
+
 8. 开发建议：一般来说，修改东西时建议再从后端请求一次数据，以避免前端页面长时间未刷新而数据实际已经更新从而带来的混乱
+
+9. reactive类型记得toRefs
+
+10. `<el-option>` 选中某个选项时同时设置多个变量
+
+    ```html
+    <el-select
+      v-model="assignForm.nickName"
+      aria-placeholder="请选择用户"
+      clearable 
+      @change="assignUserChange"
+    >
+      <el-option
+        v-for="ul in userList"
+        :key="ul.userId"
+        :label="ul.nickName"
+        :value="{value:ul.userId,userName:ul.userName,nickName:ul.nickName,deptId:ul.deptId}"
+      >
+      <!-- 此处:value中的value（代替掉userId:）用于控制选中的颜色，如果没有此字段则选中也是蓝色加粗字体 -->
+      </el-option>
+    </el-select>
+    ```
+
+    
+
 
 
 ## 接口请求

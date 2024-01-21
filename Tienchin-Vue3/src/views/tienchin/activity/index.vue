@@ -310,7 +310,6 @@ const channelList=ref([]);
    getChannelList()
    reset();
    const activityId = row.activityId || ids.value;
-   console.log("activityId===>:",activityId);
    //查询岗位详细信息，为什么不直接用呢：页面可能长时间没有刷新。
    getActivity(activityId).then(response => {
      form.value = response.data;
@@ -333,6 +332,7 @@ const channelList=ref([]);
       //处理时间选择器的数组格式===>begintime、endtime
       form.value.beginTime=form.value.activityTime[0]
       form.value.endTime=form.value.activityTime[1]
+      console.log(form.value.activityTime[0])
       delete form.value.activityTime
        if (form.value.activityId != undefined) {
          console.log("====》更新操作")

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Validator;
 
+import com.wangxy.tienchin.common.core.domain.AjaxResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import com.wangxy.tienchin.system.service.ISysUserService;
  */
 @Service
 public class SysUserServiceImpl implements ISysUserService {
+
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
     @Autowired
@@ -60,6 +62,12 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired
     protected Validator validator;
+
+    @Override
+    public AjaxResult getUsersByDeptId(Long deptId) {
+        List<SysUser> users=userMapper.getUsersByDeptId(deptId);
+        return AjaxResult.success(users);
+    }
 
     /**
      * 根据条件分页查询用户列表
