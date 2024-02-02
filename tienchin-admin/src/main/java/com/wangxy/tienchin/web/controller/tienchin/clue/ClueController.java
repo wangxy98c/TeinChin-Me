@@ -2,8 +2,6 @@ package com.wangxy.tienchin.web.controller.tienchin.clue;
 
 import com.wangxy.tienchin.activity.domain.vo.ActivityVO;
 import com.wangxy.tienchin.activity.service.IActivityService;
-import com.wangxy.tienchin.activity.validator.CreateGruop;
-import com.wangxy.tienchin.channel.domain.Channel;
 import com.wangxy.tienchin.channel.domain.vo.ChannelVO;
 import com.wangxy.tienchin.channel.service.IChannelService;
 import com.wangxy.tienchin.clue.domain.Clue;
@@ -15,17 +13,13 @@ import com.wangxy.tienchin.clue.validator.EditGroup;
 import com.wangxy.tienchin.common.annotation.Log;
 import com.wangxy.tienchin.common.core.controller.BaseController;
 import com.wangxy.tienchin.common.core.domain.AjaxResult;
-import com.wangxy.tienchin.common.core.domain.entity.SysDept;
 import com.wangxy.tienchin.common.core.page.TableDataInfo;
 import com.wangxy.tienchin.common.enums.BusinessType;
-import com.wangxy.tienchin.system.service.ISysDeptService;
 import com.wangxy.tienchin.system.service.ISysUserService;
-import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
@@ -71,11 +65,9 @@ public class ClueController extends BaseController {
     }
     @PreAuthorize("hasPermission('tienchin:clue:list')")//菜单管理，按钮级别权限
     @GetMapping("/list")
-    public TableDataInfo list(ClueVO clueVO){//##note: 注意，此处不加@RequestBody
+    public TableDataInfo list(ClueVO clueVO){//##note: 注意，此处不加@RequestBody。因为是get方法而不是put/post
         startPage();//继承自BaseController，自动从 前端的请求 里提取出来相关信息，其实不需要自己再传。来自github的分页插件
         List<ClueSummaryVO> list=clueService.selectClueList(clueVO);
-        System.out.println("====================\n");
-        System.out.println(clueVO.toString());
         return getDataTable(list);//也是分页插件的用法。
         //总之就是用分页工具把查询出来的结果用进行分页处理后返回（但是否会引发性能问题？因为要全查出来？）
     }
@@ -97,6 +89,13 @@ public class ClueController extends BaseController {
     public AjaxResult clueFollow(@RequestBody ClueDetail clueDetail){
         return clueService.clueFollow(clueDetail);
     }
+    @PreAuthorize("hasAnyPermission('tienchin:clue:follow')")
+    @Log(title = "线索转为商机", businessType = BusinessType.OTHER)
+    @PostMapping("/tobusiness/{clueId}")
+    public AjaxResult clue2Bussiness(@PathVariable Integer clueId){
+        return clueService.clue2Bussiness(clueId);
+    }
+
     @PreAuthorize("hasAnyPermission('tienchin:clue:follow')")
     @Log(title = "无效线索", businessType = BusinessType.INSERT)
     @PostMapping("/invalidate")
@@ -122,4 +121,6 @@ public class ClueController extends BaseController {
     public AjaxResult deleteClue(@PathVariable Long[] clueIds ){
         return toAjax(clueService.deleteClueByIds(clueIds));
     }
+
+
 }

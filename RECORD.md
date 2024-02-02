@@ -41,10 +41,19 @@
 6. 关于domin和dominVO。其实都无所谓，能完成业务即可。一般是domin不满足需求时再添加一个VO
 
    如果不涉及到其他表（比如活动里需要渠道信息）都是一些具体的值，一般不需要额外的VO
-   
+
    > 实际上，课程页面也是需要VO的，因为应该有筛选价格区间的条件查询，而domin/Course并没有区间参数，不能满足需要。但由于我没做价格区间筛选，course就够用了
 
 7. 关于list方法（查询列表）。Controller接口参数是不能写@RequestBody的（它在不筛选的情况下参数是空的，加了会报错）
+
+   > 在Spring框架中，`@RequestBody` 注解通常用于将请求的 HTTP 主体部分（即请求体）绑定到方法参数上。这在处理 POST 或 PUT 请求时非常有用，特别是当请求体是 JSON 或 XML 格式时。
+   >
+   > 在你提供的代码片段中，`@GetMapping("/list")` 注解表明这是一个处理 GET 请求的方法，并且方法的参数是 `ClueVO` 类型的对象 `clueVO`。在处理 GET 请求时，请求的参数通常是通过 URL 查询参数传递的，而不是请求体。
+   >
+   > 由于 `@RequestBody` 主要用于获取请求体中的数据，而 GET 请求的参数通常是通过 URL 传递的，因此在这种情况下不需要使用 `@RequestBody` 注解。Spring MVC 会自动将 URL 查询参数映射到方法参数上。
+   >
+   > 所以，对于处理 GET 请求且参数是通过 URL 查询参数传递的情况，通常不需要使用 `@RequestBody` 注解。在你的代码中，因为使用了 `@GetMapping` 注解，Spring MVC 会自动将 URL 中的参数映射到 `clueVO` 对象的相应字段上。
+
 
 # RuoYi前端
 

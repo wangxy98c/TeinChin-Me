@@ -39,6 +39,23 @@
         <dependencies>
             <dependency>
                 <groupId>com.wangxy</groupId>
+                <artifactId>tienchin-follow</artifactId>
+                <version>${tienchin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wangxy</groupId>
+                <artifactId>tienchin-assign</artifactId>
+                <version>${tienchin.version}</version>
+            </dependency>
+            <!-- 商机管理 -->
+            <dependency>
+                <groupId>com.wangxy</groupId>
+                <artifactId>tienchin-business</artifactId>
+                <version>${tienchin.version}</version>
+            </dependency>
+            <!-- 线索管理 -->
+            <dependency>
+                <groupId>com.wangxy</groupId>
                 <artifactId>tienchin-clue</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>
@@ -215,6 +232,9 @@
         <module>tienchin-activity</module>
         <module>tienchin-course</module>
         <module>tienchin-clue</module>
+        <module>tienchin-business</module>
+        <module>tienchin-assign</module>
+        <module>tienchin-follow</module>
     </modules>
     <packaging>pom</packaging>
 

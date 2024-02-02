@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangxy.tienchin.business.mapper.BusinessMapper">
+
+    <select id="selectBusinessList" resultType="com.wangxy.tienchin.business.domain.BusinessSummaryVO">
+        select tb.business_id,tb.name,tb.phone,ta.user_name as owner,tb.create_time,tb.status,tb.next_time from tienchin_business tb left join tienchin_assign ta on tb.business_id=ta.assign_id and ta.latest=true where tb.del_flag!=1 and ta.type=1
+        <if test="name!=null">
+            and tb.name=#{name}
+        </if>
+        <if test="phone!=null">
+            and tb.phone=#{phone}
+        </if>
+        <if test="owner!=null">
+            and tb.nick_name=%#{owner}%
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            and tb.next_time between #{startDate} and #{endDate}
+        </if>
+    </select>
+</mapper>

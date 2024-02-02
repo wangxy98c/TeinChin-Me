@@ -30,7 +30,7 @@ export function clueFollow(data){
 }
 export function assignClue(data){
   return request({
-    url: '/clue/assign',
+    url: '/tienchin/assign',
     method: 'post',
     data: data
   })
@@ -47,7 +47,7 @@ export function invalidateClue(data){
 // 查询线索跟进记录
 export function getClueRecordByClueId(clueId) {
   return request({
-    url: '/tienchin/clue/follow/record/' + clueId,
+    url: '/tienchin/follow/record/clue/' + clueId,
     method: 'get'
   })
 }
@@ -96,5 +96,12 @@ export function getClueSummary(clueId) {
   return request({
       url: '/tienchin/clue/summary/'+clueId,
       method: 'get',
+  })
+}
+
+export function toBusiness(clueId){
+  return request({
+    url: '/tienchin/clue/tobusiness/'+clueId,
+    method: 'post',
   })
 }

@@ -14,6 +14,18 @@
     <dependencies>
         <dependency>
             <groupId>com.wangxy</groupId>
+            <artifactId>tienchin-follow</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wangxy</groupId>
+            <artifactId>tienchin-assign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wangxy</groupId>
+            <artifactId>tienchin-business</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wangxy</groupId>
             <artifactId>tienchin-common</artifactId>
         </dependency>
         <dependency>

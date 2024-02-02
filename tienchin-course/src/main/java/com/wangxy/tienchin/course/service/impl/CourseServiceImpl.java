@@ -1,5 +1,6 @@
 package com.wangxy.tienchin.course.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.wangxy.tienchin.common.core.domain.AjaxResult;
 import com.wangxy.tienchin.common.utils.SecurityUtils;
@@ -56,4 +57,17 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return update(uw);
     }
 
+    @Override
+    public AjaxResult getCourseByType(Integer typeId) {
+        List<Course> list = null;
+        try {
+            QueryWrapper<Course> qw = new QueryWrapper<>();
+            qw.lambda().eq(Course::getType,typeId).ne(Course::getDelFlag,1);
+            list = list(qw);
+            return AjaxResult.success(list);
+        } catch (Exception e) {
+            return AjaxResult.error("查询失败"+e.getMessage());
+        }
+
+    }
 }

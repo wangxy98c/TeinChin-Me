@@ -142,4 +142,34 @@ public class GenerateCode {
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
     }
+    @Test
+    void generateBussinessCode(){
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/tienchin?serverTimezone=Asia/Shanghai&useSSL=false", "root", "12345678")
+                .globalConfig(builder -> {
+                    builder.author("wangxy") // 设置作者
+                            .enableSwagger() // 开启 swagger 模式
+                            .fileOverride() // 覆盖已生成文件
+                            .outputDir("/Users/wangxy/project/tienchin/tienchin-business/src/main/java"); // 指定输出目录
+                })
+                .dataSourceConfig(builder -> builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                    int typeCode = metaInfo.getJdbcType().TYPE_CODE;
+                    if (typeCode == Types.SMALLINT) {
+                        // 自定义类型转换
+                        return DbColumnType.INTEGER;
+                    }
+                    return typeRegistry.getColumnType(metaInfo);
+
+                }))
+                .packageConfig(builder -> {
+                    builder.parent("com.wangxy.tienchin") // 设置父包名
+                            .moduleName("business") // 设置父包模块名
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "/Users/wangxy/project/tienchin/tienchin-business/src/main/resources/mapper")); // 设置mapperXml生成路径
+                })
+                .strategyConfig(builder -> {
+                    builder.addInclude("tienchin_business") // 设置需要生成的表名
+                            .addTablePrefix("tienchin_"); // 设置过滤表前缀
+                })
+                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
+                .execute();
+    }
 }

@@ -19,11 +19,15 @@
         <!-- tienchin各个模块引入-->
         <dependency>
             <groupId>com.wangxy</groupId>
-            <artifactId>tienchin-clue</artifactId>
+            <artifactId>tienchin-business</artifactId>
         </dependency>
         <dependency>
             <groupId>com.wangxy</groupId>
             <artifactId>tienchin-course</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wangxy</groupId>
+            <artifactId>tienchin-clue</artifactId>
         </dependency>
         <dependency>
             <groupId>com.wangxy</groupId>
@@ -98,6 +102,12 @@
         <dependency>
             <groupId>com.wangxy</groupId>
             <artifactId>tienchin-generator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wangxy</groupId>
+            <artifactId>tienchin-assign</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

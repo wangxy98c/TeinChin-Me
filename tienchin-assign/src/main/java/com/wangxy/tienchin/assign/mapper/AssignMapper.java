@@ -1,7 +1,8 @@
-package com.wangxy.tienchin.clue.mapper;
+package com.wangxy.tienchin.assign.mapper;
 
-import com.wangxy.tienchin.clue.domain.Assign;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wangxy.tienchin.assign.domain.Assign;
 
 /**
  * <p>

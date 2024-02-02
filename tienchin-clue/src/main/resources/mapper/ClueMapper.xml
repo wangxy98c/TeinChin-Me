@@ -3,7 +3,7 @@
 <mapper namespace="com.wangxy.tienchin.clue.mapper.ClueMapper">
 
     <select id="selectClueList" resultType="com.wangxy.tienchin.clue.domain.vo.ClueSummaryVO" parameterType="com.wangxy.tienchin.clue.domain.vo.ClueVO" >
-        select tc.clue_id,tc.name,tch.channel_name,tc.phone,tc.status,tc.create_time,tc.create_by,ta.user_name as owner ,tc.next_time ,tc.status from tienchin_clue tc left join tienchin_channel tch on tc.channel_id=tch.channel_id left join tienchin_assign ta on tc.clue_id=ta.assign_id and ta.latest=true where tc.del_flag!=1
+        select tc.clue_id,tc.name,tch.channel_name,tc.phone,tc.status,tc.create_time,tc.create_by,ta.user_name as owner ,tc.next_time ,tc.status from tienchin_clue tc left join tienchin_channel tch on tc.channel_id=tch.channel_id left join tienchin_assign ta on tc.clue_id=ta.assign_id and ta.latest=true where tc.del_flag!=1 and ta.type=0
         <if test="name!=null">
             and tc.name=#{name}
         </if>
@@ -24,7 +24,6 @@
         </if>
     </select>
     <select id="getClueDetailByClueId" resultType="com.wangxy.tienchin.clue.domain.vo.ClueDetail">
-        select tc.clue_id,tc.name,tc.gender,tc.age,tc.weixin,tc.qq,tc.phone,tc.level,tc.subject,tc.status,tc.fail_count,tc.next_time,tch.channel_name,tas.create_by as allocator,ta.name as activity_name,ta.info as activity_info,tas.user_name  as owner,tas.create_time as belong_time,tc.create_time
-        from tienchin_clue tc left join tienchin_activity ta on tc.activity_id=ta.activity_id left join tienchin_channel tch on tc.channel_id=tch.channel_id left join tienchin_assign tas on tc.clue_id=tas.assign_id and tas.latest=true where tc.clue_id=#{clueId} where tc.del_flag!=1
+        select tc.clue_id,tc.name,tc.gender,tc.age,tc.weixin,tc.qq,tc.phone,tc.level,tc.subject,tc.status,tc.fail_count,tc.next_time,tch.channel_name,tas.create_by as allocator,ta.name as activity_name,ta.info as activity_info,tas.user_name  as owner,tas.create_time as belong_time,tc.create_time from tienchin_clue tc left join tienchin_activity ta on tc.activity_id=ta.activity_id left join tienchin_channel tch on tc.channel_id=tch.channel_id left join tienchin_assign tas on tc.clue_id=tas.assign_id and tas.latest=true where tc.clue_id=#{clueId} and tc.del_flag!=1
     </select>
 </mapper>

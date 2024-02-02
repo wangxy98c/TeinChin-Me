@@ -430,11 +430,14 @@ function handleAssignClue(){
     userList.value=resp.data;
   })
  }
- /** 查询课程列表 */
+ /** 查询线索列表 */
  function getList() {
    loading.value = true;
    listClue(queryParams.value).then(response => {
     console.log(queryParams.value)
+    //## 这里有点奇怪，为什么是row还没出问题.
+    //原因：后端口使用了分页插件，不用AjaxResult返回而是TableDataInfo（getDataTable（list））
+    console.log(response);
      clueList.value = response.rows;
      total.value = response.total;
      loading.value = false;
@@ -482,13 +485,12 @@ function handleAssignClue(){
  function handleQuery() {
   queryParams.value.startDate=dateRange.value[0];
   queryParams.value.endDate=dateRange.value[1];
-  queryParams.value.pageNum = 1;
    getList();
  }
  /** 重置按钮操作 */
  function resetQuery() {
    proxy.resetForm("queryRef");
-   dateRange=undefined;
+   dateRange.value=[];
    handleQuery();
  }
  /** 多选框选中数据 */
@@ -518,6 +520,7 @@ function handleAssignClue(){
 //  分配操作
 function handleAssign(data){
   assignForm.value.assignId=data.clueId;
+  assignForm.value.type=0;
   initDeptOptions();
   assignClueDialog.value=true
 }

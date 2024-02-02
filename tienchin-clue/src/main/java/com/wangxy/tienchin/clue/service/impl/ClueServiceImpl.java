@@ -2,20 +2,22 @@ package com.wangxy.tienchin.clue.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.wangxy.tienchin.clue.domain.Assign;
+import com.wangxy.tienchin.assign.domain.Assign;
+import com.wangxy.tienchin.assign.service.IAssignService;
+import com.wangxy.tienchin.business.domain.Business;
+import com.wangxy.tienchin.business.service.IBusinessService;
 import com.wangxy.tienchin.clue.domain.Clue;
-import com.wangxy.tienchin.clue.domain.FollowRecord;
 import com.wangxy.tienchin.clue.domain.vo.ClueDetail;
 import com.wangxy.tienchin.clue.domain.vo.ClueSummaryVO;
 import com.wangxy.tienchin.clue.domain.vo.ClueVO;
 import com.wangxy.tienchin.clue.mapper.ClueMapper;
-import com.wangxy.tienchin.clue.service.IAssignService;
 import com.wangxy.tienchin.clue.service.IClueService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wangxy.tienchin.clue.service.IFollowRecordService;
 import com.wangxy.tienchin.common.constant.TienchinConstants;
 import com.wangxy.tienchin.common.core.domain.AjaxResult;
 import com.wangxy.tienchin.common.utils.SecurityUtils;
+import com.wangxy.tienchin.follow.domain.FollowRecord;
+import com.wangxy.tienchin.follow.service.IFollowRecordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +43,50 @@ public class ClueServiceImpl extends ServiceImpl<ClueMapper, Clue> implements IC
     ClueMapper clueMapper;
     @Autowired
     IFollowRecordService followRecordService;
+    @Autowired
+    IBusinessService businessService;
     @Override
     public List<ClueSummaryVO> selectClueList(ClueVO clueVO) {
         return clueMapper.selectClueList(clueVO);
+    }
+
+    @Transactional
+    @Override
+    public AjaxResult clue2Bussiness(Integer clueId) {
+        try {
+            Clue clue = getById(clueId);
+            //此出用到business模块，需要添加依赖
+            Business business = new Business();
+            BeanUtils.copyProperties(clue,business);
+            business.setCreateBy(SecurityUtils.getUsername());
+            business.setCreateTime(LocalDateTime.now());
+            business.setEndTime(null);
+            business.setFailCount(0);//重置
+            business.setNextTime(null);
+            business.setRemark(null);
+            business.setUpdateBy(null);
+            business.setNextTime(LocalDateTime.now().plusHours(TienchinConstants.NEXT_FOLLOW_TIME));
+            business.setStatus(TienchinConstants.BUSINESS_ALLOCATED);
+            //删除线索,逻辑删除
+            UpdateWrapper<Clue> uw = new UpdateWrapper<>();
+            uw.lambda().set(Clue::getDelFlag,1).eq(Clue::getClueId,clueId);
+            update(uw);
+            //添加商机
+            businessService.save(business);
+            //默认将商机分配给admin
+            Assign assign = new Assign();
+            assign.setUserName(TienchinConstants.ADMIN_NAME);
+            assign.setType(TienchinConstants.BUSINESS_TYPE);
+            assign.setCreateBy(SecurityUtils.getUsername());
+            assign.setCreateTime(LocalDateTime.now());
+            assign.setAssignId(business.getBusinessId());
+            assign.setDeptId(SecurityUtils.getDeptId());
+            assign.setUserId(TienchinConstants.ADMIN_ID);
+            assignService.save(assign);
+        } catch (BeansException e) {
+            return AjaxResult.error("转化失败"+e.getMessage());
+        }
+        return AjaxResult.success("转化成功");
     }
 
     @Override

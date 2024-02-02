@@ -1,8 +1,8 @@
-package com.wangxy.tienchin.clue.service;
+package com.wangxy.tienchin.follow.service;
 
-import com.wangxy.tienchin.clue.domain.FollowRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wangxy.tienchin.common.core.domain.AjaxResult;
+import com.wangxy.tienchin.follow.domain.FollowRecord;
 
 /**
  * <p>
@@ -15,4 +15,6 @@ import com.wangxy.tienchin.common.core.domain.AjaxResult;
 public interface IFollowRecordService extends IService<FollowRecord> {
 
     AjaxResult getFollowRecordByClueId(Integer clueId);
+
+    AjaxResult getFollowRecordByBusinessId(Integer businessId);
 }

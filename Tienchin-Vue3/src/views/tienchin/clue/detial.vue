@@ -47,8 +47,8 @@
                                         <div style="color:#8392a6">{{ clue.activityInfo }}</div>
                                     </el-col>
                                     <el-col :span="8">
-                                        <el-button type="danger" :disabled="isDisableEdit" @click="showInvalidateClueDialog">无效线索</el-button>
-                                        <el-button type="primary" :disabled="isDisableEdit">转为商机</el-button>
+                                        <el-button type="danger"  @click="showInvalidateClueDialog">无效线索</el-button>
+                                        <el-button type="primary"  @click="handleBusiness()">转为商机</el-button>
                                     </el-col>
                                 </el-row>
                             </div>
@@ -210,8 +210,8 @@
 </template>
 <script setup>
 import { onMounted, ref, toRef } from 'vue';  
-import {getClueById,clueFollow,getClueRecordByClueId,invalidateClue} from '@/api/tienchin/clue.js'
-import { ElMessage, parseDate } from 'element-plus';
+import {getClueById,clueFollow,getClueRecordByClueId,invalidateClue,toBusiness} from '@/api/tienchin/clue.js'
+import { ElMessage, ElMessageBox } from 'element-plus';
 import router from '../../../router';
 const { proxy } = getCurrentInstance();
 const {clue_status,course_apply_to,course_type,sys_user_sex,clue_level,clue_invalidate} = proxy.useDict("clue_status","course_apply_to","course_type","sys_user_sex","clue_level","clue_invalidate");
@@ -287,6 +287,31 @@ const data = reactive({
         })
     }
   })
+ }
+ function handleBusiness(){
+    ElMessageBox.confirm(
+    '确认要将此线索转化为商机?',
+    'Warning',
+    {
+      confirmButtonText: '确定转化',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    .then(() => {
+        toBusiness(clue.value.clueId).then(resp=>{
+            ElMessage({
+                type:'success',
+                message:'转化成功'
+            })
+            proxy.$route.go(-1)
+        })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消转化线索',
+      })
+    })
  }
  function invalidateCluecancel(){
     invalidateClueDialog.value=false;

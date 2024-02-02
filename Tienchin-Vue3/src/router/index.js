@@ -89,13 +89,28 @@ export const constantRoutes = [
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
   {
+    path: '/business/detail',
+    component: Layout, 
+    hidden: true,
+    permissions: ['tienchin:business:view','tienchin:business:follow'],
+    children: [
+      { //此处是一个正则表达式，之后可以在detial.vue的onMounted种提取出来参数clueId type
+        path: 'index/:businessId/:type',//此处如果加（\\d+）(\\s+) 会出404（匹配不上）没深究
+        //path: '/index/:clueId(\\d+)',
+        component: () => import('@/views/tienchin/business/detial'),
+        name: 'BusinessDetails',
+        meta: { title: '商机详情', activeMenu: '/business' }
+      }
+    ]
+  },
+  {
     path: '/clue/detail',
     component: Layout, 
     hidden: true,
     permissions: ['tienchin:clue:view','tienchin:clue:follow'],
     children: [
       { //此处是一个正则表达式，之后可以在detial.vue的onMounted种提取出来参数clueId type
-        path: 'index/:clueId/:type',
+        path: 'index/:clueId/:type',//此处如果加（\\d+）(\\s+) 会出404（匹配不上）没深究
         //path: '/index/:clueId(\\d+)',
         component: () => import('@/views/tienchin/clue/detial'),
         name: 'ClueDetails',

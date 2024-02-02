@@ -1,6 +1,6 @@
-package com.wangxy.tienchin.clue.service;
+package com.wangxy.tienchin.assign.service;
 
-import com.wangxy.tienchin.clue.domain.Assign;
+import com.wangxy.tienchin.assign.domain.Assign;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wangxy.tienchin.common.core.domain.AjaxResult;
 
@@ -14,5 +14,5 @@ import com.wangxy.tienchin.common.core.domain.AjaxResult;
  */
 public interface IAssignService extends IService<Assign> {
 
-    AjaxResult assignClue(Assign assign);
+    AjaxResult assignClueOrBusiness(Assign assign);
 }
