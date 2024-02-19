@@ -19,6 +19,10 @@
         <!-- tienchin各个模块引入-->
         <dependency>
             <groupId>com.wangxy</groupId>
+            <artifactId>tienchin-contract</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wangxy</groupId>
             <artifactId>tienchin-business</artifactId>
         </dependency>
         <dependency>

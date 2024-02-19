@@ -76,7 +76,7 @@ public class BusinessController extends BaseController {
     public AjaxResult businessFollow(@RequestBody Business business){
         return null;
     }
-    @PreAuthorize("hasAnyPermission('tienchin:business:follow')")
+    @PreAuthorize("hasAnyPermission('tienchin:business:follow,tienchin:contract:create')")
     @GetMapping("/course/{typeId}")
     public AjaxResult getCourseByType(@PathVariable Integer typeId){
         return courseService.getCourseByType(typeId);

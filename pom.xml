@@ -39,6 +39,11 @@
         <dependencies>
             <dependency>
                 <groupId>com.wangxy</groupId>
+                <artifactId>tienchin-contract</artifactId>
+                <version>${tienchin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wangxy</groupId>
                 <artifactId>tienchin-follow</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>
@@ -235,6 +240,7 @@
         <module>tienchin-business</module>
         <module>tienchin-assign</module>
         <module>tienchin-follow</module>
+        <module>tienchin-contract</module>
     </modules>
     <packaging>pom</packaging>
 

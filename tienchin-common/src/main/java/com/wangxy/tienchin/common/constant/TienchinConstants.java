@@ -1,5 +1,6 @@
 package com.wangxy.tienchin.common.constant;
 
+
 public class TienchinConstants {
     public static final Integer CLUE_TYPE = 0;
     public static final Integer BUSINESS_TYPE=1;
@@ -17,4 +18,9 @@ public class TienchinConstants {
     public static final String ADMIN_NAME="admin";
 
     public static final Long ADMIN_ID=1L;
+
+    public static final Integer CONTRACT_UNAPPROVE=1;
+    public static final Integer CONTRACT_APPROVED=2;
+    public static final Integer CONTRACT_REJECT=3;
+    public static final String CONTRACT_PROCESS_DEFINITION_ID="tienchin_contract_approve";
 }
