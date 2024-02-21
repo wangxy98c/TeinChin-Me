@@ -1,0 +1,4710 @@
+# ************************************************************
+# Sequel Ace SQL dump
+# 版本号： 20062
+#
+# https://sequel-ace.com/
+# https://github.com/Sequel-Ace/Sequel-Ace
+#
+# 主机: 127.0.0.1 (MySQL 5.7.42)
+# 数据库: tienchin
+# 生成时间: 2024-02-21 下午1:48:16 +0000
+# ************************************************************
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+SET NAMES utf8mb4;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE='NO_AUTO_VALUE_ON_ZERO', SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# 转储表 ACT_APP_APPDEF
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_APP_APPDEF`;
+
+CREATE TABLE `ACT_APP_APPDEF` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `KEY_` varchar(255) NOT NULL,
+  `VERSION_` int(11) NOT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(4000) DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_IDX_APP_DEF_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`),
+  KEY `ACT_IDX_APP_DEF_DPLY` (`DEPLOYMENT_ID_`),
+  CONSTRAINT `ACT_FK_APP_DEF_DPLY` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_APP_DEPLOYMENT` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_APP_DATABASECHANGELOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_APP_DATABASECHANGELOG`;
+
+CREATE TABLE `ACT_APP_DATABASECHANGELOG` (
+  `ID` varchar(255) NOT NULL,
+  `AUTHOR` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) NOT NULL,
+  `MD5SUM` varchar(35) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `COMMENTS` varchar(255) DEFAULT NULL,
+  `TAG` varchar(255) DEFAULT NULL,
+  `LIQUIBASE` varchar(20) DEFAULT NULL,
+  `CONTEXTS` varchar(255) DEFAULT NULL,
+  `LABELS` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_APP_DATABASECHANGELOG` WRITE;
+/*!40000 ALTER TABLE `ACT_APP_DATABASECHANGELOG` DISABLE KEYS */;
+
+INSERT INTO `ACT_APP_DATABASECHANGELOG` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`)
+VALUES
+	('1','flowable','org/flowable/app/db/liquibase/flowable-app-db-changelog.xml','2024-02-08 11:51:45',1,'EXECUTED','8:496fc778bdf2ab13f2e1926d0e63e0a2','createTable tableName=ACT_APP_DEPLOYMENT; createTable tableName=ACT_APP_DEPLOYMENT_RESOURCE; addForeignKeyConstraint baseTableName=ACT_APP_DEPLOYMENT_RESOURCE, constraintName=ACT_FK_APP_RSRC_DPL, referencedTableName=ACT_APP_DEPLOYMENT; createIndex...','',NULL,'4.3.5',NULL,NULL,'7364305276'),
+	('2','flowable','org/flowable/app/db/liquibase/flowable-app-db-changelog.xml','2024-02-08 11:51:45',2,'EXECUTED','8:ccea9ebfb6c1f8367ca4dd473fcbb7db','modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_APP_DEPLOYMENT','',NULL,'4.3.5',NULL,NULL,'7364305276'),
+	('3','flowable','org/flowable/app/db/liquibase/flowable-app-db-changelog.xml','2024-02-08 11:51:45',3,'EXECUTED','8:f1f8aff320aade831944ebad24355f3d','createIndex indexName=ACT_IDX_APP_DEF_UNIQ, tableName=ACT_APP_APPDEF','',NULL,'4.3.5',NULL,NULL,'7364305276');
+
+/*!40000 ALTER TABLE `ACT_APP_DATABASECHANGELOG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_APP_DATABASECHANGELOGLOCK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_APP_DATABASECHANGELOGLOCK`;
+
+CREATE TABLE `ACT_APP_DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_APP_DATABASECHANGELOGLOCK` WRITE;
+/*!40000 ALTER TABLE `ACT_APP_DATABASECHANGELOGLOCK` DISABLE KEYS */;
+
+INSERT INTO `ACT_APP_DATABASECHANGELOGLOCK` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`)
+VALUES
+	(1,b'0',NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_APP_DATABASECHANGELOGLOCK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_APP_DEPLOYMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_APP_DEPLOYMENT`;
+
+CREATE TABLE `ACT_APP_DEPLOYMENT` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `KEY_` varchar(255) DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_APP_DEPLOYMENT_RESOURCE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_APP_DEPLOYMENT_RESOURCE`;
+
+CREATE TABLE `ACT_APP_DEPLOYMENT_RESOURCE` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_APP_RSRC_DPL` (`DEPLOYMENT_ID_`),
+  CONSTRAINT `ACT_FK_APP_RSRC_DPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_APP_DEPLOYMENT` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_CASEDEF
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_CASEDEF`;
+
+CREATE TABLE `ACT_CMMN_CASEDEF` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `KEY_` varchar(255) NOT NULL,
+  `VERSION_` int(11) NOT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(4000) DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) DEFAULT NULL,
+  `HAS_GRAPHICAL_NOTATION_` bit(1) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  `DGRM_RESOURCE_NAME_` varchar(4000) DEFAULT NULL,
+  `HAS_START_FORM_KEY_` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_IDX_CASE_DEF_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`),
+  KEY `ACT_IDX_CASE_DEF_DPLY` (`DEPLOYMENT_ID_`),
+  CONSTRAINT `ACT_FK_CASE_DEF_DPLY` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_CMMN_DEPLOYMENT` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_DATABASECHANGELOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_DATABASECHANGELOG`;
+
+CREATE TABLE `ACT_CMMN_DATABASECHANGELOG` (
+  `ID` varchar(255) NOT NULL,
+  `AUTHOR` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) NOT NULL,
+  `MD5SUM` varchar(35) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `COMMENTS` varchar(255) DEFAULT NULL,
+  `TAG` varchar(255) DEFAULT NULL,
+  `LIQUIBASE` varchar(20) DEFAULT NULL,
+  `CONTEXTS` varchar(255) DEFAULT NULL,
+  `LABELS` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_CMMN_DATABASECHANGELOG` WRITE;
+/*!40000 ALTER TABLE `ACT_CMMN_DATABASECHANGELOG` DISABLE KEYS */;
+
+INSERT INTO `ACT_CMMN_DATABASECHANGELOG` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`)
+VALUES
+	('1','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',1,'EXECUTED','8:8b4b922d90b05ff27483abefc9597aa6','createTable tableName=ACT_CMMN_DEPLOYMENT; createTable tableName=ACT_CMMN_DEPLOYMENT_RESOURCE; addForeignKeyConstraint baseTableName=ACT_CMMN_DEPLOYMENT_RESOURCE, constraintName=ACT_FK_CMMN_RSRC_DPL, referencedTableName=ACT_CMMN_DEPLOYMENT; create...','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('2','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',2,'EXECUTED','8:65e39b3d385706bb261cbeffe7533cbe','addColumn tableName=ACT_CMMN_CASEDEF; addColumn tableName=ACT_CMMN_DEPLOYMENT_RESOURCE; addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('3','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',3,'EXECUTED','8:c01f6e802b49436b4489040da3012359','addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_CASE_INST; createIndex indexName=ACT_IDX_PLAN_ITEM_STAGE_INST, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableNam...','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('4','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',4,'EXECUTED','8:e40d29cb79345b7fb5afd38a7f0ba8fc','createTable tableName=ACT_CMMN_HI_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_MIL_INST; addColumn tableName=ACT_CMMN_HI_MIL_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('5','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',5,'EXECUTED','8:70349de472f87368dcdec971a10311a0','modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_CMMN_DEPLOYMENT; modifyDataType columnName=START_TIME_, tableName=ACT_CMMN_RU_CASE_INST; modifyDataType columnName=START_TIME_, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; modifyDataType columnName=T...','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('6','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',6,'EXECUTED','8:10e82e26a7fee94c32a92099c059c18c','createIndex indexName=ACT_IDX_CASE_DEF_UNIQ, tableName=ACT_CMMN_CASEDEF','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('7','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',7,'EXECUTED','8:530bc81a1e30618ccf4a2da1f7c6c043','renameColumn newColumnName=CREATE_TIME_, oldColumnName=START_TIME_, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; renameColumn newColumnName=CREATE_TIME_, oldColumnName=CREATED_TIME_, tableName=ACT_CMMN_HI_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_P...','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('8','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',8,'EXECUTED','8:e8c2eb1ce28bc301efe07e0e29757781','addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('9','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:44',9,'EXECUTED','8:4cb4782b9bdec5ced2a64c525aa7b3a0','addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('10','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:45',10,'EXECUTED','8:341c16be247f5d17badc9809da8691f9','addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_RU_CASE_INST; createIndex indexName=ACT_IDX_CASE_INST_REF_ID_, tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE...','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('11','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:45',11,'EXECUTED','8:d7c4da9276bcfffbfb0ebfb25e3f7b05','addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('12','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:45',12,'EXECUTED','8:adf4ecc45f2aa9a44a5626b02e1d6f98','addColumn tableName=ACT_CMMN_RU_CASE_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('13','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:45',13,'EXECUTED','8:7550626f964ab5518464709408333ec1','addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('14','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:45',14,'EXECUTED','8:086b40b3a05596dcc8a8d7479922d494','addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST','',NULL,'4.3.5',NULL,NULL,'7364303811'),
+	('16','flowable','org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml','2024-02-08 11:51:45',15,'EXECUTED','8:a697a222ddd99dd15b36516a252f1c63','addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST','',NULL,'4.3.5',NULL,NULL,'7364303811');
+
+/*!40000 ALTER TABLE `ACT_CMMN_DATABASECHANGELOG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_CMMN_DATABASECHANGELOGLOCK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_DATABASECHANGELOGLOCK`;
+
+CREATE TABLE `ACT_CMMN_DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_CMMN_DATABASECHANGELOGLOCK` WRITE;
+/*!40000 ALTER TABLE `ACT_CMMN_DATABASECHANGELOGLOCK` DISABLE KEYS */;
+
+INSERT INTO `ACT_CMMN_DATABASECHANGELOGLOCK` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`)
+VALUES
+	(1,b'0',NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_CMMN_DATABASECHANGELOGLOCK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_CMMN_DEPLOYMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_DEPLOYMENT`;
+
+CREATE TABLE `ACT_CMMN_DEPLOYMENT` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `KEY_` varchar(255) DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_DEPLOYMENT_RESOURCE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_DEPLOYMENT_RESOURCE`;
+
+CREATE TABLE `ACT_CMMN_DEPLOYMENT_RESOURCE` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob,
+  `GENERATED_` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_CMMN_RSRC_DPL` (`DEPLOYMENT_ID_`),
+  CONSTRAINT `ACT_FK_CMMN_RSRC_DPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_CMMN_DEPLOYMENT` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_HI_CASE_INST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_HI_CASE_INST`;
+
+CREATE TABLE `ACT_CMMN_HI_CASE_INST` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `BUSINESS_KEY_` varchar(255) DEFAULT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `PARENT_ID_` varchar(255) DEFAULT NULL,
+  `CASE_DEF_ID_` varchar(255) DEFAULT NULL,
+  `STATE_` varchar(255) DEFAULT NULL,
+  `START_TIME_` datetime(3) DEFAULT NULL,
+  `END_TIME_` datetime(3) DEFAULT NULL,
+  `START_USER_ID_` varchar(255) DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  `REFERENCE_ID_` varchar(255) DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) DEFAULT NULL,
+  `LAST_REACTIVATION_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_REACTIVATION_USER_ID_` varchar(255) DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_HI_MIL_INST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_HI_MIL_INST`;
+
+CREATE TABLE `ACT_CMMN_HI_MIL_INST` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `NAME_` varchar(255) NOT NULL,
+  `TIME_STAMP_` datetime(3) DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) NOT NULL,
+  `CASE_DEF_ID_` varchar(255) NOT NULL,
+  `ELEMENT_ID_` varchar(255) NOT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_HI_PLAN_ITEM_INST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_HI_PLAN_ITEM_INST`;
+
+CREATE TABLE `ACT_CMMN_HI_PLAN_ITEM_INST` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `STATE_` varchar(255) DEFAULT NULL,
+  `CASE_DEF_ID_` varchar(255) DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) DEFAULT NULL,
+  `STAGE_INST_ID_` varchar(255) DEFAULT NULL,
+  `IS_STAGE_` bit(1) DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) DEFAULT NULL,
+  `ITEM_DEFINITION_ID_` varchar(255) DEFAULT NULL,
+  `ITEM_DEFINITION_TYPE_` varchar(255) DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_AVAILABLE_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_ENABLED_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_DISABLED_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_STARTED_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_SUSPENDED_TIME_` datetime(3) DEFAULT NULL,
+  `COMPLETED_TIME_` datetime(3) DEFAULT NULL,
+  `OCCURRED_TIME_` datetime(3) DEFAULT NULL,
+  `TERMINATED_TIME_` datetime(3) DEFAULT NULL,
+  `EXIT_TIME_` datetime(3) DEFAULT NULL,
+  `ENDED_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_UPDATED_TIME_` datetime(3) DEFAULT NULL,
+  `START_USER_ID_` varchar(255) DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  `ENTRY_CRITERION_ID_` varchar(255) DEFAULT NULL,
+  `EXIT_CRITERION_ID_` varchar(255) DEFAULT NULL,
+  `SHOW_IN_OVERVIEW_` bit(1) DEFAULT NULL,
+  `EXTRA_VALUE_` varchar(255) DEFAULT NULL,
+  `DERIVED_CASE_DEF_ID_` varchar(255) DEFAULT NULL,
+  `LAST_UNAVAILABLE_TIME_` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_RU_CASE_INST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_RU_CASE_INST`;
+
+CREATE TABLE `ACT_CMMN_RU_CASE_INST` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `BUSINESS_KEY_` varchar(255) DEFAULT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `PARENT_ID_` varchar(255) DEFAULT NULL,
+  `CASE_DEF_ID_` varchar(255) DEFAULT NULL,
+  `STATE_` varchar(255) DEFAULT NULL,
+  `START_TIME_` datetime(3) DEFAULT NULL,
+  `START_USER_ID_` varchar(255) DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  `LOCK_TIME_` datetime(3) DEFAULT NULL,
+  `IS_COMPLETEABLE_` bit(1) DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) DEFAULT NULL,
+  `LAST_REACTIVATION_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_REACTIVATION_USER_ID_` varchar(255) DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_CASE_INST_CASE_DEF` (`CASE_DEF_ID_`),
+  KEY `ACT_IDX_CASE_INST_PARENT` (`PARENT_ID_`),
+  KEY `ACT_IDX_CASE_INST_REF_ID_` (`REFERENCE_ID_`),
+  CONSTRAINT `ACT_FK_CASE_INST_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `ACT_CMMN_CASEDEF` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_RU_MIL_INST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_RU_MIL_INST`;
+
+CREATE TABLE `ACT_CMMN_RU_MIL_INST` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) NOT NULL,
+  `TIME_STAMP_` datetime(3) DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) NOT NULL,
+  `CASE_DEF_ID_` varchar(255) NOT NULL,
+  `ELEMENT_ID_` varchar(255) NOT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_MIL_CASE_DEF` (`CASE_DEF_ID_`),
+  KEY `ACT_IDX_MIL_CASE_INST` (`CASE_INST_ID_`),
+  CONSTRAINT `ACT_FK_MIL_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `ACT_CMMN_CASEDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_MIL_CASE_INST` FOREIGN KEY (`CASE_INST_ID_`) REFERENCES `ACT_CMMN_RU_CASE_INST` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_RU_PLAN_ITEM_INST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_RU_PLAN_ITEM_INST`;
+
+CREATE TABLE `ACT_CMMN_RU_PLAN_ITEM_INST` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `CASE_DEF_ID_` varchar(255) DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) DEFAULT NULL,
+  `STAGE_INST_ID_` varchar(255) DEFAULT NULL,
+  `IS_STAGE_` bit(1) DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) DEFAULT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `STATE_` varchar(255) DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) DEFAULT NULL,
+  `START_USER_ID_` varchar(255) DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT '',
+  `ITEM_DEFINITION_ID_` varchar(255) DEFAULT NULL,
+  `ITEM_DEFINITION_TYPE_` varchar(255) DEFAULT NULL,
+  `IS_COMPLETEABLE_` bit(1) DEFAULT NULL,
+  `IS_COUNT_ENABLED_` bit(1) DEFAULT NULL,
+  `VAR_COUNT_` int(11) DEFAULT NULL,
+  `SENTRY_PART_INST_COUNT_` int(11) DEFAULT NULL,
+  `LAST_AVAILABLE_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_ENABLED_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_DISABLED_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_STARTED_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_SUSPENDED_TIME_` datetime(3) DEFAULT NULL,
+  `COMPLETED_TIME_` datetime(3) DEFAULT NULL,
+  `OCCURRED_TIME_` datetime(3) DEFAULT NULL,
+  `TERMINATED_TIME_` datetime(3) DEFAULT NULL,
+  `EXIT_TIME_` datetime(3) DEFAULT NULL,
+  `ENDED_TIME_` datetime(3) DEFAULT NULL,
+  `ENTRY_CRITERION_ID_` varchar(255) DEFAULT NULL,
+  `EXIT_CRITERION_ID_` varchar(255) DEFAULT NULL,
+  `EXTRA_VALUE_` varchar(255) DEFAULT NULL,
+  `DERIVED_CASE_DEF_ID_` varchar(255) DEFAULT NULL,
+  `LAST_UNAVAILABLE_TIME_` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_PLAN_ITEM_CASE_DEF` (`CASE_DEF_ID_`),
+  KEY `ACT_IDX_PLAN_ITEM_CASE_INST` (`CASE_INST_ID_`),
+  KEY `ACT_IDX_PLAN_ITEM_STAGE_INST` (`STAGE_INST_ID_`),
+  CONSTRAINT `ACT_FK_PLAN_ITEM_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `ACT_CMMN_CASEDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_PLAN_ITEM_CASE_INST` FOREIGN KEY (`CASE_INST_ID_`) REFERENCES `ACT_CMMN_RU_CASE_INST` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CMMN_RU_SENTRY_PART_INST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CMMN_RU_SENTRY_PART_INST`;
+
+CREATE TABLE `ACT_CMMN_RU_SENTRY_PART_INST` (
+  `ID_` varchar(255) NOT NULL,
+  `REV_` int(11) NOT NULL,
+  `CASE_DEF_ID_` varchar(255) DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) DEFAULT NULL,
+  `PLAN_ITEM_INST_ID_` varchar(255) DEFAULT NULL,
+  `ON_PART_ID_` varchar(255) DEFAULT NULL,
+  `IF_PART_ID_` varchar(255) DEFAULT NULL,
+  `TIME_STAMP_` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_SENTRY_CASE_DEF` (`CASE_DEF_ID_`),
+  KEY `ACT_IDX_SENTRY_CASE_INST` (`CASE_INST_ID_`),
+  KEY `ACT_IDX_SENTRY_PLAN_ITEM` (`PLAN_ITEM_INST_ID_`),
+  CONSTRAINT `ACT_FK_SENTRY_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `ACT_CMMN_CASEDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_SENTRY_CASE_INST` FOREIGN KEY (`CASE_INST_ID_`) REFERENCES `ACT_CMMN_RU_CASE_INST` (`ID_`),
+  CONSTRAINT `ACT_FK_SENTRY_PLAN_ITEM` FOREIGN KEY (`PLAN_ITEM_INST_ID_`) REFERENCES `ACT_CMMN_RU_PLAN_ITEM_INST` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CO_CONTENT_ITEM
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CO_CONTENT_ITEM`;
+
+CREATE TABLE `ACT_CO_CONTENT_ITEM` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) NOT NULL,
+  `MIME_TYPE_` varchar(255) DEFAULT NULL,
+  `TASK_ID_` varchar(255) DEFAULT NULL,
+  `PROC_INST_ID_` varchar(255) DEFAULT NULL,
+  `CONTENT_STORE_ID_` varchar(255) DEFAULT NULL,
+  `CONTENT_STORE_NAME_` varchar(255) DEFAULT NULL,
+  `FIELD_` varchar(400) DEFAULT NULL,
+  `CONTENT_AVAILABLE_` bit(1) DEFAULT b'0',
+  `CREATED_` timestamp(6) NULL DEFAULT NULL,
+  `CREATED_BY_` varchar(255) DEFAULT NULL,
+  `LAST_MODIFIED_` timestamp(6) NULL DEFAULT NULL,
+  `LAST_MODIFIED_BY_` varchar(255) DEFAULT NULL,
+  `CONTENT_SIZE_` bigint(20) DEFAULT '0',
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `idx_contitem_taskid` (`TASK_ID_`),
+  KEY `idx_contitem_procid` (`PROC_INST_ID_`),
+  KEY `idx_contitem_scope` (`SCOPE_ID_`,`SCOPE_TYPE_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_CO_DATABASECHANGELOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CO_DATABASECHANGELOG`;
+
+CREATE TABLE `ACT_CO_DATABASECHANGELOG` (
+  `ID` varchar(255) NOT NULL,
+  `AUTHOR` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) NOT NULL,
+  `MD5SUM` varchar(35) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `COMMENTS` varchar(255) DEFAULT NULL,
+  `TAG` varchar(255) DEFAULT NULL,
+  `LIQUIBASE` varchar(20) DEFAULT NULL,
+  `CONTEXTS` varchar(255) DEFAULT NULL,
+  `LABELS` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_CO_DATABASECHANGELOG` WRITE;
+/*!40000 ALTER TABLE `ACT_CO_DATABASECHANGELOG` DISABLE KEYS */;
+
+INSERT INTO `ACT_CO_DATABASECHANGELOG` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`)
+VALUES
+	('1','activiti','org/flowable/content/db/liquibase/flowable-content-db-changelog.xml','2024-02-08 11:51:43',1,'EXECUTED','8:7644d7165cfe799200a2abdd3419e8b6','createTable tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_taskid, tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_procid, tableName=ACT_CO_CONTENT_ITEM','',NULL,'4.3.5',NULL,NULL,'7364303580'),
+	('2','flowable','org/flowable/content/db/liquibase/flowable-content-db-changelog.xml','2024-02-08 11:51:43',2,'EXECUTED','8:fe7b11ac7dbbf9c43006b23bbab60bab','addColumn tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_scope, tableName=ACT_CO_CONTENT_ITEM','',NULL,'4.3.5',NULL,NULL,'7364303580');
+
+/*!40000 ALTER TABLE `ACT_CO_DATABASECHANGELOG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_CO_DATABASECHANGELOGLOCK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_CO_DATABASECHANGELOGLOCK`;
+
+CREATE TABLE `ACT_CO_DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_CO_DATABASECHANGELOGLOCK` WRITE;
+/*!40000 ALTER TABLE `ACT_CO_DATABASECHANGELOGLOCK` DISABLE KEYS */;
+
+INSERT INTO `ACT_CO_DATABASECHANGELOGLOCK` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`)
+VALUES
+	(1,b'0',NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_CO_DATABASECHANGELOGLOCK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_DMN_DATABASECHANGELOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_DMN_DATABASECHANGELOG`;
+
+CREATE TABLE `ACT_DMN_DATABASECHANGELOG` (
+  `ID` varchar(255) NOT NULL,
+  `AUTHOR` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) NOT NULL,
+  `MD5SUM` varchar(35) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `COMMENTS` varchar(255) DEFAULT NULL,
+  `TAG` varchar(255) DEFAULT NULL,
+  `LIQUIBASE` varchar(20) DEFAULT NULL,
+  `CONTEXTS` varchar(255) DEFAULT NULL,
+  `LABELS` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_DMN_DATABASECHANGELOG` WRITE;
+/*!40000 ALTER TABLE `ACT_DMN_DATABASECHANGELOG` DISABLE KEYS */;
+
+INSERT INTO `ACT_DMN_DATABASECHANGELOG` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`)
+VALUES
+	('1','activiti','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',1,'EXECUTED','8:c8701f1c71018b55029f450b2e9a10a1','createTable tableName=ACT_DMN_DEPLOYMENT; createTable tableName=ACT_DMN_DEPLOYMENT_RESOURCE; createTable tableName=ACT_DMN_DECISION_TABLE','',NULL,'4.3.5',NULL,NULL,'7364303031'),
+	('2','flowable','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',2,'EXECUTED','8:47f94b27feb7df8a30d4e338c7bd5fb8','createTable tableName=ACT_DMN_HI_DECISION_EXECUTION','',NULL,'4.3.5',NULL,NULL,'7364303031'),
+	('3','flowable','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',3,'EXECUTED','8:ac17eae89fbdccb6e08daf3c7797b579','addColumn tableName=ACT_DMN_HI_DECISION_EXECUTION','',NULL,'4.3.5',NULL,NULL,'7364303031'),
+	('4','flowable','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',4,'EXECUTED','8:f73aabc4529e7292c2942073d1cff6f9','dropColumn columnName=PARENT_DEPLOYMENT_ID_, tableName=ACT_DMN_DECISION_TABLE','',NULL,'4.3.5',NULL,NULL,'7364303031'),
+	('5','flowable','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',5,'EXECUTED','8:3e03528582dd4eeb4eb41f9b9539140d','modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_DMN_DEPLOYMENT; modifyDataType columnName=START_TIME_, tableName=ACT_DMN_HI_DECISION_EXECUTION; modifyDataType columnName=END_TIME_, tableName=ACT_DMN_HI_DECISION_EXECUTION','',NULL,'4.3.5',NULL,NULL,'7364303031'),
+	('6','flowable','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',6,'EXECUTED','8:646c6a061e0b6e8a62e69844ff96abb0','createIndex indexName=ACT_IDX_DEC_TBL_UNIQ, tableName=ACT_DMN_DECISION_TABLE','',NULL,'4.3.5',NULL,NULL,'7364303031'),
+	('7','flowable','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',7,'EXECUTED','8:215a499ff7ae77685b55355245b8b708','dropIndex indexName=ACT_IDX_DEC_TBL_UNIQ, tableName=ACT_DMN_DECISION_TABLE; renameTable newTableName=ACT_DMN_DECISION, oldTableName=ACT_DMN_DECISION_TABLE; createIndex indexName=ACT_IDX_DMN_DEC_UNIQ, tableName=ACT_DMN_DECISION','',NULL,'4.3.5',NULL,NULL,'7364303031'),
+	('8','flowable','org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml','2024-02-08 11:51:43',8,'EXECUTED','8:5355bee389318afed91a11702f2df032','addColumn tableName=ACT_DMN_DECISION','',NULL,'4.3.5',NULL,NULL,'7364303031');
+
+/*!40000 ALTER TABLE `ACT_DMN_DATABASECHANGELOG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_DMN_DATABASECHANGELOGLOCK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_DMN_DATABASECHANGELOGLOCK`;
+
+CREATE TABLE `ACT_DMN_DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_DMN_DATABASECHANGELOGLOCK` WRITE;
+/*!40000 ALTER TABLE `ACT_DMN_DATABASECHANGELOGLOCK` DISABLE KEYS */;
+
+INSERT INTO `ACT_DMN_DATABASECHANGELOGLOCK` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`)
+VALUES
+	(1,b'0',NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_DMN_DATABASECHANGELOGLOCK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_DMN_DECISION
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_DMN_DECISION`;
+
+CREATE TABLE `ACT_DMN_DECISION` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `VERSION_` int(11) DEFAULT NULL,
+  `KEY_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) DEFAULT NULL,
+  `DECISION_TYPE_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_IDX_DMN_DEC_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_DMN_DEPLOYMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_DMN_DEPLOYMENT`;
+
+CREATE TABLE `ACT_DMN_DEPLOYMENT` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_DMN_DEPLOYMENT_RESOURCE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_DMN_DEPLOYMENT_RESOURCE`;
+
+CREATE TABLE `ACT_DMN_DEPLOYMENT_RESOURCE` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_DMN_HI_DECISION_EXECUTION
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_DMN_HI_DECISION_EXECUTION`;
+
+CREATE TABLE `ACT_DMN_HI_DECISION_EXECUTION` (
+  `ID_` varchar(255) NOT NULL,
+  `DECISION_DEFINITION_ID_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `START_TIME_` datetime(3) DEFAULT NULL,
+  `END_TIME_` datetime(3) DEFAULT NULL,
+  `INSTANCE_ID_` varchar(255) DEFAULT NULL,
+  `EXECUTION_ID_` varchar(255) DEFAULT NULL,
+  `ACTIVITY_ID_` varchar(255) DEFAULT NULL,
+  `FAILED_` bit(1) DEFAULT b'0',
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `EXECUTION_JSON_` longtext,
+  `SCOPE_TYPE_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_EVT_LOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_EVT_LOG`;
+
+CREATE TABLE `ACT_EVT_LOG` (
+  `LOG_NR_` bigint(20) NOT NULL AUTO_INCREMENT,
+  `TYPE_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TIME_STAMP_` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `DATA_` longblob,
+  `LOCK_OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `LOCK_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `IS_PROCESSED_` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`LOG_NR_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_FO_DATABASECHANGELOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_FO_DATABASECHANGELOG`;
+
+CREATE TABLE `ACT_FO_DATABASECHANGELOG` (
+  `ID` varchar(255) NOT NULL,
+  `AUTHOR` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) NOT NULL,
+  `MD5SUM` varchar(35) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `COMMENTS` varchar(255) DEFAULT NULL,
+  `TAG` varchar(255) DEFAULT NULL,
+  `LIQUIBASE` varchar(20) DEFAULT NULL,
+  `CONTEXTS` varchar(255) DEFAULT NULL,
+  `LABELS` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_FO_DATABASECHANGELOG` WRITE;
+/*!40000 ALTER TABLE `ACT_FO_DATABASECHANGELOG` DISABLE KEYS */;
+
+INSERT INTO `ACT_FO_DATABASECHANGELOG` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`)
+VALUES
+	('1','activiti','org/flowable/form/db/liquibase/flowable-form-db-changelog.xml','2024-02-08 11:51:43',1,'EXECUTED','8:033ebf9380889aed7c453927ecc3250d','createTable tableName=ACT_FO_FORM_DEPLOYMENT; createTable tableName=ACT_FO_FORM_RESOURCE; createTable tableName=ACT_FO_FORM_DEFINITION; createTable tableName=ACT_FO_FORM_INSTANCE','',NULL,'4.3.5',NULL,NULL,'7364303346'),
+	('2','flowable','org/flowable/form/db/liquibase/flowable-form-db-changelog.xml','2024-02-08 11:51:43',2,'EXECUTED','8:986365ceb40445ce3b27a8e6b40f159b','addColumn tableName=ACT_FO_FORM_INSTANCE','',NULL,'4.3.5',NULL,NULL,'7364303346'),
+	('3','flowable','org/flowable/form/db/liquibase/flowable-form-db-changelog.xml','2024-02-08 11:51:43',3,'EXECUTED','8:abf482518ceb09830ef674e52c06bf15','dropColumn columnName=PARENT_DEPLOYMENT_ID_, tableName=ACT_FO_FORM_DEFINITION','',NULL,'4.3.5',NULL,NULL,'7364303346'),
+	('4','flowable','org/flowable/form/db/liquibase/flowable-form-db-changelog.xml','2024-02-08 11:51:43',4,'EXECUTED','8:2087829f22a4b2298dbf530681c74854','modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_FO_FORM_DEPLOYMENT; modifyDataType columnName=SUBMITTED_DATE_, tableName=ACT_FO_FORM_INSTANCE','',NULL,'4.3.5',NULL,NULL,'7364303346'),
+	('5','flowable','org/flowable/form/db/liquibase/flowable-form-db-changelog.xml','2024-02-08 11:51:43',5,'EXECUTED','8:b4be732b89e5ca028bdd520c6ad4d446','createIndex indexName=ACT_IDX_FORM_DEF_UNIQ, tableName=ACT_FO_FORM_DEFINITION','',NULL,'4.3.5',NULL,NULL,'7364303346'),
+	('6','flowable','org/flowable/form/db/liquibase/flowable-form-db-changelog.xml','2024-02-08 11:51:43',6,'EXECUTED','8:384bbd364a649b67c3ca1bcb72fe537f','createIndex indexName=ACT_IDX_FORM_TASK, tableName=ACT_FO_FORM_INSTANCE; createIndex indexName=ACT_IDX_FORM_PROC, tableName=ACT_FO_FORM_INSTANCE; createIndex indexName=ACT_IDX_FORM_SCOPE, tableName=ACT_FO_FORM_INSTANCE','',NULL,'4.3.5',NULL,NULL,'7364303346');
+
+/*!40000 ALTER TABLE `ACT_FO_DATABASECHANGELOG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_FO_DATABASECHANGELOGLOCK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_FO_DATABASECHANGELOGLOCK`;
+
+CREATE TABLE `ACT_FO_DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `ACT_FO_DATABASECHANGELOGLOCK` WRITE;
+/*!40000 ALTER TABLE `ACT_FO_DATABASECHANGELOGLOCK` DISABLE KEYS */;
+
+INSERT INTO `ACT_FO_DATABASECHANGELOGLOCK` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`)
+VALUES
+	(1,b'0',NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_FO_DATABASECHANGELOGLOCK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_FO_FORM_DEFINITION
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_FO_FORM_DEFINITION`;
+
+CREATE TABLE `ACT_FO_FORM_DEFINITION` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `VERSION_` int(11) DEFAULT NULL,
+  `KEY_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_IDX_FORM_DEF_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_FO_FORM_DEPLOYMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_FO_FORM_DEPLOYMENT`;
+
+CREATE TABLE `ACT_FO_FORM_DEPLOYMENT` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_FO_FORM_INSTANCE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_FO_FORM_INSTANCE`;
+
+CREATE TABLE `ACT_FO_FORM_INSTANCE` (
+  `ID_` varchar(255) NOT NULL,
+  `FORM_DEFINITION_ID_` varchar(255) NOT NULL,
+  `TASK_ID_` varchar(255) DEFAULT NULL,
+  `PROC_INST_ID_` varchar(255) DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(255) DEFAULT NULL,
+  `SUBMITTED_DATE_` datetime(3) DEFAULT NULL,
+  `SUBMITTED_BY_` varchar(255) DEFAULT NULL,
+  `FORM_VALUES_ID_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_FORM_TASK` (`TASK_ID_`),
+  KEY `ACT_IDX_FORM_PROC` (`PROC_INST_ID_`),
+  KEY `ACT_IDX_FORM_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_FO_FORM_RESOURCE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_FO_FORM_RESOURCE`;
+
+CREATE TABLE `ACT_FO_FORM_RESOURCE` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 ACT_GE_BYTEARRAY
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_GE_BYTEARRAY`;
+
+CREATE TABLE `ACT_GE_BYTEARRAY` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `BYTES_` longblob,
+  `GENERATED_` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_FK_BYTEARR_DEPL` (`DEPLOYMENT_ID_`),
+  CONSTRAINT `ACT_FK_BYTEARR_DEPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_RE_DEPLOYMENT` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_GE_BYTEARRAY` WRITE;
+/*!40000 ALTER TABLE `ACT_GE_BYTEARRAY` DISABLE KEYS */;
+
+INSERT INTO `ACT_GE_BYTEARRAY` (`ID_`, `REV_`, `NAME_`, `DEPLOYMENT_ID_`, `BYTES_`, `GENERATED_`)
+VALUES
+	(X'36313937643261382D633633352D313165652D393763312D336131383235363037623062',1,X'2F55736572732F77616E6778792F70726F6A6563742F7469656E6368696E2F7469656E6368696E2D61646D696E2F7461726765742F636C61737365732F70726F6365737365732F7469656E6368696E5F636F6E74726163745F617070726F76655F70726F636573732E62706D6E32302E786D6C',X'36313937616239372D633633352D313165652D393763312D336131383235363037623062',X'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D38223F3E0A3C646566696E6974696F6E7320786D6C6E733D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F4D4F44454C2220786D6C6E733A7873693D22687474703A2F2F7777772E77332E6F72672F323030312F584D4C536368656D612D696E7374616E63652220786D6C6E733A7873643D22687474703A2F2F7777772E77332E6F72672F323030312F584D4C536368656D612220786D6C6E733A666C6F7761626C653D22687474703A2F2F666C6F7761626C652E6F72672F62706D6E2220786D6C6E733A62706D6E64693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F44492220786D6C6E733A6F6D6764633D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F44432220786D6C6E733A6F6D6764693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F44492220747970654C616E67756167653D22687474703A2F2F7777772E77332E6F72672F323030312F584D4C536368656D61222065787072657373696F6E4C616E67756167653D22687474703A2F2F7777772E77332E6F72672F313939392F585061746822207461726765744E616D6573706163653D22687474703A2F2F7777772E666C6F7761626C652E6F72672F70726F6365737364656622206578706F727465723D22466C6F7761626C65204F70656E20536F75726365204D6F64656C657222206578706F7274657256657273696F6E3D22362E372E32223E0A20203C70726F636573732069643D227469656E6368696E5F636F6E74726163745F617070726F766522206E616D653D225469656E4368696EE9A1B9E79BAEE59088E5908CE5AEA1E689B9E6B581E7A88B2220697345786563757461626C653D2274727565223E0A202020203C73746172744576656E742069643D2273746172744576656E74312220666C6F7761626C653A666F726D4669656C6456616C69646174696F6E3D2274727565223E3C2F73746172744576656E743E0A202020203C757365725461736B2069643D227375626D6974436F6E74726163745461736B22206E616D653D22E68F90E4BAA4E59088E5908C2220666C6F7761626C653A61737369676E65653D22247B63757272656E74557365727D2220666C6F7761626C653A666F726D4669656C6456616C69646174696F6E3D2274727565223E0A2020202020203C657874656E73696F6E456C656D656E74733E0A20202020202020203C6D6F64656C65723A61637469766974692D69646D2D696E69746961746F7220786D6C6E733A6D6F64656C65723D22687474703A2F2F666C6F7761626C652E6F72672F6D6F64656C6572223E3C215B43444154415B747275655D5D3E3C2F6D6F64656C65723A61637469766974692D69646D2D696E69746961746F723E0A2020202020203C2F657874656E73696F6E456C656D656E74733E0A202020203C2F757365725461736B3E0A202020203C73657175656E6365466C6F772069643D227369642D34393544434130362D433642302D344346322D383541342D3245334235353737464644432220736F757263655265663D2273746172744576656E743122207461726765745265663D227375626D6974436F6E74726163745461736B223E3C2F73657175656E6365466C6F773E0A202020203C757365725461736B2069643D227369642D31343432433237412D303233452D344146332D423942352D46353338453335333730334222206E616D653D22E59088E5908CE5AEA1E689B92220666C6F7761626C653A61737369676E65653D22247B617070726F7665557365727D2220666C6F7761626C653A666F726D4669656C6456616C69646174696F6E3D2274727565223E0A2020202020203C657874656E73696F6E456C656D656E74733E0A20202020202020203C6D6F64656C65723A696E69746961746F722D63616E2D636F6D706C65746520786D6C6E733A6D6F64656C65723D22687474703A2F2F666C6F7761626C652E6F72672F6D6F64656C6572223E3C215B43444154415B66616C73655D5D3E3C2F6D6F64656C65723A696E69746961746F722D63616E2D636F6D706C6574653E0A2020202020203C2F657874656E73696F6E456C656D656E74733E0A202020203C2F757365725461736B3E0A202020203C73657175656E6365466C6F772069643D227369642D34303731443443382D313932322D344636342D424343302D3841324546413745334239382220736F757263655265663D227375626D6974436F6E74726163745461736B22207461726765745265663D227369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342223E3C2F73657175656E6365466C6F773E0A202020203C6578636C7573697665476174657761792069643D227369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243223E3C2F6578636C7573697665476174657761793E0A202020203C656E644576656E742069643D227369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631223E3C2F656E644576656E743E0A202020203C73657175656E6365466C6F772069643D227369642D36374634334642382D453335392D344146312D413034332D3930464337464131423934442220736F757263655265663D227369642D31343432433237412D303233452D344146332D423942352D46353338453335333730334222207461726765745265663D227369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243223E3C2F73657175656E6365466C6F773E0A202020203C73657175656E6365466C6F772069643D227369642D36323344313138462D353138352D343936452D383138452D41433341424133433442394422206E616D653D22E5AEA1E689B9E9809AE8BF872220736F757263655265663D227369642D32303332443039342D313442382D344338342D383534462D45453737424239323043324322207461726765745265663D227369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631223E0A2020202020203C636F6E646974696F6E45787072657373696F6E207873693A747970653D2274466F726D616C45787072657373696F6E223E3C215B43444154415B247B617070726F76657D5D5D3E3C2F636F6E646974696F6E45787072657373696F6E3E0A202020203C2F73657175656E6365466C6F773E0A202020203C73657175656E6365466C6F772069643D227369642D36374443363942452D324139342D343734412D394130322D41303535314631383432453922206E616D653D22E59088E5908CE5AEA1E689B9E9A9B3E59B9E2220736F757263655265663D227369642D32303332443039342D313442382D344338342D383534462D45453737424239323043324322207461726765745265663D227375626D6974436F6E74726163745461736B223E0A2020202020203C636F6E646974696F6E45787072657373696F6E207873693A747970653D2274466F726D616C45787072657373696F6E223E3C215B43444154415B247B21617070726F76657D5D5D3E3C2F636F6E646974696F6E45787072657373696F6E3E0A202020203C2F73657175656E6365466C6F773E0A20203C2F70726F636573733E0A20203C62706D6E64693A42504D4E4469616772616D2069643D2242504D4E4469616772616D5F7469656E6368696E5F636F6E74726163745F617070726F7665223E0A202020203C62706D6E64693A42504D4E506C616E652062706D6E456C656D656E743D227469656E6368696E5F636F6E74726163745F617070726F7665222069643D2242504D4E506C616E655F7469656E6368696E5F636F6E74726163745F617070726F7665223E0A2020202020203C62706D6E64693A42504D4E53686170652062706D6E456C656D656E743D2273746172744576656E7431222069643D2242504D4E53686170655F73746172744576656E7431223E0A20202020202020203C6F6D6764633A426F756E6473206865696768743D2233302E30222077696474683D2233302E302220783D223130302E302220793D223136332E30223E3C2F6F6D6764633A426F756E64733E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652062706D6E456C656D656E743D227375626D6974436F6E74726163745461736B222069643D2242504D4E53686170655F7375626D6974436F6E74726163745461736B223E0A20202020202020203C6F6D6764633A426F756E6473206865696768743D2238302E30222077696474683D223130302E302220783D223231302E302220793D223133382E30223E3C2F6F6D6764633A426F756E64733E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652062706D6E456C656D656E743D227369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342222069643D2242504D4E53686170655F7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342223E0A20202020202020203C6F6D6764633A426F756E6473206865696768743D2238302E30222077696474683D223130302E302220783D223432302E302220793D223133382E30223E3C2F6F6D6764633A426F756E64733E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652062706D6E456C656D656E743D227369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243222069643D2242504D4E53686170655F7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243223E0A20202020202020203C6F6D6764633A426F756E6473206865696768743D2234302E30222077696474683D2234302E302220783D223537302E302220793D223135382E30223E3C2F6F6D6764633A426F756E64733E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652062706D6E456C656D656E743D227369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631222069643D2242504D4E53686170655F7369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631223E0A20202020202020203C6F6D6764633A426F756E6473206865696768743D2232382E30222077696474683D2232382E302220783D223733352E302220793D223136342E30223E3C2F6F6D6764633A426F756E64733E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E456467652062706D6E456C656D656E743D227369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443222069643D2242504D4E456467655F7369642D34393544434130362D433642302D344346322D383541342D3245334235353737464644432220666C6F7761626C653A736F75726365446F636B6572583D2231352E302220666C6F7761626C653A736F75726365446F636B6572593D2231352E302220666C6F7761626C653A746172676574446F636B6572583D2235302E302220666C6F7761626C653A746172676574446F636B6572593D2234302E30223E0A20202020202020203C6F6D6764693A776179706F696E7420783D223132392E39343939393931333037363739362220793D223137382E30223E3C2F6F6D6764693A776179706F696E743E0A20202020202020203C6F6D6764693A776179706F696E7420783D223230392E39393939393939393939383036372220793D223137382E30223E3C2F6F6D6764693A776179706F696E743E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A2020202020203C62706D6E64693A42504D4E456467652062706D6E456C656D656E743D227369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444222069643D2242504D4E456467655F7369642D36374634334642382D453335392D344146312D413034332D3930464337464131423934442220666C6F7761626C653A736F75726365446F636B6572583D2235302E302220666C6F7761626C653A736F75726365446F636B6572593D2234302E302220666C6F7761626C653A746172676574446F636B6572583D2232302E352220666C6F7761626C653A746172676574446F636B6572593D2232302E35223E0A20202020202020203C6F6D6764693A776179706F696E7420783D223531392E393439393939393939393935332220793D223137382E3230373236313431303738383336223E3C2F6F6D6764693A776179706F696E743E0A20202020202020203C6F6D6764693A776179706F696E7420783D223537302E343136363636363636363636372220793D223137382E3431363636363636363636363639223E3C2F6F6D6764693A776179706F696E743E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A2020202020203C62706D6E64693A42504D4E456467652062706D6E456C656D656E743D227369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938222069643D2242504D4E456467655F7369642D34303731443443382D313932322D344636342D424343302D3841324546413745334239382220666C6F7761626C653A736F75726365446F636B6572583D2235302E302220666C6F7761626C653A736F75726365446F636B6572593D2234302E302220666C6F7761626C653A746172676574446F636B6572583D2235302E302220666C6F7761626C653A746172676574446F636B6572593D2234302E30223E0A20202020202020203C6F6D6764693A776179706F696E7420783D223330392E39343939393939393939353033362220793D223137382E30223E3C2F6F6D6764693A776179706F696E743E0A20202020202020203C6F6D6764693A776179706F696E7420783D223431392E39393939393939393939393730342220793D223137382E30223E3C2F6F6D6764693A776179706F696E743E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A2020202020203C62706D6E64693A42504D4E456467652062706D6E456C656D656E743D227369642D36323344313138462D353138352D343936452D383138452D414333414241334334423944222069643D2242504D4E456467655F7369642D36323344313138462D353138352D343936452D383138452D4143334142413343344239442220666C6F7761626C653A736F75726365446F636B6572583D2232302E352220666C6F7761626C653A736F75726365446F636B6572593D2232302E352220666C6F7761626C653A746172676574446F636B6572583D2231342E302220666C6F7761626C653A746172676574446F636B6572593D2231342E30223E0A20202020202020203C6F6D6764693A776179706F696E7420783D223630392E353033393337333831343034322220793D223137382E3433393837333431373732313537223E3C2F6F6D6764693A776179706F696E743E0A20202020202020203C6F6D6764693A776179706F696E7420783D223733352E303030303637303133363332372220793D223137382E30343430303632353133373932223E3C2F6F6D6764693A776179706F696E743E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A2020202020203C62706D6E64693A42504D4E456467652062706D6E456C656D656E743D227369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539222069643D2242504D4E456467655F7369642D36374443363942452D324139342D343734412D394130322D4130353531463138343245392220666C6F7761626C653A736F75726365446F636B6572583D2232302E352220666C6F7761626C653A736F75726365446F636B6572593D2232302E352220666C6F7761626C653A746172676574446F636B6572583D2235302E302220666C6F7761626C653A746172676574446F636B6572593D2234302E30223E0A20202020202020203C6F6D6764693A776179706F696E7420783D223539302E352220793D223135382E35223E3C2F6F6D6764693A776179706F696E743E0A20202020202020203C6F6D6764693A776179706F696E7420783D223539302E352220793D2232362E30223E3C2F6F6D6764693A776179706F696E743E0A20202020202020203C6F6D6764693A776179706F696E7420783D223236302E302220793D2232362E30223E3C2F6F6D6764693A776179706F696E743E0A20202020202020203C6F6D6764693A776179706F696E7420783D223236302E302220793D223133382E30223E3C2F6F6D6764693A776179706F696E743E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A202020203C2F62706D6E64693A42504D4E506C616E653E0A20203C2F62706D6E64693A42504D4E4469616772616D3E0A3C2F646566696E6974696F6E733E',0),
+	(X'36323066323538392D633633352D313165652D393763312D336131383235363037623062',1,X'2F55736572732F77616E6778792F70726F6A6563742F7469656E6368696E2F7469656E6368696E2D61646D696E2F7461726765742F636C61737365732F70726F6365737365732F7469656E6368696E5F636F6E74726163745F617070726F76655F70726F636573732E7469656E6368696E5F636F6E74726163745F617070726F76652E706E67',X'36313937616239372D633633352D313165652D393763312D336131383235363037623062',X'89504E470D0A1A0A0000000D4948445200000305000000E40806000000C99588C300001B0649444154785EEDDD79B01C65B93860C00DD7D272F943BD6E50EE5A6AB996CB0505B1C42A5C2A098435108A04082EE482C5A2C4A028F2875BB92B6E57D16B01010D70310102040445AF10642782921B494004493440FFFAEDDF9973277D7A3A3367FDBAE779AADE9A33DD3DDD934CBFDFF77ED3CB6CB71D000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000D0607BEFBD77268410A23ECA6D2700B48ACE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA692701683D9D1D403DED2400ADA7B303A8A79D04A0F5747600F5B49300B49ECE0EA09E761280D6D3D901D4D34E02D07A3A3B807ADA49005A4F6707504F3B0940EBE9EC00EA6927016895BC63BB283AB76DC445E5D7010C338302005A25EFD876A91804946397F2EB008699410100AD1347022A06028E1200F460500040EBC491808AC180A304003D181400D04A7144A06240E0280140058302005AA9C7D1825DCACB01605000408B958E16384A00D083410100AD553A5AB04B793E00FF9F410100ADD6395A509E0EC0FFD14E02D06A9DA305E5E900FC1FED24003D6559F6D8DB6EBBED67575C71C5BF56AC58915D78E1858D8CE8ECCAD39A12F9FFFB23AB56ADBA6BE5CA957B953F1F9AA12D79D4E49047DB665000404F7921F35F79479AAD5FBF3EDBB46953F6CF7FFE534C73C4FF7BFCFF5F7CF1C5F7E5C5CD9EE5CF88F4C9A3990F79B46D060500F414DF6C46475AEE60C5F4C7BA75EB36E4C5CC55E5CF88F4C9A374421EF5665000404F71AA836F36D388F81CF2626673F933227DF2289D9047BD191400D0539C8B5BEE54C5CC457C1EE5CF88F4C9A3B4421E55332800A0A77E8B9907FEB62EBBEDEAD3B335BFFA5411F1774C2B2F2726168A9966924769853CAA665000404FFD1433F7DFFB97ECBA0B4ECCFEE797FFB155C4B498575E5E8C3F1433CD248FD20A7954CDA000809EFA2966EE5C73CE9842A6137F5E73EE98E5C5F84331D34CF228AD9047D50C0A00E8A99F62E68F177D6E4C11D38998575E5E8C3F1433CD248FD20A7954CDA000809EFA2966AEBBF0A431454C27625E797931FE50CC34933C4A2BE451358302007A52CCA4158A9966924769853CAA665000404FFD14337197947211D38998575E5E8C3F1433CD248FD20A7954CDA000809EFA29666EBEFC2B638A984EC4BCF2F262FCA1986926799456C8A36A060500F4D44F31B3F12F7FC8AEFBEF4F8E2964625ACC2B2F2FC61F8A9966924769853CAA665000404FFD143311B7FFE607638A9998565E4E4C2C1433CD248FD20A7954CDA000809EFA2A66366FCE6E5EFDB531C54C4C8B79639617E30EC54C33C9A3B4421E55332800A0A76D1533F14BAB375DFEE531854C27629E5F639DBC50CC34933C4A2BE451358302007AEA59CC6CDE9CADBB796576EDF9C78D2960CA11CBC4B2BEED9C7828669A491EA515F2A89A4101003D551533DBFA56B357F8B673E2A1986926799456C8A36A060500F45455CCF4F3AD66AF88D796D727FA0FC54C33C9A3B4421E55332800A0A7AA62A65CA00C1AE5F589FE4331D34CF228AD904795FE7D6450F0EFE519005059CC88990BC54C33C9A3B4421E8D110381F5792C1E79343000606B8A99B44231D34CF228AD90475BE90C083A0381F2730050CCA4168A9966924769853C1AD56B00D06B3A00C34A31935628669A491EA515F2A8B0ADC27F5BF301A64E96653B5C71C5151FFCC10F7EF0DF4B962CD970ECB1C76E5AB870E12371F1D382050BB62C5EBCF8EFF9B45B962E5D7ADABC79F3FEADFC7A269F6226AD50CC34933C4A2BE451DF057FBFCB41DF66CD9AF59CBCAE5B3067CE9C73F2C7ABF2B833EABC91C7AB46A62F88E5CAAF6508E483811DCF3FFFFC6F9E78E289FF9A3F7F7EF6D5AF7E35BBF2CA2BB35B6FBD35DBB8716316E2319EC7F4987FC821873CBC68D1A2DB0E3DF4D03DCAEB63F22866D20AC54C33C9A3B462C8F368D0427FD0E5A1D2ECD9B377CD8BFD552303807E6355BCAEBC2E5A2A2FF28F58BA74E9A68F7CE423D915575C913DFCF0C3C520605B62B958FEA8A38EDA72F8E1875F938F2C772AAF9B8953CCA415435ECC34963C4A2B86388FC65BE08FF775B05DD46779717F5E45C13F489CA7CE6BB1BCAEDFFE820B2EF8CFC30E3B2C5BBE7C79F6D0430F95EBFEBEC4EBE2F5071D74D003FBECB3CFEEE5ED30318A99B462888B9946934769C590E6D1440BFB89BE9E21347BF6ECDDF2DAEC6FDD05FEFEFBEF9F9D72CA29D98A152B2ACF0889E9313F962B0D0CEE89F595B741C3E59FFDF6679E79E6AF172E5C98DD70C30D5B57F9E314EB993F7FFE8373E7CE3DA4BC3DC64F3193560C6931D378F228AD18C23C9AAC827EB2D6C310C88BF883F301C1439DA27EDF7DF7CDBEF5AD6F65F7DE7B6FB984AB14CBC5F2F1BAAE81C196586F795B34581C2158B06041B67EFDFAF23E3021B1BE79F3E6DD6F243979143369C5101633AD208FD28A21CBA3C92EE4277B7DB4D0C81182D101C191471E99DD7EFBEDE5B2AD2FF1BA787DF7C0409DD712AB57AF3E220604937584A02C5FEF23071C70C0BDB366CDDAB9BC6D06A798492B86AC98690D7994560C511E950BF8EDF33870E47110E5D795D70BA3A2FE9A3B77EEBD9D22FEF8E38FCFEEBBEFBE72B93690787DACA76B60B0519DD770F9E7BAE3C9279FBC29AE01984ACB962DBB37DF21CF2F6F9FC12966D28A212A665A451EA515439247E5C23D0AFAEFE411FFF678EC7760D0EB75E5F543212FD897771F2198E880A023D6533A62B0BCBC6D1AE4BCF3CEFB46DC6568BC1715F72BD63F7FFEFCBBDDC66AE2143369C5901433AD238FD28A21C8A3AA823DBEE98F7F7727FA1918740F083A7140D7FCAAED30C4466E3B3A7A0DC1784F19EA25D6D77D8D813AAFA1F2CF7287134E38E15F711BD1E970D96597C5D5EE9796DF078351CCA4154350CCB4923C4A2B5A9E47BD0AF5AA02BF6E6050B5FCB747A677EBB53D8650D45D9D823D2E129E0AB1DEAEA305EABC265ABD7AF5070E3DF4D0BE7F8760A2623BF968F26F7E11AF5A9E4817E5B14B797A996226AD687931D338F2A899917A1EF5BB5F55D856815E55E8570D0CAA96AB1A10746C6BBB345C3FFBE4C82F153F12C57ADC4EB4DFBB0C0D2AD6DB75BBD247D4790DF4FDEF7FFFC2F825E2E9B464C992EBE6CC99B3B0FC5E2812BC9350B589AE98492B522F66868D3C6A66A49E47FDEE5725FD16E655057FF7C0A06A7EDD80A0A3DFEDD340FDEC93516F7596FBEC673F5B2EC92655ACBFB32D755E032D5DBAF4EEE93A75A8E357BFFAD59A7C8739B3FC5ED82AC16B135D319356A45ECC0C1B79D4CC483D8FFADDAFBA0C5A905715FEF17C878AE9FD0C083A067D1F34443FFB64FEFCCCCEFCBCFE2A9764932AD6DFF55ED4794D73CC31C76CBAEDB6DBCA9FEB94BAF1C61BD7E63BCBD5E5F74265825726BA6226AD48BD98193615F9238F1A10A9E751C5FE54B95F8D186F215E3530B8B1F47C900141C778DF0F09ABD817C7EC93F9E3D59DE9535DEFC5FABBDE833AAF69162C58F0C83DF7DC53FE5CA7D4C68D1BEFCF7796BF94DF0BB509BE55A22B66D28AD48B9961539137E590470946EA7954B11F95A3D8AFB69B78015E353098C880A063A2EF8BC454EC83E5887D7243E7F954D77BB1FEAE6DABF39A262E0AD9B2654BF9739D52F9F6FE5EB1E38A0162A68A99B56BD7663FFEF18F8BFB1297E7D5C52DB7DC52DC9960C3860D63E69563CD9A35D90F7FF8C3E21B87F2BC54A3FCF98866C44CE55127A66A5FBFFCF2CBB32F7EF18B63A677E28F7FFC6376D65967157F5F73CD35D99FFFFCE76CF3E6CDD9AF7FFDEBE217E8CBCB4F57943F9F26C6AC59B3B21D77DC318AF7C5E5FE764071CA50F908413C8FE913B1B8FC9EC5F0C454D77BB1FEAEED6D2EEF7C24EEB0C30EDB32D523C7B2BBEFBEFB96BD8D202B9513B82B2EDA3B81D31ECE3DF7DCA2738A7DE6431FFA50F698C73C267BDCE31E57C4631FFBD8ECD5AF7E75B15CDCB3F8E28B2FCEE27A95882850E275679F7DF6E8B4981FCB75AF3F8AA4673DEB59D90E3BEC90BDF295AFCCEEBAEBAEADE6470113DB7CFCE31F9F3DE1094F181331FDD18F7E7476E595578E79EF5319A97FC3396C2AF227A93C8A98CC7D3DF2297E3CE8C31FFE70112F7DE94B8B7C8B5FA9EF4C8BF9AB57AF2ED6FDB5AF7D2D7BEA539F5AFCFDFCE73F3FFBCC673E53FC1D391C83FEF27B9DAE483D8F2AF6A7CAFD6ABB897F235F77A4A0EAAE44FD9AE8FB223115FBE2987D327FFC4B67FA54D77B8E1434DCD1471FFDF7A93EC7ACECFAEBAFFFCDDECE35AB5497D8DD66A29859B56A5576D45147151D5314F9EF7FFFFBB39D76DA293BE080038A78DDEB5E97BDE10D6F2896FDEE77BF5B0C105EF39AD764CF79CE738AC78857BDEA55D9739FFBDCE2EF98FFED6F7FBB58FEC1071FCCCE3CF3CCEC79CF7B5EF6E637BF39BBE1861BB277BCE31DC5FA7FFEF39F670F3CF040B1DC75D75D576CFFD8638FCD3EF1894F649FFCE42747239E7FFCE31F2FE64741557EFF5319A91733C326E53C9A8A7DFD273FF949B6FDF6DB67871C7248117BEDB557F6CC673E33EEFE313A2D061F3FFAD18FB24B2EB9249B376F5EF6A4273D29FBE94F7F9ABDE4252FC93EFFF9CF17DB8CC146BCB74B2FBD34FBC31FFE30E6BD4F75A49E47FDEE5723C65B80570D08CA470CC6333018EFFB2161FDEC937BBBA6807E1D77DC71374DF7DD87CE3AEBAC73F676557AA5BAC4EE3613C54C0C0AE297AFF3CD675FFAD2978A41411414871D7658116F7AD39BB2D7BFFEF55BBD268E06C4379ADFF8C6378AE7279C7042F68C673C237EC46E74992F7FF9CBC54021D61B471CE2DFBFDF7EFB6573E7CE2D5E1BD3E3354B972E1D2D948E39E698A290DA75D75D47239E7FEC631F1B2D94CAEF7F2A23F56266D8A49A4753B5AFFFE31FFF28968B79EF7AD7BB8AC179CC7BEB5BDF5A3C7FE73BDF590C22EEBFFFFEE2685D1CE58B01400CEE2387DFF8C637164713625ABC9F384211EFB5FCFEA73A52CFA37EF7AB2E8316E2550382B886A0EAEE43830C0C067D1F34443FFBE4DEEE3E44BF962C5972DA74FF4EC191471EB9DCFD6BABD52576B7E92E663AB17CF9F2A2433AFDF4D3B32F7CE10BD981071E981D74D04145C4DF517874968D6F3DE3148528386EBAE9A662DAEF7FFFFBECB5AF7D6D5100C5C062D3A64DD957BEF2956CF7DD77CF3EFDE94F676F79CB5BB2B7BDED6DA311CF3FF5A94F65EF79CF7B8A6F333B85529C331DD7287CEE739F1B8DD88FAFBEFAEAD142A9FCDEA732522F66864DAA793495FB7A0CCC5FF08217144716E2C85DCC3BFCF0C38BE7313D4E25EABC8F6F7EF39BD9D39FFEF4ECE69B6F2E06052F7AD18B8A4E3C0605F1BA238E3862CC7B9F8E483D8FFADDAF4AFA2DC87B0D08EA7EA7A09F8141BFDBA781FAD927FD4E017D9B376FDEBFCD9F3FFFE169FC45E3FFCD7796BBFDD2DDC44C77311311E72E47A26F37D2213DF1894FCC9EF6B4A76D154F79CA53E2C7E9B265CB9615CBECB9E79EC5D183F8A632D6F1BEF7BDAF3865E2831FFC6031BF73FEF21D77DC917DEF7BDF2B4E6F28474CBFF3CE3B8B0B21BB0BA5185C4461F3E217BFB83855224EBF28174AD315A91733549B893C9AAA7D3D8AFE3855EFE0830FCEDEFBDEF716F3225FE3F9B39FFDECD141C1EF7EF7BBF855F9627E0C08CAA70FE5FDC198F73C5DD1E23CDA56615E55F057DD65A86AB9BA81C1B6B6CB1098CE5F34DE6FBFFD8AEDC4F6D4790DB568D1A2DBA7EB14A233CE38E347F9CE7269F93D3098992866162F5E3C7A8A430C10F2FDA61800440112D708FCEC673F2BCE6D8E22258E007CFDEB5F2F1EA3F08FD7C4E946F118E731C7FA62E010C54FFCBD72E5CA625E9CB61077EEE8445CF818D3E33CE858AEBB508A6B18E2348B981EA741ECBCF3CE630AA5E98A161733AD3613793455FB7A14FD716A523C7606DD712A50F7F458EED0430F2DE6C500204EE32B0F0AE29A824E5E4E77B43C8FA230AF2AD0AB0AFDAA014147D5F25503835EDB630845DDD5F9063F8E3C4E85586F671BEABC06CB3B893D8E3AEAA82D0F3DF450F9339E54F9FAEFCC77949B67CF9EBD6BF93D3098992866E21BCC73CE39A7E884E296A47104202E588C7391E3A2C5B8834A7C8359754BC338B7395E17E74297E745C4858D31FFDA6BAFDD6A7A9C6E14D33B774D29174A711D439CEA10EBAD2A94A62B5A5ECCB4D64CE4D154EDEB51F4C7F4934E3AA9B8B038E61D7DF4D1C5F3C8CBCEA0202E6C3EEDB4D38A230FF1BC6A5070F2C92767279E78E298F73ED53104795455A81FB8DDD6057EDD80A0A36A607040D7FCAAED30C4A2EEEA14EC71A430EEFC3799627D73E7CEED1C25C8D4790D77E491475EB37CF9F247CA1FF4247AE4D4534F3D3DDF599697B7CDE066A29889E85C5310B7538CBB9DC4DD84A28179C52B5E51DC7128CE758E8B193BCBC7EF1AC41D50E23571DA433CC61183EBAFBF7EABF58EA7508A532AE25CE8B89032221AA272A1345D3104C54C2BCD441E4DD5BE1E038128F4DFFDEE7717A7E8C5BC1840C4F398DE7D5A50E79A82F83B060531B88F81406750F0D18F7E343AF531EF7DAA6348F2A85CB07717F8FD0C083A7ABDAEBC7E2844FDD529DAE316C5F1E5DE6488F51C71C4110F771D2550E735DDAC59B376CE3B86FBE35BA4A970C925977C3FDF51D6C576CADB66703351CC5C74D14545F1906FBEB8BBC9CB5EF6B2ECED6F7F7BF13C6EAF18A717453111771A8A6577DB6DB7EC518F7A54F6F297BFBCB83039EE9012773479F2939F5CBC26061471BA51AC3BEE6C14D3E29A84EE6B14E208444CEFDCAD286E93D8791E176BFEE217BF28A6C705937167A4B8D839E6C7A0A5FCFEA73286A498699D99C8A3A9DAD763B011A72675FE8E799DDF01897F6767B0118F715E71DCE5288EF2C5298131C0DF679F7D8AF710791BBF5D70FCF1C78F79EF531D439447E5C23D0AFAF8A6BFDF014147F975E5F5C2A8A8BFF23A6C63A7788F1C9FE8C0205E7FDC71C78D1E2188F5ABF35A22EF14763FF8E0831F8CD33F26D3DAB56BCFCD7794BB66CF9EBD5B799B8CCF4C14337111645CE818BFD8191710C73798714FF5F8AD81B898F1031FF840B6C71E7B64DFF9CE77B2DFFEF6B7C5B7957107A2F2F9C9F1ABC671EE61DC3EB153A8441113838CD8C62F7FF9CBD18875C5F44EA114DFA6C69D54BA6F691A110D53DCD525D6D97D9795E98A212A665A6526F2683AF6F5B815701C09281F918B88EDBCF0852FCC162E5C58DC2238EE1612BF381EF34E3DF5D422B7239FE374C1F26BA73A862C8F26BB809FECF5D1425187E5F5D896EE2306E33D95285E573A42B0459DD73273E7CE3D64DEBC797F9FAC2306234708E2D7F40E2E6F8BF19B896246F48E212B665A431EA5154398479355C84FD67A1802518F750F0CE214E0F8A2AEDFBB12C572B17CF7350423EB53E7B5518CF4F6DF7FFF7B972D5B76EF782F3E8E8B8A47AE21F85F23C7C9A798492B86B09869057994560C691E4DB4A09FE8EB194223470CEEE92AEA8BD30A4F39E5946CC58A15D9ADB7DE9A6DDCB8B1A8E7E2319EC7F498DF75DBD14EDCA3CE6BB93973E6EC948F022F983F7FFEDD975D76D9DFFAFD1D837CB9F5679C71C67FE63BC9CD799C17EB29AF9B8953CCA415435ACC349E3C4A2B86388FC65BD88FF77550D47951A7950AFC41439D374C466E63B56ADF7DF7BDEFA4934EBA361F295E77E38D37DEB161C38607F231C0FD7FFDEB5F6F5BB366CD6FCE3EFBEC658B162D8A9D6B432CEF7654534B3193560C7131D368F228AD18F23C1AB4C01F7479A8D4A9F32A0AFEBA50E70DB3915FC45B908F08CFC91FAFCA237E7320768C78BC6A64FA02BF60373D143369C59017338D258FD20A79D477A1DFEF72D037751E34946226AD50CC34933C4A2BE451615B05FFB6E603304C1433698562A699E4515A218F46F52AFC7B4D0760582966D20AC54C33C9A3B4421E6DA53C00283F0700C54C6AA1986926799456C8A3313A0381C5238F0604006C4D31935628669A491EA515F2A892230400F4A698492B1433CD248FD20A79D4D313CA1300A0A098492B1433CD248FD20A7904000352CCA4158A9966924769853C0280012966D20AC54C33C9A3B4421E01C0801433698562A699E4515A218F0060408A99B44231D34CF228AD9047003020C54C5AA1986926799456C8230018906226AD50CC34933C4A2BE411000C4831935628669A491EA515F2080006A498492B1433CD248FD20A7904000352CCA4158A9966924769853C0280012966D20AC54C33C9A3B4421E01C0801433698562A699E4515A218F0060408A99B44231D34CF228AD9047003020C54C5AA1986926799456C8230018906226AD50CC34933C4A2BE411000C68C58A158F6CDAB4694CA72AA63FF2CFE1AEBC98D95CFE8C489F3C4A27E411008CC3AA55ABEE5ABF7EFD988E554C7FFCE94F7F3A232F66AE2A7F46A44F1EA513F20800C661E5CA957B5D7CF1C5F7AD5BB76E836F3A6726F2FFF7756BD7AEFD715EC8DC91C79EE5CF88F4C9A3990F79040013141D687CB396C73FE35C5C31ED11FFEFF1FFAF9069B0F8FC463E47793433218F000000000000000000000000000000000000000000000000000000A0CDFE1F804A2A767200AB590000000049454E44AE426082',1);
+
+/*!40000 ALTER TABLE `ACT_GE_BYTEARRAY` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_GE_PROPERTY
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_GE_PROPERTY`;
+
+CREATE TABLE `ACT_GE_PROPERTY` (
+  `NAME_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `VALUE_` varchar(300) COLLATE utf8_bin DEFAULT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  PRIMARY KEY (`NAME_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_GE_PROPERTY` WRITE;
+/*!40000 ALTER TABLE `ACT_GE_PROPERTY` DISABLE KEYS */;
+
+INSERT INTO `ACT_GE_PROPERTY` (`NAME_`, `VALUE_`, `REV_`)
+VALUES
+	(X'62617463682E736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'6366672E657865637574696F6E2D72656C617465642D656E7469746965732D636F756E74',X'74727565',1),
+	(X'6366672E7461736B2D72656C617465642D656E7469746965732D636F756E74',X'74727565',1),
+	(X'636F6D6D6F6E2E736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'656E746974796C696E6B2E736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'6576656E74737562736372697074696F6E2E736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'6964656E746974796C696E6B2E736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'6A6F622E736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'6E6578742E64626964',X'31',1),
+	(X'736368656D612E686973746F7279',X'63726561746528362E372E322E3029',1),
+	(X'736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'7461736B2E736368656D612E76657273696F6E',X'362E372E322E30',1),
+	(X'7661726961626C652E736368656D612E76657273696F6E',X'362E372E322E30',1);
+
+/*!40000 ALTER TABLE `ACT_GE_PROPERTY` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_HI_ACTINST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_ACTINST`;
+
+CREATE TABLE `ACT_HI_ACTINST` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT '1',
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `ACT_ID_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CALL_PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ACT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ACT_TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `ASSIGNEE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `END_TIME_` datetime(3) DEFAULT NULL,
+  `TRANSACTION_ORDER_` int(11) DEFAULT NULL,
+  `DURATION_` bigint(20) DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_HI_ACT_INST_START` (`START_TIME_`),
+  KEY `ACT_IDX_HI_ACT_INST_END` (`END_TIME_`),
+  KEY `ACT_IDX_HI_ACT_INST_PROCINST` (`PROC_INST_ID_`,`ACT_ID_`),
+  KEY `ACT_IDX_HI_ACT_INST_EXEC` (`EXECUTION_ID_`,`ACT_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_HI_ACTINST` WRITE;
+/*!40000 ALTER TABLE `ACT_HI_ACTINST` DISABLE KEYS */;
+
+INSERT INTO `ACT_HI_ACTINST` (`ID_`, `REV_`, `PROC_DEF_ID_`, `PROC_INST_ID_`, `EXECUTION_ID_`, `ACT_ID_`, `TASK_ID_`, `CALL_PROC_INST_ID_`, `ACT_NAME_`, `ACT_TYPE_`, `ASSIGNEE_`, `START_TIME_`, `END_TIME_`, `TRANSACTION_ORDER_`, `DURATION_`, `DELETE_REASON_`, `TENANT_ID_`)
+VALUES
+	(X'31313363326262382D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'73746172744576656E7431',NULL,NULL,NULL,X'73746172744576656E74',NULL,'2024-02-14 22:05:11.250','2024-02-14 22:05:11.250',1,0,NULL,X''),
+	(X'31313363326262392D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:05:11.250','2024-02-14 22:05:11.250',2,0,NULL,X''),
+	(X'31313363326262612D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'31313363326262622D636234322D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:05:11.250','2024-02-14 22:05:11.321',3,71,NULL,X''),
+	(X'31313437346635322D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:05:11.323','2024-02-14 22:05:11.323',1,0,NULL,X''),
+	(X'31313437373636332D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31313437373636342D636234322D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 22:05:11.324','2024-02-14 22:07:14.501',2,123177,NULL,X''),
+	(X'31613931623439322D633665392D313165652D623436392D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'73746172744576656E7431',NULL,NULL,NULL,X'73746172744576656E74',NULL,'2024-02-09 09:18:17.050','2024-02-09 09:18:17.055',1,5,NULL,X''),
+	(X'31613932373765332D633665392D313165652D623436392D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-09 09:18:17.055','2024-02-09 09:18:17.055',2,0,NULL,X''),
+	(X'31613932396566342D633665392D313165652D623436392D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7375626D6974436F6E74726163745461736B',X'31613933666538352D633665392D313165652D623436392D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-09 09:18:17.056','2024-02-09 09:18:17.143',3,87,NULL,X''),
+	(X'31616130306337632D633665392D313165652D623436392D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-09 09:18:17.144','2024-02-09 09:18:17.144',1,0,NULL,X''),
+	(X'31616130306337642D633665392D313165652D623436392D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31616130306337652D633665392D313165652D623436392D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-09 09:18:17.144','2024-02-12 16:05:24.319',2,283627175,NULL,X''),
+	(X'32633631653563302D636234312D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:58:47.299','2024-02-14 21:58:47.299',1,0,NULL,X''),
+	(X'32633632306364312D636234312D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 21:58:47.300','2024-02-14 21:58:47.300',2,0,NULL,X''),
+	(X'32633632306364322D636234312D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D36323344313138462D353138352D343936452D383138452D414333414241334334423944',NULL,NULL,X'E5AEA1E689B9E9809AE8BF87',X'73657175656E6365466C6F77',NULL,'2024-02-14 21:58:47.300','2024-02-14 21:58:47.300',3,0,NULL,X''),
+	(X'32633632306364332D636234312D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631',NULL,NULL,NULL,X'656E644576656E74',NULL,'2024-02-14 21:58:47.300','2024-02-14 21:58:47.300',4,0,NULL,X''),
+	(X'33313661663235662D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:30:17.760','2024-02-14 21:30:17.760',1,0,NULL,X''),
+	(X'33313662313937302D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 21:30:17.761','2024-02-14 21:30:17.769',2,8,NULL,X''),
+	(X'33313663353166312D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 21:30:17.769','2024-02-14 21:30:17.769',3,0,NULL,X''),
+	(X'33313663613031322D636233642D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7375626D6974436F6E74726163745461736B',X'33313663613031332D636233642D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 21:30:17.771','2024-02-14 21:30:47.211',4,29440,NULL,X''),
+	(X'34326639393336362D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:30:47.216','2024-02-14 21:30:47.216',1,0,NULL,X''),
+	(X'34326662316130372D636233642D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'34326662316130382D636233642D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 21:30:47.226','2024-02-14 21:30:54.057',2,6831,NULL,X''),
+	(X'34373064626331622D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:30:54.059','2024-02-14 21:30:54.059',1,0,NULL,X''),
+	(X'34373065306133632D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 21:30:54.061','2024-02-14 21:30:54.061',2,0,NULL,X''),
+	(X'34373065306133642D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36323344313138462D353138352D343936452D383138452D414333414241334334423944',NULL,NULL,X'E5AEA1E689B9E9809AE8BF87',X'73657175656E6365466C6F77',NULL,'2024-02-14 21:30:54.061','2024-02-14 21:30:54.061',3,0,NULL,X''),
+	(X'34373065353835652D636233642D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631',NULL,NULL,NULL,X'656E644576656E74',NULL,'2024-02-14 21:30:54.063','2024-02-14 21:30:54.066',4,3,NULL,X''),
+	(X'35356162393938302D636235322D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-15 00:01:38.013','2024-02-15 00:01:38.013',1,0,NULL,X''),
+	(X'35356163306562312D636235322D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-15 00:01:38.016','2024-02-15 00:01:38.017',2,1,NULL,X''),
+	(X'35356163333563322D636235322D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-15 00:01:38.017','2024-02-15 00:01:38.017',3,0,NULL,X''),
+	(X'35356163356364332D636235322D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'35356163356364342D636235322D313165652D386665612D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-15 00:01:38.018','2024-02-15 00:04:08.374',4,150356,NULL,X''),
+	(X'35616232656630392D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:14.502','2024-02-14 22:07:14.502',1,0,NULL,X''),
+	(X'35616233336432612D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 22:07:14.504','2024-02-14 22:07:14.504',2,0,NULL,X''),
+	(X'35616233336432622D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:14.504','2024-02-14 22:07:14.504',3,0,NULL,X''),
+	(X'35616233363433632D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'35616233363433642D636234322D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:07:14.505','2024-02-14 22:07:36.684',4,22179,NULL,X''),
+	(X'36376562636138302D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:36.685','2024-02-14 22:07:36.685',1,0,NULL,X''),
+	(X'36376562663139312D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'36376562663139322D636234322D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 22:07:36.686','2024-02-14 22:07:43.961',2,7275,NULL,X''),
+	(X'36633432326335352D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:43.962','2024-02-14 22:07:43.962',1,0,NULL,X''),
+	(X'36633432353336362D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 22:07:43.963','2024-02-14 22:07:43.963',2,0,NULL,X''),
+	(X'36633432353336372D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:43.963','2024-02-14 22:07:43.963',3,0,NULL,X''),
+	(X'36633432376137382D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'36633432376137392D636234322D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:07:43.964','2024-02-14 22:07:52.680',4,8716,NULL,X''),
+	(X'37313734366633632D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:52.680','2024-02-14 22:07:52.680',1,0,NULL,X''),
+	(X'37313734393634642D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'37313734393634652D636234322D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 22:07:52.681','2024-02-14 22:58:39.015',2,3046334,NULL,X''),
+	(X'37393961386132642D633937642D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-12 16:05:24.333','2024-02-12 16:05:24.333',1,0,NULL,X''),
+	(X'37393962323636652D633937642D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-12 16:05:24.337','2024-02-12 16:05:24.348',2,11,NULL,X''),
+	(X'37393963643431662D633937642D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7369642D36323344313138462D353138352D343936452D383138452D414333414241334334423944',NULL,NULL,X'E5AEA1E689B9E9809AE8BF87',X'73657175656E6365466C6F77',NULL,'2024-02-12 16:05:24.348','2024-02-12 16:05:24.348',3,0,NULL,X''),
+	(X'37393963666233302D633937642D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',X'7369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631',NULL,NULL,NULL,X'656E644576656E74',NULL,'2024-02-12 16:05:24.349','2024-02-12 16:05:24.350',4,1,NULL,X''),
+	(X'37656136643932362D633937652D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-12 16:12:42.299','2024-02-12 16:12:42.299',1,0,NULL,X''),
+	(X'37656136643932372D633937652D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-12 16:12:42.299','2024-02-12 16:12:42.305',2,6,NULL,X''),
+	(X'37656137633338382D633937652D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-12 16:12:42.305','2024-02-12 16:12:42.305',3,0,NULL,X''),
+	(X'37656138313161392D633937652D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7375626D6974436F6E74726163745461736B',X'37656138313161612D633937652D313165652D393835642D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-12 16:12:42.307','2024-02-12 16:14:36.507',4,114200,NULL,X''),
+	(X'38393336623934342D636234392D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:58:39.018','2024-02-14 22:58:39.018',1,0,NULL,X''),
+	(X'38393337353538352D636234392D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 22:58:39.022','2024-02-14 22:58:39.034',2,12,NULL,X''),
+	(X'38393339326134362D636234392D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 22:58:39.034','2024-02-14 22:58:39.034',3,0,NULL,X''),
+	(X'38393339633638372D636234392D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'38393339656439382D636234392D313165652D386665612D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:58:39.038','2024-02-14 23:28:51.778',4,1812740,NULL,X''),
+	(X'38616632356565662D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'73746172744576656E7431',NULL,NULL,NULL,X'73746172744576656E74',NULL,'2024-02-08 11:52:56.178','2024-02-08 11:52:56.180',1,2,NULL,X''),
+	(X'38616632666233302D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-08 11:52:56.181','2024-02-08 11:52:56.181',2,0,NULL,X''),
+	(X'38616632666233312D633633352D313165652D393763312D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7375626D6974436F6E74726163745461736B',X'38616634383164322D633633352D313165652D393763312D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-08 11:52:56.181','2024-02-08 11:52:56.249',3,68,NULL,X''),
+	(X'38616664356237392D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-08 11:52:56.249','2024-02-08 11:52:56.249',1,0,NULL,X''),
+	(X'38616664383238612D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'38616664383238622D633633352D313165652D393763312D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'636F6E747261637475736572','2024-02-08 11:52:56.250',NULL,2,NULL,NULL,X''),
+	(X'39303830666132352D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-19 16:40:41.632','2024-02-19 16:40:41.632',1,0,NULL,X''),
+	(X'39303831343834362D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-19 16:40:41.634','2024-02-19 16:40:41.651',2,17,NULL,X''),
+	(X'39303833653035372D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-19 16:40:41.651','2024-02-19 16:40:41.651',3,0,NULL,X''),
+	(X'39303834326537382D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'39303834353538392D636630322D313165652D396436652D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-19 16:40:41.653',NULL,4,NULL,NULL,X''),
+	(X'61663462326330622D636235322D313165652D613966632D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-15 00:04:08.376','2024-02-15 00:04:08.376',1,0,NULL,X''),
+	(X'61663462633834632D636235322D313165652D613966632D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'61663464323764642D636235322D313165652D613966632D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-15 00:04:08.380','2024-02-19 16:40:41.627',2,405393247,NULL,X''),
+	(X'62336139333431332D636234302D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'73746172744576656E7431',NULL,NULL,NULL,X'73746172744576656E74',NULL,'2024-02-14 21:55:24.762','2024-02-14 21:55:24.762',1,0,NULL,X''),
+	(X'62336139333431342D636234302D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:55:24.762','2024-02-14 21:55:24.762',2,0,NULL,X''),
+	(X'62336139333431352D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'62336139333431362D636234302D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 21:55:24.762','2024-02-14 21:55:24.802',3,40,NULL,X''),
+	(X'62336166373561642D636234302D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:55:24.803','2024-02-14 21:55:24.803',1,0,NULL,X''),
+	(X'62336166396362652D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'62336166396362662D636234302D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 21:55:24.804','2024-02-14 21:55:37.467',2,12663,NULL,X''),
+	(X'62623362666334342D636234302D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:55:37.469','2024-02-14 21:55:37.469',1,0,NULL,X''),
+	(X'62623363346136352D636234302D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 21:55:37.470','2024-02-14 21:55:37.470',2,0,NULL,X''),
+	(X'62623363346136362D636234302D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 21:55:37.470','2024-02-14 21:55:37.470',3,0,NULL,X''),
+	(X'62623363373137372D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'62623363373137382D636234302D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 21:55:37.471','2024-02-14 21:56:04.122',4,26651,NULL,X''),
+	(X'63316234363766622D636234642D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 23:28:51.781','2024-02-14 23:28:51.781',1,0,NULL,X''),
+	(X'63316234646432632D636234642D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'63316234646432642D636234642D313165652D386665612D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 23:28:51.784','2024-02-15 00:01:38.010',2,1966226,NULL,X''),
+	(X'63326261356537642D633937652D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-12 16:14:36.512','2024-02-12 16:14:36.512',1,0,NULL,X''),
+	(X'63326261383538652D633937652D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'63326261383538662D633937652D313165652D393835642D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-12 16:14:36.513','2024-02-14 21:13:29.657',2,190733144,NULL,X''),
+	(X'63623166333733622D636234302D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:56:04.123','2024-02-14 21:56:04.123',1,0,NULL,X''),
+	(X'63623166356534632D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'63623166356534642D636234302D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 21:56:04.124','2024-02-14 21:58:47.299',2,163175,NULL,X''),
+	(X'64343261373035352D633937642D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'73746172744576656E7431',NULL,NULL,NULL,X'73746172744576656E74',NULL,'2024-02-12 16:07:56.271','2024-02-12 16:07:56.271',1,0,NULL,X''),
+	(X'64343261373035362D633937642D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-12 16:07:56.271','2024-02-12 16:07:56.271',2,0,NULL,X''),
+	(X'64343261373035372D633937642D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7375626D6974436F6E74726163745461736B',X'64343261393736382D633937642D313165652D393835642D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-12 16:07:56.271','2024-02-12 16:07:56.352',3,81,NULL,X''),
+	(X'64343337363861662D633937642D313165652D393835642D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-12 16:07:56.356','2024-02-12 16:07:56.356',1,0,NULL,X''),
+	(X'64343337623664302D633937642D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'64343337623664312D633937642D313165652D393835642D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-12 16:07:56.358','2024-02-12 16:12:42.297',2,285939,NULL,X''),
+	(X'64383862313835622D636233612D313165652D616462332D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:13:29.660','2024-02-14 21:13:29.660',1,0,NULL,X''),
+	(X'64383862336636632D636233612D313165652D616462332D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 21:13:29.661','2024-02-14 21:13:29.669',2,8,NULL,X''),
+	(X'64383863373765642D636233612D313165652D616462332D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 21:13:29.669','2024-02-14 21:13:29.669',3,0,NULL,X''),
+	(X'64383863633630652D636233612D313165652D616462332D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7375626D6974436F6E74726163745461736B',X'64383863633630662D636233612D313165652D616462332D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 21:13:29.671','2024-02-14 21:14:31.910',4,62239,NULL,X''),
+	(X'66646136323630322D636233612D313165652D613233312D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 21:14:31.913','2024-02-14 21:14:31.913',1,0,NULL,X''),
+	(X'66646136373432332D636233612D313165652D613233312D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'66646137616361342D636233612D313165652D613233312D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 21:14:31.915','2024-02-14 21:30:17.758',2,945843,NULL,X'');
+
+/*!40000 ALTER TABLE `ACT_HI_ACTINST` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_HI_ATTACHMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_ATTACHMENT`;
+
+CREATE TABLE `ACT_HI_ATTACHMENT` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `URL_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CONTENT_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TIME_` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_HI_COMMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_COMMENT`;
+
+CREATE TABLE `ACT_HI_COMMENT` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TIME_` datetime(3) NOT NULL,
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ACTION_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `MESSAGE_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `FULL_MSG_` longblob,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_HI_DETAIL
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_DETAIL`;
+
+CREATE TABLE `ACT_HI_DETAIL` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ACT_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `VAR_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `TIME_` datetime(3) NOT NULL,
+  `BYTEARRAY_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DOUBLE_` double DEFAULT NULL,
+  `LONG_` bigint(20) DEFAULT NULL,
+  `TEXT_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TEXT2_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_HI_DETAIL_PROC_INST` (`PROC_INST_ID_`),
+  KEY `ACT_IDX_HI_DETAIL_ACT_INST` (`ACT_INST_ID_`),
+  KEY `ACT_IDX_HI_DETAIL_TIME` (`TIME_`),
+  KEY `ACT_IDX_HI_DETAIL_NAME` (`NAME_`),
+  KEY `ACT_IDX_HI_DETAIL_TASK_ID` (`TASK_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_HI_ENTITYLINK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_ENTITYLINK`;
+
+CREATE TABLE `ACT_HI_ENTITYLINK` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `LINK_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PARENT_ELEMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REF_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REF_SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REF_SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ROOT_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ROOT_SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HIERARCHY_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_HI_ENT_LNK_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`,`LINK_TYPE_`),
+  KEY `ACT_IDX_HI_ENT_LNK_REF_SCOPE` (`REF_SCOPE_ID_`,`REF_SCOPE_TYPE_`,`LINK_TYPE_`),
+  KEY `ACT_IDX_HI_ENT_LNK_ROOT_SCOPE` (`ROOT_SCOPE_ID_`,`ROOT_SCOPE_TYPE_`,`LINK_TYPE_`),
+  KEY `ACT_IDX_HI_ENT_LNK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`,`LINK_TYPE_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_HI_IDENTITYLINK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_IDENTITYLINK`;
+
+CREATE TABLE `ACT_HI_IDENTITYLINK` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `GROUP_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_HI_IDENT_LNK_USER` (`USER_ID_`),
+  KEY `ACT_IDX_HI_IDENT_LNK_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_IDENT_LNK_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_IDENT_LNK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_IDENT_LNK_TASK` (`TASK_ID_`),
+  KEY `ACT_IDX_HI_IDENT_LNK_PROCINST` (`PROC_INST_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_HI_IDENTITYLINK` WRITE;
+/*!40000 ALTER TABLE `ACT_HI_IDENTITYLINK` DISABLE KEYS */;
+
+INSERT INTO `ACT_HI_IDENTITYLINK` (`ID_`, `GROUP_ID_`, `TYPE_`, `USER_ID_`, `TASK_ID_`, `CREATE_TIME_`, `PROC_INST_ID_`, `SCOPE_ID_`, `SUB_SCOPE_ID_`, `SCOPE_TYPE_`, `SCOPE_DEFINITION_ID_`)
+VALUES
+	(X'31313362646439352D636234322D313165652D613634352D373235636638366233386332',NULL,X'73746172746572',X'61646D696E',NULL,'2024-02-14 22:05:11.248',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'31313363353263632D636234322D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'31313363326262622D636234322D313165652D613634352D373235636638366233386332','2024-02-14 22:05:11.251',NULL,NULL,NULL,NULL,NULL),
+	(X'31313363353263642D636234322D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 22:05:11.251',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'31313436313664312D636234322D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 22:05:11.315',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'31313437373636352D636234322D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'31313437373636342D636234322D313165652D613634352D373235636638366233386332','2024-02-14 22:05:11.324',NULL,NULL,NULL,NULL,NULL),
+	(X'31613931336635662D633665392D313165652D623436392D336131383235363037623062',NULL,X'73746172746572',X'61646D696E',NULL,'2024-02-09 09:18:17.048',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'31613934346361362D633665392D313165652D623436392D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'31613933666538352D633665392D313165652D623436392D336131383235363037623062','2024-02-09 09:18:17.067',NULL,NULL,NULL,NULL,NULL),
+	(X'31613934346361372D633665392D313165652D623436392D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-09 09:18:17.067',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'31613966373033622D633665392D313165652D623436392D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-09 09:18:17.140',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'31616130333338662D633665392D313165652D623436392D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'31616130306337652D633665392D313165652D623436392D336131383235363037623062','2024-02-09 09:18:17.145',NULL,NULL,NULL,NULL,NULL),
+	(X'32633631393739662D636234312D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:58:47.297',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'33313639393263652D636233642D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:30:17.751',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'33313663613031342D636233642D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'33313663613031332D636233642D313165652D613634352D373235636638366233386332','2024-02-14 21:30:17.771',NULL,NULL,NULL,NULL,NULL),
+	(X'34326635633264352D636233642D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:30:47.191',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'34326662343131392D636233642D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'34326662316130382D636233642D313165652D613634352D373235636638366233386332','2024-02-14 21:30:47.227',NULL,NULL,NULL,NULL,NULL),
+	(X'34373063663863612D636233642D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:30:54.054',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'35356138336531662D636235322D313165652D386665612D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-15 00:01:37.991',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'35356163383365352D636235322D313165652D386665612D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'35356163356364342D636235322D313165652D386665612D336131383235363037623062','2024-02-15 00:01:38.019',NULL,NULL,NULL,NULL,NULL),
+	(X'35616232303461382D636234322D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 22:07:14.496',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'35616233363433652D636234322D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'35616233363433642D636234322D313165652D613634352D373235636638366233386332','2024-02-14 22:07:14.505',NULL,NULL,NULL,NULL,NULL),
+	(X'36376561653031662D636234322D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 22:07:36.679',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'36376562663139332D636234322D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'36376562663139322D636234322D313165652D613634352D373235636638366233386332','2024-02-14 22:07:36.686',NULL,NULL,NULL,NULL,NULL),
+	(X'36633431316165342D636234322D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 22:07:43.955',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'36633432376137612D636234322D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'36633432376137392D636234322D313165652D613634352D373235636638366233386332','2024-02-14 22:07:43.964',NULL,NULL,NULL,NULL,NULL),
+	(X'37313733666130622D636234322D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 22:07:52.677',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'37313734393634662D636234322D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'37313734393634652D636234322D313165652D613634352D373235636638366233386332','2024-02-14 22:07:52.681',NULL,NULL,NULL,NULL,NULL),
+	(X'37393933643336632D633937642D313165652D393835642D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-12 16:05:24.289',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'37656135656563352D633937652D313165652D393835642D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-12 16:12:42.293',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'37656138313161622D633937652D313165652D393835642D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'37656138313161612D633937652D313165652D393835642D336131383235363037623062','2024-02-12 16:12:42.307',NULL,NULL,NULL,NULL,NULL),
+	(X'38393334626437332D636234392D313165652D386665612D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 22:58:39.006',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'38393361313461392D636234392D313165652D386665612D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'38393339656439382D636234392D313165652D386665612D336131383235363037623062','2024-02-14 22:58:39.040',NULL,NULL,NULL,NULL,NULL),
+	(X'38616632313063632D633633352D313165652D393763312D336131383235363037623062',NULL,X'73746172746572',X'61646D696E',NULL,'2024-02-08 11:52:56.176',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'38616634613865332D633633352D313165652D393763312D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'38616634383164322D633633352D313165652D393763312D336131383235363037623062','2024-02-08 11:52:56.192',NULL,NULL,NULL,NULL,NULL),
+	(X'38616634613865342D633633352D313165652D393763312D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-08 11:52:56.192',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'38616663373131382D633633352D313165652D393763312D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-08 11:52:56.243',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'38616664383238632D633633352D313165652D393763312D336131383235363037623062',NULL,X'61737369676E6565',X'636F6E747261637475736572',X'38616664383238622D633633352D313165652D393763312D336131383235363037623062','2024-02-08 11:52:56.250',NULL,NULL,NULL,NULL,NULL),
+	(X'38616664383238642D633633352D313165652D393763312D336131383235363037623062',NULL,X'7061727469636970616E74',X'636F6E747261637475736572',NULL,'2024-02-08 11:52:56.250',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'39303764396563342D636630322D313165652D396436652D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-19 16:40:41.610',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'39303834376339612D636630322D313165652D396436652D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'39303834353538392D636630322D313165652D396436652D336131383235363037623062','2024-02-19 16:40:41.655',NULL,NULL,NULL,NULL,NULL),
+	(X'61663438626230612D636235322D313165652D613966632D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-15 00:04:08.360',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'61663464346565652D636235322D313165652D613966632D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'61663464323764642D636235322D313165652D613966632D336131383235363037623062','2024-02-15 00:04:08.390',NULL,NULL,NULL,NULL,NULL),
+	(X'62336139306430302D636234302D313165652D613634352D373235636638366233386332',NULL,X'73746172746572',X'61646D696E',NULL,'2024-02-14 21:55:24.762',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'62336139333431372D636234302D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'62336139333431362D636234302D313165652D613634352D373235636638366233386332','2024-02-14 21:55:24.762',NULL,NULL,NULL,NULL,NULL),
+	(X'62336139333431382D636234302D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:55:24.762',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'62336165623235632D636234302D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:55:24.798',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'62336166396363302D636234302D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'62336166396362662D636234302D313165652D613634352D373235636638366233386332','2024-02-14 21:55:24.804',NULL,NULL,NULL,NULL,NULL),
+	(X'62623361633363332D636234302D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:55:37.461',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'62623363373137392D636234302D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'62623363373137382D636234302D313165652D613634352D373235636638366233386332','2024-02-14 21:55:37.471',NULL,NULL,NULL,NULL,NULL),
+	(X'63316231663666612D636234642D313165652D386665612D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 23:28:51.765',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'63316234646432652D636234642D313165652D386665612D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'63316234646432642D636234642D313165652D386665612D336131383235363037623062','2024-02-14 23:28:51.784',NULL,NULL,NULL,NULL,NULL),
+	(X'63326238313438632D633937652D313165652D393835642D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-12 16:14:36.497',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'63326261383539302D633937652D313165652D393835642D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'63326261383538662D633937652D313165652D393835642D336131383235363037623062','2024-02-12 16:14:36.513',NULL,NULL,NULL,NULL,NULL),
+	(X'63623164383938612D636234302D313165652D613634352D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:56:04.112',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL),
+	(X'63623166356534652D636234302D313165652D613634352D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'63623166356534642D636234302D313165652D613634352D373235636638366233386332','2024-02-14 21:56:04.124',NULL,NULL,NULL,NULL,NULL),
+	(X'64343261343934322D633937642D313165652D393835642D336131383235363037623062',NULL,X'73746172746572',X'61646D696E',NULL,'2024-02-12 16:07:56.270',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'64343261626537392D633937642D313165652D393835642D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'64343261393736382D633937642D313165652D393835642D336131383235363037623062','2024-02-12 16:07:56.273',NULL,NULL,NULL,NULL,NULL),
+	(X'64343261626537612D633937642D313165652D393835642D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-12 16:07:56.273',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'64343334663761652D633937642D313165652D393835642D336131383235363037623062',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-12 16:07:56.341',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'64343337623664322D633937642D313165652D393835642D336131383235363037623062',NULL,X'61737369676E6565',X'61646D696E',X'64343337623664312D633937642D313165652D393835642D336131383235363037623062','2024-02-12 16:07:56.358',NULL,NULL,NULL,NULL,NULL),
+	(X'64383839623863612D636233612D313165652D616462332D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:13:29.651',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'64383863633631302D636233612D313165652D616462332D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'64383863633630662D636233612D313165652D616462332D373235636638366233386332','2024-02-14 21:13:29.671',NULL,NULL,NULL,NULL,NULL),
+	(X'66646133386466312D636233612D313165652D613233312D373235636638366233386332',NULL,X'7061727469636970616E74',X'61646D696E',NULL,'2024-02-14 21:14:31.897',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL),
+	(X'66646137643362352D636233612D313165652D613233312D373235636638366233386332',NULL,X'61737369676E6565',X'61646D696E',X'66646137616361342D636233612D313165652D613233312D373235636638366233386332','2024-02-14 21:14:31.924',NULL,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_HI_IDENTITYLINK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_HI_PROCINST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_PROCINST`;
+
+CREATE TABLE `ACT_HI_PROCINST` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT '1',
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `BUSINESS_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `END_TIME_` datetime(3) DEFAULT NULL,
+  `DURATION_` bigint(20) DEFAULT NULL,
+  `START_USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `START_ACT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `END_ACT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUPER_PROCESS_INSTANCE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `PROC_INST_ID_` (`PROC_INST_ID_`),
+  KEY `ACT_IDX_HI_PRO_INST_END` (`END_TIME_`),
+  KEY `ACT_IDX_HI_PRO_I_BUSKEY` (`BUSINESS_KEY_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_HI_PROCINST` WRITE;
+/*!40000 ALTER TABLE `ACT_HI_PROCINST` DISABLE KEYS */;
+
+INSERT INTO `ACT_HI_PROCINST` (`ID_`, `REV_`, `PROC_INST_ID_`, `BUSINESS_KEY_`, `PROC_DEF_ID_`, `START_TIME_`, `END_TIME_`, `DURATION_`, `START_USER_ID_`, `START_ACT_ID_`, `END_ACT_ID_`, `SUPER_PROCESS_INSTANCE_ID_`, `DELETE_REASON_`, `TENANT_ID_`, `NAME_`, `CALLBACK_ID_`, `CALLBACK_TYPE_`, `REFERENCE_ID_`, `REFERENCE_TYPE_`, `PROPAGATED_STAGE_INST_ID_`, `BUSINESS_STATUS_`)
+VALUES
+	(X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',1,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062','2024-02-14 22:05:11.248',NULL,NULL,X'61646D696E',X'73746172744576656E7431',NULL,NULL,NULL,X'',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',2,X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062','2024-02-09 09:18:17.047','2024-02-12 16:05:24.381',283627334,X'61646D696E',X'73746172744576656E7431',X'7369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631',NULL,NULL,X'',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',1,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062','2024-02-08 11:52:56.175',NULL,NULL,X'61646D696E',X'73746172744576656E7431',NULL,NULL,NULL,X'',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',2,X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062','2024-02-14 21:55:24.761','2024-02-14 21:58:47.306',202545,X'61646D696E',X'73746172744576656E7431',X'7369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631',NULL,NULL,X'',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',2,X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062','2024-02-12 16:07:56.270','2024-02-14 21:30:54.105',192177835,X'61646D696E',X'73746172744576656E7431',X'7369642D39463637354245422D364537412D343039302D394543432D303343393633424134373631',NULL,NULL,X'',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_HI_PROCINST` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_HI_TASKINST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_TASKINST`;
+
+CREATE TABLE `ACT_HI_TASKINST` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT '1',
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_DEF_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PARENT_TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ASSIGNEE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `CLAIM_TIME_` datetime(3) DEFAULT NULL,
+  `END_TIME_` datetime(3) DEFAULT NULL,
+  `DURATION_` bigint(20) DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `PRIORITY_` int(11) DEFAULT NULL,
+  `DUE_DATE_` datetime(3) DEFAULT NULL,
+  `FORM_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `LAST_UPDATED_TIME_` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_HI_TASK_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_TASK_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_TASK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_TASK_INST_PROCINST` (`PROC_INST_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_HI_TASKINST` WRITE;
+/*!40000 ALTER TABLE `ACT_HI_TASKINST` DISABLE KEYS */;
+
+INSERT INTO `ACT_HI_TASKINST` (`ID_`, `REV_`, `PROC_DEF_ID_`, `TASK_DEF_ID_`, `TASK_DEF_KEY_`, `PROC_INST_ID_`, `EXECUTION_ID_`, `SCOPE_ID_`, `SUB_SCOPE_ID_`, `SCOPE_TYPE_`, `SCOPE_DEFINITION_ID_`, `PROPAGATED_STAGE_INST_ID_`, `NAME_`, `PARENT_TASK_ID_`, `DESCRIPTION_`, `OWNER_`, `ASSIGNEE_`, `START_TIME_`, `CLAIM_TIME_`, `END_TIME_`, `DURATION_`, `DELETE_REASON_`, `PRIORITY_`, `DUE_DATE_`, `FORM_KEY_`, `CATEGORY_`, `TENANT_ID_`, `LAST_UPDATED_TIME_`)
+VALUES
+	(X'31313363326262622D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 22:05:11.250',NULL,'2024-02-14 22:05:11.316',66,NULL,50,NULL,NULL,NULL,X'','2024-02-14 22:05:11.316'),
+	(X'31313437373636342D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 22:05:11.324',NULL,'2024-02-14 22:07:14.497',123173,NULL,50,NULL,NULL,NULL,X'','2024-02-14 22:07:14.497'),
+	(X'31613933666538352D633665392D313165652D623436392D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-09 09:18:17.056',NULL,'2024-02-09 09:18:17.140',84,NULL,50,NULL,NULL,NULL,X'','2024-02-09 09:18:17.140'),
+	(X'31616130306337652D633665392D313165652D623436392D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931386438312D633665392D313165652D623436392D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-09 09:18:17.144',NULL,'2024-02-12 16:05:24.296',283627152,NULL,50,NULL,NULL,NULL,X'','2024-02-12 16:05:24.296'),
+	(X'33313663613031332D636233642D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:30:17.771',NULL,'2024-02-14 21:30:47.195',29424,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:30:47.195'),
+	(X'34326662316130382D636233642D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:30:47.226',NULL,'2024-02-14 21:30:54.055',6829,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:30:54.055'),
+	(X'35356163356364342D636235322D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-15 00:01:38.018',NULL,'2024-02-15 00:04:08.365',150347,NULL,50,NULL,NULL,NULL,X'','2024-02-15 00:04:08.365'),
+	(X'35616233363433642D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 22:07:14.505',NULL,'2024-02-14 22:07:36.679',22174,NULL,50,NULL,NULL,NULL,X'','2024-02-14 22:07:36.679'),
+	(X'36376562663139322D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 22:07:36.686',NULL,'2024-02-14 22:07:43.957',7271,NULL,50,NULL,NULL,NULL,X'','2024-02-14 22:07:43.957'),
+	(X'36633432376137392D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 22:07:43.964',NULL,'2024-02-14 22:07:52.678',8714,NULL,50,NULL,NULL,NULL,X'','2024-02-14 22:07:52.678'),
+	(X'37313734393634652D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 22:07:52.681',NULL,'2024-02-14 22:58:39.007',3046326,NULL,50,NULL,NULL,NULL,X'','2024-02-14 22:58:39.007'),
+	(X'37656138313161612D633937652D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-12 16:12:42.307',NULL,'2024-02-12 16:14:36.498',114191,NULL,50,NULL,NULL,NULL,X'','2024-02-12 16:14:36.498'),
+	(X'38393339656439382D636234392D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 22:58:39.038',NULL,'2024-02-14 23:28:51.768',1812730,NULL,50,NULL,NULL,NULL,X'','2024-02-14 23:28:51.768'),
+	(X'38616634383164322D633633352D313165652D393763312D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-08 11:52:56.181',NULL,'2024-02-08 11:52:56.243',62,NULL,50,NULL,NULL,NULL,X'','2024-02-08 11:52:56.243'),
+	(X'38616664383238622D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'636F6E747261637475736572','2024-02-08 11:52:56.250',NULL,NULL,NULL,NULL,50,NULL,NULL,NULL,X'','2024-02-08 11:52:56.250'),
+	(X'39303834353538392D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-19 16:40:41.653',NULL,NULL,NULL,NULL,50,NULL,NULL,NULL,X'','2024-02-19 16:40:41.655'),
+	(X'61663464323764642D636235322D313165652D613966632D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-15 00:04:08.380',NULL,'2024-02-19 16:40:41.614',405393234,NULL,50,NULL,NULL,NULL,X'','2024-02-19 16:40:41.614'),
+	(X'62336139333431362D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:55:24.762',NULL,'2024-02-14 21:55:24.799',37,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:55:24.799'),
+	(X'62336166396362662D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:55:24.804',NULL,'2024-02-14 21:55:37.462',12658,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:55:37.462'),
+	(X'62623363373137382D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:55:37.471',NULL,'2024-02-14 21:56:04.114',26643,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:56:04.114'),
+	(X'63316234646432642D636234642D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 23:28:51.784',NULL,'2024-02-15 00:01:37.995',1966211,NULL,50,NULL,NULL,NULL,X'','2024-02-15 00:01:37.995'),
+	(X'63326261383538662D633937652D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-12 16:14:36.513',NULL,'2024-02-14 21:13:29.652',190733139,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:13:29.652'),
+	(X'63623166356534642D636234302D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139333431322D636234302D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:56:04.124',NULL,'2024-02-14 21:58:47.297',163173,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:58:47.297'),
+	(X'64343261393736382D633937642D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-12 16:07:56.271',NULL,'2024-02-12 16:07:56.343',72,NULL,50,NULL,NULL,NULL,X'','2024-02-12 16:07:56.343'),
+	(X'64343337623664312D633937642D313165652D393835642D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-12 16:07:56.358',NULL,'2024-02-12 16:12:42.294',285936,NULL,50,NULL,NULL,NULL,X'','2024-02-12 16:12:42.294'),
+	(X'64383863633630662D636233612D313165652D616462332D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7375626D6974436F6E74726163745461736B',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:13:29.671',NULL,'2024-02-14 21:14:31.899',62228,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:14:31.899'),
+	(X'66646137616361342D636233612D313165652D613233312D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261373035342D633937642D313165652D393835642D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,NULL,X'61646D696E','2024-02-14 21:14:31.915',NULL,'2024-02-14 21:30:17.753',945838,NULL,50,NULL,NULL,NULL,X'','2024-02-14 21:30:17.753');
+
+/*!40000 ALTER TABLE `ACT_HI_TASKINST` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_HI_TSK_LOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_TSK_LOG`;
+
+CREATE TABLE `ACT_HI_TSK_LOG` (
+  `ID_` bigint(20) NOT NULL AUTO_INCREMENT,
+  `TYPE_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `TIME_STAMP_` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `DATA_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_HI_VARINST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_HI_VARINST`;
+
+CREATE TABLE `ACT_HI_VARINST` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT '1',
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `VAR_TYPE_` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `BYTEARRAY_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DOUBLE_` double DEFAULT NULL,
+  `LONG_` bigint(20) DEFAULT NULL,
+  `TEXT_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TEXT2_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) DEFAULT NULL,
+  `LAST_UPDATED_TIME_` datetime(3) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_HI_PROCVAR_NAME_TYPE` (`NAME_`,`VAR_TYPE_`),
+  KEY `ACT_IDX_HI_VAR_SCOPE_ID_TYPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_VAR_SUB_ID_TYPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_HI_PROCVAR_PROC_INST` (`PROC_INST_ID_`),
+  KEY `ACT_IDX_HI_PROCVAR_TASK_ID` (`TASK_ID_`),
+  KEY `ACT_IDX_HI_PROCVAR_EXE` (`EXECUTION_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_HI_VARINST` WRITE;
+/*!40000 ALTER TABLE `ACT_HI_VARINST` DISABLE KEYS */;
+
+INSERT INTO `ACT_HI_VARINST` (`ID_`, `REV_`, `PROC_INST_ID_`, `EXECUTION_ID_`, `TASK_ID_`, `NAME_`, `VAR_TYPE_`, `SCOPE_ID_`, `SUB_SCOPE_ID_`, `SCOPE_TYPE_`, `BYTEARRAY_ID_`, `DOUBLE_`, `LONG_`, `TEXT_`, `TEXT2_`, `CREATE_TIME_`, `LAST_UPDATED_TIME_`)
+VALUES
+	(X'31313363303461362D636234322D313165652D613634352D373235636638366233386332',1,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'63757272656E7455736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-14 22:05:11.249','2024-02-19 16:40:41.604'),
+	(X'31313436313663652D636234322D313165652D613634352D373235636638366233386332',1,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'636F6E74726163744964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,11,X'3131',NULL,'2024-02-14 22:05:11.315','2024-02-19 16:40:41.605'),
+	(X'31313436313663662D636234322D313165652D613634352D373235636638366233386332',1,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'617070726F766555736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-14 22:05:11.315','2024-02-19 16:40:41.606'),
+	(X'31313436313664302D636234322D313165652D613634352D373235636638366233386332',1,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'617070726F7665557365724964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,1,X'31',NULL,'2024-02-14 22:05:11.315','2024-02-19 16:40:41.606'),
+	(X'31613931363637302D633665392D313165652D623436392D336131383235363037623062',0,X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,X'63757272656E7455736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-09 09:18:17.049','2024-02-09 09:18:17.049'),
+	(X'31613966343932382D633665392D313165652D623436392D336131383235363037623062',0,X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,X'636F6E74726163744964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,8,X'38',NULL,'2024-02-09 09:18:17.139','2024-02-09 09:18:17.139'),
+	(X'31613966373033392D633665392D313165652D623436392D336131383235363037623062',0,X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,X'617070726F766555736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-09 09:18:17.140','2024-02-09 09:18:17.140'),
+	(X'31613966373033612D633665392D313165652D623436392D336131383235363037623062',0,X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,X'617070726F7665557365724964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,1,X'31',NULL,'2024-02-09 09:18:17.140','2024-02-09 09:18:17.140'),
+	(X'35616231646439362D636234322D313165652D613634352D373235636638366233386332',7,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'726561736F6E',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'35353535',NULL,'2024-02-14 22:07:14.495','2024-02-15 00:04:08.357'),
+	(X'35616232303461372D636234322D313165652D613634352D373235636638366233386332',7,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'617070726F7665',X'626F6F6C65616E',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,'2024-02-14 22:07:14.496','2024-02-15 00:04:08.359'),
+	(X'37393932653930612D633937642D313165652D393835642D336131383235363037623062',0,X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,X'726561736F6E',X'6E756C6C',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-02-12 16:05:24.286','2024-02-12 16:05:24.286'),
+	(X'37393933383534622D633937642D313165652D393835642D336131383235363037623062',0,X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',X'31613931336635652D633665392D313165652D623436392D336131383235363037623062',NULL,X'617070726F7665',X'626F6F6C65616E',NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,'2024-02-12 16:05:24.287','2024-02-12 16:05:24.287'),
+	(X'37656135633762332D633937652D313165652D393835642D336131383235363037623062',6,X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,X'726561736F6E',X'6E756C6C',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-02-12 16:12:42.292','2024-02-14 21:30:54.045'),
+	(X'37656135656563342D633937652D313165652D393835642D336131383235363037623062',6,X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,X'617070726F7665',X'626F6F6C65616E',NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,'2024-02-12 16:12:42.293','2024-02-14 21:30:54.049'),
+	(X'38616632333764642D633633352D313165652D393763312D336131383235363037623062',0,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,X'63757272656E7455736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-08 11:52:56.177','2024-02-08 11:52:56.177'),
+	(X'38616663373131352D633633352D313165652D393763312D336131383235363037623062',0,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,X'636F6E74726163744964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,7,X'37',NULL,'2024-02-08 11:52:56.243','2024-02-08 11:52:56.243'),
+	(X'38616663373131362D633633352D313165652D393763312D336131383235363037623062',0,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,X'617070726F766555736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'636F6E747261637475736572',NULL,'2024-02-08 11:52:56.243','2024-02-08 11:52:56.243'),
+	(X'38616663373131372D633633352D313165652D393763312D336131383235363037623062',0,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,X'617070726F7665557365724964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,7,X'37',NULL,'2024-02-08 11:52:56.243','2024-02-08 11:52:56.243'),
+	(X'62336139333431312D636234302D313165652D613634352D373235636638366233386332',0,X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,X'63757272656E7455736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-14 21:55:24.762','2024-02-14 21:55:24.762'),
+	(X'62336165386234392D636234302D313165652D613634352D373235636638366233386332',0,X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,X'636F6E74726163744964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,10,X'3130',NULL,'2024-02-14 21:55:24.797','2024-02-14 21:55:24.797'),
+	(X'62336165386234612D636234302D313165652D613634352D373235636638366233386332',0,X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,X'617070726F766555736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-14 21:55:24.797','2024-02-14 21:55:24.797'),
+	(X'62336165623235622D636234302D313165652D613634352D373235636638366233386332',0,X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,X'617070726F7665557365724964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,1,X'31',NULL,'2024-02-14 21:55:24.798','2024-02-14 21:55:24.798'),
+	(X'62623361633363312D636234302D313165652D613634352D373235636638366233386332',2,X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,X'726561736F6E',X'6E756C6C',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-02-14 21:55:37.460','2024-02-14 21:58:47.296'),
+	(X'62623361633363322D636234302D313165652D613634352D373235636638366233386332',2,X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',X'62336139306366662D636234302D313165652D613634352D373235636638366233386332',NULL,X'617070726F7665',X'626F6F6C65616E',NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,'2024-02-14 21:55:37.460','2024-02-14 21:58:47.296'),
+	(X'64343261373035332D633937642D313165652D393835642D336131383235363037623062',0,X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,X'63757272656E7455736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-12 16:07:56.271','2024-02-12 16:07:56.271'),
+	(X'64343334643039622D633937642D313165652D393835642D336131383235363037623062',0,X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,X'636F6E74726163744964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,9,X'39',NULL,'2024-02-12 16:07:56.340','2024-02-12 16:07:56.340'),
+	(X'64343334663761632D633937642D313165652D393835642D336131383235363037623062',0,X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,X'617070726F766555736572',X'737472696E67',NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL,'2024-02-12 16:07:56.340','2024-02-12 16:07:56.340'),
+	(X'64343334663761642D633937642D313165652D393835642D336131383235363037623062',0,X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',X'64343261343934312D633937642D313165652D393835642D336131383235363037623062',NULL,X'617070726F7665557365724964',X'696E7465676572',NULL,NULL,NULL,NULL,NULL,1,X'31',NULL,'2024-02-12 16:07:56.340','2024-02-12 16:07:56.340');
+
+/*!40000 ALTER TABLE `ACT_HI_VARINST` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_ID_BYTEARRAY
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_BYTEARRAY`;
+
+CREATE TABLE `ACT_ID_BYTEARRAY` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `BYTES_` longblob,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_ID_GROUP
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_GROUP`;
+
+CREATE TABLE `ACT_ID_GROUP` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_ID_INFO
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_INFO`;
+
+CREATE TABLE `ACT_ID_INFO` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `USER_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `VALUE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PASSWORD_` longblob,
+  `PARENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_ID_MEMBERSHIP
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_MEMBERSHIP`;
+
+CREATE TABLE `ACT_ID_MEMBERSHIP` (
+  `USER_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `GROUP_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`USER_ID_`,`GROUP_ID_`),
+  KEY `ACT_FK_MEMB_GROUP` (`GROUP_ID_`),
+  CONSTRAINT `ACT_FK_MEMB_GROUP` FOREIGN KEY (`GROUP_ID_`) REFERENCES `ACT_ID_GROUP` (`ID_`),
+  CONSTRAINT `ACT_FK_MEMB_USER` FOREIGN KEY (`USER_ID_`) REFERENCES `ACT_ID_USER` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_ID_PRIV
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_PRIV`;
+
+CREATE TABLE `ACT_ID_PRIV` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_UNIQ_PRIV_NAME` (`NAME_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_ID_PRIV_MAPPING
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_PRIV_MAPPING`;
+
+CREATE TABLE `ACT_ID_PRIV_MAPPING` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `PRIV_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `GROUP_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_FK_PRIV_MAPPING` (`PRIV_ID_`),
+  KEY `ACT_IDX_PRIV_USER` (`USER_ID_`),
+  KEY `ACT_IDX_PRIV_GROUP` (`GROUP_ID_`),
+  CONSTRAINT `ACT_FK_PRIV_MAPPING` FOREIGN KEY (`PRIV_ID_`) REFERENCES `ACT_ID_PRIV` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_ID_PROPERTY
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_PROPERTY`;
+
+CREATE TABLE `ACT_ID_PROPERTY` (
+  `NAME_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `VALUE_` varchar(300) COLLATE utf8_bin DEFAULT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  PRIMARY KEY (`NAME_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_ID_PROPERTY` WRITE;
+/*!40000 ALTER TABLE `ACT_ID_PROPERTY` DISABLE KEYS */;
+
+INSERT INTO `ACT_ID_PROPERTY` (`NAME_`, `VALUE_`, `REV_`)
+VALUES
+	(X'736368656D612E76657273696F6E',X'362E372E322E30',1);
+
+/*!40000 ALTER TABLE `ACT_ID_PROPERTY` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_ID_TOKEN
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_TOKEN`;
+
+CREATE TABLE `ACT_ID_TOKEN` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `TOKEN_VALUE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TOKEN_DATE_` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  `IP_ADDRESS_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `USER_AGENT_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TOKEN_DATA_` varchar(2000) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_ID_USER
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_ID_USER`;
+
+CREATE TABLE `ACT_ID_USER` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `FIRST_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `LAST_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `DISPLAY_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `EMAIL_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PWD_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PICTURE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_PROCDEF_INFO
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_PROCDEF_INFO`;
+
+CREATE TABLE `ACT_PROCDEF_INFO` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `INFO_JSON_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_UNIQ_INFO_PROCDEF` (`PROC_DEF_ID_`),
+  KEY `ACT_IDX_INFO_PROCDEF` (`PROC_DEF_ID_`),
+  KEY `ACT_FK_INFO_JSON_BA` (`INFO_JSON_ID_`),
+  CONSTRAINT `ACT_FK_INFO_JSON_BA` FOREIGN KEY (`INFO_JSON_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_INFO_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RE_DEPLOYMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RE_DEPLOYMENT`;
+
+CREATE TABLE `ACT_RE_DEPLOYMENT` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `DEPLOY_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `DERIVED_FROM_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DERIVED_FROM_ROOT_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ENGINE_VERSION_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_RE_DEPLOYMENT` WRITE;
+/*!40000 ALTER TABLE `ACT_RE_DEPLOYMENT` DISABLE KEYS */;
+
+INSERT INTO `ACT_RE_DEPLOYMENT` (`ID_`, `NAME_`, `CATEGORY_`, `KEY_`, `TENANT_ID_`, `DEPLOY_TIME_`, `DERIVED_FROM_`, `DERIVED_FROM_ROOT_`, `PARENT_DEPLOYMENT_ID_`, `ENGINE_VERSION_`)
+VALUES
+	(X'36313937616239372D633633352D313165652D393763312D336131383235363037623062',X'537072696E67426F6F744175746F4465706C6F796D656E74',NULL,NULL,X'','2024-02-08 11:51:46.795',NULL,NULL,X'36313937616239372D633633352D313165652D393763312D336131383235363037623062',NULL);
+
+/*!40000 ALTER TABLE `ACT_RE_DEPLOYMENT` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_RE_MODEL
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RE_MODEL`;
+
+CREATE TABLE `ACT_RE_MODEL` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LAST_UPDATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `VERSION_` int(11) DEFAULT NULL,
+  `META_INFO_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EDITOR_SOURCE_VALUE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EDITOR_SOURCE_EXTRA_VALUE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_FK_MODEL_SOURCE` (`EDITOR_SOURCE_VALUE_ID_`),
+  KEY `ACT_FK_MODEL_SOURCE_EXTRA` (`EDITOR_SOURCE_EXTRA_VALUE_ID_`),
+  KEY `ACT_FK_MODEL_DEPLOYMENT` (`DEPLOYMENT_ID_`),
+  CONSTRAINT `ACT_FK_MODEL_DEPLOYMENT` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_RE_DEPLOYMENT` (`ID_`),
+  CONSTRAINT `ACT_FK_MODEL_SOURCE` FOREIGN KEY (`EDITOR_SOURCE_VALUE_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_MODEL_SOURCE_EXTRA` FOREIGN KEY (`EDITOR_SOURCE_EXTRA_VALUE_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RE_PROCDEF
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RE_PROCDEF`;
+
+CREATE TABLE `ACT_RE_PROCDEF` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `KEY_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `VERSION_` int(11) NOT NULL,
+  `DEPLOYMENT_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DGRM_RESOURCE_NAME_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `HAS_START_FORM_KEY_` tinyint(4) DEFAULT NULL,
+  `HAS_GRAPHICAL_NOTATION_` tinyint(4) DEFAULT NULL,
+  `SUSPENSION_STATE_` int(11) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `ENGINE_VERSION_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `DERIVED_FROM_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DERIVED_FROM_ROOT_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DERIVED_VERSION_` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_UNIQ_PROCDEF` (`KEY_`,`VERSION_`,`DERIVED_VERSION_`,`TENANT_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_RE_PROCDEF` WRITE;
+/*!40000 ALTER TABLE `ACT_RE_PROCDEF` DISABLE KEYS */;
+
+INSERT INTO `ACT_RE_PROCDEF` (`ID_`, `REV_`, `CATEGORY_`, `NAME_`, `KEY_`, `VERSION_`, `DEPLOYMENT_ID_`, `RESOURCE_NAME_`, `DGRM_RESOURCE_NAME_`, `DESCRIPTION_`, `HAS_START_FORM_KEY_`, `HAS_GRAPHICAL_NOTATION_`, `SUSPENSION_STATE_`, `TENANT_ID_`, `ENGINE_VERSION_`, `DERIVED_FROM_`, `DERIVED_FROM_ROOT_`, `DERIVED_VERSION_`)
+VALUES
+	(X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',1,X'687474703A2F2F7777772E666C6F7761626C652E6F72672F70726F63657373646566',X'5469656E4368696EE9A1B9E79BAEE59088E5908CE5AEA1E689B9E6B581E7A88B',X'7469656E6368696E5F636F6E74726163745F617070726F7665',1,X'36313937616239372D633633352D313165652D393763312D336131383235363037623062',X'2F55736572732F77616E6778792F70726F6A6563742F7469656E6368696E2F7469656E6368696E2D61646D696E2F7461726765742F636C61737365732F70726F6365737365732F7469656E6368696E5F636F6E74726163745F617070726F76655F70726F636573732E62706D6E32302E786D6C',X'2F55736572732F77616E6778792F70726F6A6563742F7469656E6368696E2F7469656E6368696E2D61646D696E2F7461726765742F636C61737365732F70726F6365737365732F7469656E6368696E5F636F6E74726163745F617070726F76655F70726F636573732E7469656E6368696E5F636F6E74726163745F617070726F76652E706E67',NULL,0,1,1,X'',NULL,NULL,NULL,0);
+
+/*!40000 ALTER TABLE `ACT_RE_PROCDEF` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_RU_ACTINST
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_ACTINST`;
+
+CREATE TABLE `ACT_RU_ACTINST` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT '1',
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `ACT_ID_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CALL_PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ACT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ACT_TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `ASSIGNEE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `END_TIME_` datetime(3) DEFAULT NULL,
+  `DURATION_` bigint(20) DEFAULT NULL,
+  `TRANSACTION_ORDER_` int(11) DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_RU_ACTI_START` (`START_TIME_`),
+  KEY `ACT_IDX_RU_ACTI_END` (`END_TIME_`),
+  KEY `ACT_IDX_RU_ACTI_PROC` (`PROC_INST_ID_`),
+  KEY `ACT_IDX_RU_ACTI_PROC_ACT` (`PROC_INST_ID_`,`ACT_ID_`),
+  KEY `ACT_IDX_RU_ACTI_EXEC` (`EXECUTION_ID_`),
+  KEY `ACT_IDX_RU_ACTI_EXEC_ACT` (`EXECUTION_ID_`,`ACT_ID_`),
+  KEY `ACT_IDX_RU_ACTI_TASK` (`TASK_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_RU_ACTINST` WRITE;
+/*!40000 ALTER TABLE `ACT_RU_ACTINST` DISABLE KEYS */;
+
+INSERT INTO `ACT_RU_ACTINST` (`ID_`, `REV_`, `PROC_DEF_ID_`, `PROC_INST_ID_`, `EXECUTION_ID_`, `ACT_ID_`, `TASK_ID_`, `CALL_PROC_INST_ID_`, `ACT_NAME_`, `ACT_TYPE_`, `ASSIGNEE_`, `START_TIME_`, `END_TIME_`, `DURATION_`, `TRANSACTION_ORDER_`, `DELETE_REASON_`, `TENANT_ID_`)
+VALUES
+	(X'31313363326262382D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'73746172744576656E7431',NULL,NULL,NULL,X'73746172744576656E74',NULL,'2024-02-14 22:05:11.250','2024-02-14 22:05:11.250',0,1,NULL,X''),
+	(X'31313363326262392D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:05:11.250','2024-02-14 22:05:11.250',0,2,NULL,X''),
+	(X'31313363326262612D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'31313363326262622D636234322D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:05:11.250','2024-02-14 22:05:11.321',71,3,NULL,X''),
+	(X'31313437346635322D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:05:11.323','2024-02-14 22:05:11.323',0,1,NULL,X''),
+	(X'31313437373636332D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'31313437373636342D636234322D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 22:05:11.324','2024-02-14 22:07:14.501',123177,2,NULL,X''),
+	(X'35356162393938302D636235322D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-15 00:01:38.013','2024-02-15 00:01:38.013',0,1,NULL,X''),
+	(X'35356163306562312D636235322D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-15 00:01:38.016','2024-02-15 00:01:38.017',1,2,NULL,X''),
+	(X'35356163333563322D636235322D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-15 00:01:38.017','2024-02-15 00:01:38.017',0,3,NULL,X''),
+	(X'35356163356364332D636235322D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'35356163356364342D636235322D313165652D386665612D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-15 00:01:38.018','2024-02-15 00:04:08.374',150356,4,NULL,X''),
+	(X'35616232656630392D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:14.502','2024-02-14 22:07:14.502',0,1,NULL,X''),
+	(X'35616233336432612D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 22:07:14.504','2024-02-14 22:07:14.504',0,2,NULL,X''),
+	(X'35616233336432622D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:14.504','2024-02-14 22:07:14.504',0,3,NULL,X''),
+	(X'35616233363433632D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'35616233363433642D636234322D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:07:14.505','2024-02-14 22:07:36.684',22179,4,NULL,X''),
+	(X'36376562636138302D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:36.685','2024-02-14 22:07:36.685',0,1,NULL,X''),
+	(X'36376562663139312D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'36376562663139322D636234322D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 22:07:36.686','2024-02-14 22:07:43.961',7275,2,NULL,X''),
+	(X'36633432326335352D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:43.962','2024-02-14 22:07:43.962',0,1,NULL,X''),
+	(X'36633432353336362D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 22:07:43.963','2024-02-14 22:07:43.963',0,2,NULL,X''),
+	(X'36633432353336372D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:43.963','2024-02-14 22:07:43.963',0,3,NULL,X''),
+	(X'36633432376137382D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'36633432376137392D636234322D313165652D613634352D373235636638366233386332',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:07:43.964','2024-02-14 22:07:52.680',8716,4,NULL,X''),
+	(X'37313734366633632D636234322D313165652D613634352D373235636638366233386332',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:07:52.680','2024-02-14 22:07:52.680',0,1,NULL,X''),
+	(X'37313734393634642D636234322D313165652D613634352D373235636638366233386332',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'37313734393634652D636234322D313165652D613634352D373235636638366233386332',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 22:07:52.681','2024-02-14 22:58:39.015',3046334,2,NULL,X''),
+	(X'38393336623934342D636234392D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 22:58:39.018','2024-02-14 22:58:39.018',0,1,NULL,X''),
+	(X'38393337353538352D636234392D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-14 22:58:39.022','2024-02-14 22:58:39.034',12,2,NULL,X''),
+	(X'38393339326134362D636234392D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-14 22:58:39.034','2024-02-14 22:58:39.034',0,3,NULL,X''),
+	(X'38393339633638372D636234392D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'38393339656439382D636234392D313165652D386665612D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-14 22:58:39.038','2024-02-14 23:28:51.778',1812740,4,NULL,X''),
+	(X'38616632356565662D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'73746172744576656E7431',NULL,NULL,NULL,X'73746172744576656E74',NULL,'2024-02-08 11:52:56.178','2024-02-08 11:52:56.180',2,1,NULL,X''),
+	(X'38616632666233302D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7369642D34393544434130362D433642302D344346322D383541342D324533423535373746464443',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-08 11:52:56.181','2024-02-08 11:52:56.181',0,2,NULL,X''),
+	(X'38616632666233312D633633352D313165652D393763312D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7375626D6974436F6E74726163745461736B',X'38616634383164322D633633352D313165652D393763312D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-08 11:52:56.181','2024-02-08 11:52:56.249',68,3,NULL,X''),
+	(X'38616664356237392D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-08 11:52:56.249','2024-02-08 11:52:56.249',0,1,NULL,X''),
+	(X'38616664383238612D633633352D313165652D393763312D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'38616664383238622D633633352D313165652D393763312D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'636F6E747261637475736572','2024-02-08 11:52:56.250',NULL,NULL,2,NULL,X''),
+	(X'39303830666132352D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374634334642382D453335392D344146312D413034332D393046433746413142393444',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-19 16:40:41.632','2024-02-19 16:40:41.632',0,1,NULL,X''),
+	(X'39303831343834362D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D32303332443039342D313442382D344338342D383534462D454537374242393230433243',NULL,NULL,NULL,X'6578636C757369766547617465776179',NULL,'2024-02-19 16:40:41.634','2024-02-19 16:40:41.651',17,2,NULL,X''),
+	(X'39303833653035372D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D36374443363942452D324139342D343734412D394130322D413035353146313834324539',NULL,NULL,X'E59088E5908CE5AEA1E689B9E9A9B3E59B9E',X'73657175656E6365466C6F77',NULL,'2024-02-19 16:40:41.651','2024-02-19 16:40:41.651',0,3,NULL,X''),
+	(X'39303834326537382D636630322D313165652D396436652D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',X'39303834353538392D636630322D313165652D396436652D336131383235363037623062',NULL,X'E68F90E4BAA4E59088E5908C',X'757365725461736B',X'61646D696E','2024-02-19 16:40:41.653',NULL,NULL,4,NULL,X''),
+	(X'61663462326330622D636235322D313165652D613966632D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-15 00:04:08.376','2024-02-15 00:04:08.376',0,1,NULL,X''),
+	(X'61663462633834632D636235322D313165652D613966632D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'61663464323764642D636235322D313165652D613966632D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-15 00:04:08.380','2024-02-19 16:40:41.627',405393247,2,NULL,X''),
+	(X'63316234363766622D636234642D313165652D386665612D336131383235363037623062',1,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D34303731443443382D313932322D344636342D424343302D384132454641374533423938',NULL,NULL,NULL,X'73657175656E6365466C6F77',NULL,'2024-02-14 23:28:51.781','2024-02-14 23:28:51.781',0,1,NULL,X''),
+	(X'63316234646432632D636234642D313165652D386665612D336131383235363037623062',2,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',X'63316234646432642D636234642D313165652D386665612D336131383235363037623062',NULL,X'E59088E5908CE5AEA1E689B9',X'757365725461736B',X'61646D696E','2024-02-14 23:28:51.784','2024-02-15 00:01:38.010',1966226,2,NULL,X'');
+
+/*!40000 ALTER TABLE `ACT_RU_ACTINST` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_RU_DEADLETTER_JOB
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_DEADLETTER_JOB`;
+
+CREATE TABLE `ACT_RU_DEADLETTER_JOB` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `EXCLUSIVE_` tinyint(1) DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_DEADLETTER_JOB_EXCEPTION_STACK_ID` (`EXCEPTION_STACK_ID_`),
+  KEY `ACT_IDX_DEADLETTER_JOB_CUSTOM_VALUES_ID` (`CUSTOM_VALUES_ID_`),
+  KEY `ACT_IDX_DEADLETTER_JOB_CORRELATION_ID` (`CORRELATION_ID_`),
+  KEY `ACT_IDX_DJOB_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_DJOB_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_DJOB_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_FK_DEADLETTER_JOB_EXECUTION` (`EXECUTION_ID_`),
+  KEY `ACT_FK_DEADLETTER_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
+  KEY `ACT_FK_DEADLETTER_JOB_PROC_DEF` (`PROC_DEF_ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_ENTITYLINK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_ENTITYLINK`;
+
+CREATE TABLE `ACT_RU_ENTITYLINK` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) DEFAULT NULL,
+  `LINK_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PARENT_ELEMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REF_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REF_SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REF_SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ROOT_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ROOT_SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HIERARCHY_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_ENT_LNK_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`,`LINK_TYPE_`),
+  KEY `ACT_IDX_ENT_LNK_REF_SCOPE` (`REF_SCOPE_ID_`,`REF_SCOPE_TYPE_`,`LINK_TYPE_`),
+  KEY `ACT_IDX_ENT_LNK_ROOT_SCOPE` (`ROOT_SCOPE_ID_`,`ROOT_SCOPE_TYPE_`,`LINK_TYPE_`),
+  KEY `ACT_IDX_ENT_LNK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`,`LINK_TYPE_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_EVENT_SUBSCR
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_EVENT_SUBSCR`;
+
+CREATE TABLE `ACT_RU_EVENT_SUBSCR` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `EVENT_TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `EVENT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ACTIVITY_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CONFIGURATION_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CREATED_` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_EVENT_SUBSCR_CONFIG_` (`CONFIGURATION_`),
+  KEY `ACT_FK_EVENT_EXEC` (`EXECUTION_ID_`),
+  CONSTRAINT `ACT_FK_EVENT_EXEC` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_EXECUTION
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_EXECUTION`;
+
+CREATE TABLE `ACT_RU_EXECUTION` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `BUSINESS_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PARENT_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SUPER_EXEC_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ROOT_PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ACT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `IS_ACTIVE_` tinyint(4) DEFAULT NULL,
+  `IS_CONCURRENT_` tinyint(4) DEFAULT NULL,
+  `IS_SCOPE_` tinyint(4) DEFAULT NULL,
+  `IS_EVENT_SCOPE_` tinyint(4) DEFAULT NULL,
+  `IS_MI_ROOT_` tinyint(4) DEFAULT NULL,
+  `SUSPENSION_STATE_` int(11) DEFAULT NULL,
+  `CACHED_ENT_STATE_` int(11) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `START_ACT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `START_TIME_` datetime(3) DEFAULT NULL,
+  `START_USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `LOCK_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `IS_COUNT_ENABLED_` tinyint(4) DEFAULT NULL,
+  `EVT_SUBSCR_COUNT_` int(11) DEFAULT NULL,
+  `TASK_COUNT_` int(11) DEFAULT NULL,
+  `JOB_COUNT_` int(11) DEFAULT NULL,
+  `TIMER_JOB_COUNT_` int(11) DEFAULT NULL,
+  `SUSP_JOB_COUNT_` int(11) DEFAULT NULL,
+  `DEADLETTER_JOB_COUNT_` int(11) DEFAULT NULL,
+  `EXTERNAL_WORKER_JOB_COUNT_` int(11) DEFAULT NULL,
+  `VAR_COUNT_` int(11) DEFAULT NULL,
+  `ID_LINK_COUNT_` int(11) DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_EXEC_BUSKEY` (`BUSINESS_KEY_`),
+  KEY `ACT_IDC_EXEC_ROOT` (`ROOT_PROC_INST_ID_`),
+  KEY `ACT_IDX_EXEC_REF_ID_` (`REFERENCE_ID_`),
+  KEY `ACT_FK_EXE_PROCINST` (`PROC_INST_ID_`),
+  KEY `ACT_FK_EXE_PARENT` (`PARENT_ID_`),
+  KEY `ACT_FK_EXE_SUPER` (`SUPER_EXEC_`),
+  KEY `ACT_FK_EXE_PROCDEF` (`PROC_DEF_ID_`),
+  CONSTRAINT `ACT_FK_EXE_PARENT` FOREIGN KEY (`PARENT_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`) ON DELETE CASCADE,
+  CONSTRAINT `ACT_FK_EXE_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_EXE_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ACT_FK_EXE_SUPER` FOREIGN KEY (`SUPER_EXEC_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_RU_EXECUTION` WRITE;
+/*!40000 ALTER TABLE `ACT_RU_EXECUTION` DISABLE KEYS */;
+
+INSERT INTO `ACT_RU_EXECUTION` (`ID_`, `REV_`, `PROC_INST_ID_`, `BUSINESS_KEY_`, `PARENT_ID_`, `PROC_DEF_ID_`, `SUPER_EXEC_`, `ROOT_PROC_INST_ID_`, `ACT_ID_`, `IS_ACTIVE_`, `IS_CONCURRENT_`, `IS_SCOPE_`, `IS_EVENT_SCOPE_`, `IS_MI_ROOT_`, `SUSPENSION_STATE_`, `CACHED_ENT_STATE_`, `TENANT_ID_`, `NAME_`, `START_ACT_ID_`, `START_TIME_`, `START_USER_ID_`, `LOCK_TIME_`, `LOCK_OWNER_`, `IS_COUNT_ENABLED_`, `EVT_SUBSCR_COUNT_`, `TASK_COUNT_`, `JOB_COUNT_`, `TIMER_JOB_COUNT_`, `SUSP_JOB_COUNT_`, `DEADLETTER_JOB_COUNT_`, `EXTERNAL_WORKER_JOB_COUNT_`, `VAR_COUNT_`, `ID_LINK_COUNT_`, `CALLBACK_ID_`, `CALLBACK_TYPE_`, `REFERENCE_ID_`, `REFERENCE_TYPE_`, `PROPAGATED_STAGE_INST_ID_`, `BUSINESS_STATUS_`)
+VALUES
+	(X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',1,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,1,0,1,0,0,1,NULL,X'',NULL,X'73746172744576656E7431','2024-02-14 22:05:11.248',X'61646D696E',NULL,NULL,1,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL),
+	(X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',11,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'7375626D6974436F6E74726163745461736B',1,0,0,0,0,1,NULL,X'',NULL,NULL,'2024-02-14 22:05:11.249',NULL,NULL,NULL,1,0,1,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL),
+	(X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',1,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,1,0,1,0,0,1,NULL,X'',NULL,X'73746172744576656E7431','2024-02-08 11:52:56.175',X'61646D696E',NULL,NULL,1,0,0,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL),
+	(X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',2,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',1,0,0,0,0,1,NULL,X'',NULL,NULL,'2024-02-08 11:52:56.177',NULL,NULL,NULL,1,0,1,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_RU_EXECUTION` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_RU_EXTERNAL_JOB
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_EXTERNAL_JOB`;
+
+CREATE TABLE `ACT_RU_EXTERNAL_JOB` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `EXCLUSIVE_` tinyint(1) DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `RETRIES_` int(11) DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_EXTERNAL_JOB_EXCEPTION_STACK_ID` (`EXCEPTION_STACK_ID_`),
+  KEY `ACT_IDX_EXTERNAL_JOB_CUSTOM_VALUES_ID` (`CUSTOM_VALUES_ID_`),
+  KEY `ACT_IDX_EXTERNAL_JOB_CORRELATION_ID` (`CORRELATION_ID_`),
+  KEY `ACT_IDX_EJOB_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_EJOB_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_EJOB_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  CONSTRAINT `ACT_FK_EXTERNAL_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_EXTERNAL_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_HISTORY_JOB
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_HISTORY_JOB`;
+
+CREATE TABLE `ACT_RU_HISTORY_JOB` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `RETRIES_` int(11) DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ADV_HANDLER_CFG_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_IDENTITYLINK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_IDENTITYLINK`;
+
+CREATE TABLE `ACT_RU_IDENTITYLINK` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `GROUP_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_IDENT_LNK_USER` (`USER_ID_`),
+  KEY `ACT_IDX_IDENT_LNK_GROUP` (`GROUP_ID_`),
+  KEY `ACT_IDX_IDENT_LNK_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_IDENT_LNK_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_IDENT_LNK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_ATHRZ_PROCEDEF` (`PROC_DEF_ID_`),
+  KEY `ACT_FK_TSKASS_TASK` (`TASK_ID_`),
+  KEY `ACT_FK_IDL_PROCINST` (`PROC_INST_ID_`),
+  CONSTRAINT `ACT_FK_ATHRZ_PROCEDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_IDL_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TSKASS_TASK` FOREIGN KEY (`TASK_ID_`) REFERENCES `ACT_RU_TASK` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_RU_IDENTITYLINK` WRITE;
+/*!40000 ALTER TABLE `ACT_RU_IDENTITYLINK` DISABLE KEYS */;
+
+INSERT INTO `ACT_RU_IDENTITYLINK` (`ID_`, `REV_`, `GROUP_ID_`, `TYPE_`, `USER_ID_`, `TASK_ID_`, `PROC_INST_ID_`, `PROC_DEF_ID_`, `SCOPE_ID_`, `SUB_SCOPE_ID_`, `SCOPE_TYPE_`, `SCOPE_DEFINITION_ID_`)
+VALUES
+	(X'31313362646439352D636234322D313165652D613634352D373235636638366233386332',1,NULL,X'73746172746572',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'31313363353263642D636234322D313165652D613634352D373235636638366233386332',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'31313436313664312D636234322D313165652D613634352D373235636638366233386332',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'35356138336531662D636235322D313165652D386665612D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'35616232303461382D636234322D313165652D613634352D373235636638366233386332',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'36376561653031662D636234322D313165652D613634352D373235636638366233386332',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'36633431316165342D636234322D313165652D613634352D373235636638366233386332',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'37313733666130622D636234322D313165652D613634352D373235636638366233386332',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'38393334626437332D636234392D313165652D386665612D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'38616632313063632D633633352D313165652D393763312D336131383235363037623062',1,NULL,X'73746172746572',X'61646D696E',NULL,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL),
+	(X'38616634613865342D633633352D313165652D393763312D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL),
+	(X'38616663373131382D633633352D313165652D393763312D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL),
+	(X'38616664383238642D633633352D313165652D393763312D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'636F6E747261637475736572',NULL,X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL),
+	(X'39303764396563342D636630322D313165652D396436652D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'61663438626230612D636235322D313165652D613966632D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL),
+	(X'63316231663666612D636234642D313165652D386665612D336131383235363037623062',1,NULL,X'7061727469636970616E74',X'61646D696E',NULL,X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `ACT_RU_IDENTITYLINK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_RU_JOB
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_JOB`;
+
+CREATE TABLE `ACT_RU_JOB` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `EXCLUSIVE_` tinyint(1) DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `RETRIES_` int(11) DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_JOB_EXCEPTION_STACK_ID` (`EXCEPTION_STACK_ID_`),
+  KEY `ACT_IDX_JOB_CUSTOM_VALUES_ID` (`CUSTOM_VALUES_ID_`),
+  KEY `ACT_IDX_JOB_CORRELATION_ID` (`CORRELATION_ID_`),
+  KEY `ACT_IDX_JOB_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_JOB_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_JOB_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_FK_JOB_EXECUTION` (`EXECUTION_ID_`),
+  KEY `ACT_FK_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
+  KEY `ACT_FK_JOB_PROC_DEF` (`PROC_DEF_ID_`),
+  CONSTRAINT `ACT_FK_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_SUSPENDED_JOB
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_SUSPENDED_JOB`;
+
+CREATE TABLE `ACT_RU_SUSPENDED_JOB` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `EXCLUSIVE_` tinyint(1) DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `RETRIES_` int(11) DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_SUSPENDED_JOB_EXCEPTION_STACK_ID` (`EXCEPTION_STACK_ID_`),
+  KEY `ACT_IDX_SUSPENDED_JOB_CUSTOM_VALUES_ID` (`CUSTOM_VALUES_ID_`),
+  KEY `ACT_IDX_SUSPENDED_JOB_CORRELATION_ID` (`CORRELATION_ID_`),
+  KEY `ACT_IDX_SJOB_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_SJOB_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_SJOB_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_FK_SUSPENDED_JOB_EXECUTION` (`EXECUTION_ID_`),
+  KEY `ACT_FK_SUSPENDED_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
+  KEY `ACT_FK_SUSPENDED_JOB_PROC_DEF` (`PROC_DEF_ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_TASK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_TASK`;
+
+CREATE TABLE `ACT_RU_TASK` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `PARENT_TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_DEF_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ASSIGNEE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `DELEGATION_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PRIORITY_` int(11) DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `DUE_DATE_` datetime(3) DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUSPENSION_STATE_` int(11) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `FORM_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CLAIM_TIME_` datetime(3) DEFAULT NULL,
+  `IS_COUNT_ENABLED_` tinyint(4) DEFAULT NULL,
+  `VAR_COUNT_` int(11) DEFAULT NULL,
+  `ID_LINK_COUNT_` int(11) DEFAULT NULL,
+  `SUB_TASK_COUNT_` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_TASK_CREATE` (`CREATE_TIME_`),
+  KEY `ACT_IDX_TASK_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_TASK_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_TASK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_FK_TASK_EXE` (`EXECUTION_ID_`),
+  KEY `ACT_FK_TASK_PROCINST` (`PROC_INST_ID_`),
+  KEY `ACT_FK_TASK_PROCDEF` (`PROC_DEF_ID_`),
+  CONSTRAINT `ACT_FK_TASK_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TASK_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_TASK_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_RU_TASK` WRITE;
+/*!40000 ALTER TABLE `ACT_RU_TASK` DISABLE KEYS */;
+
+INSERT INTO `ACT_RU_TASK` (`ID_`, `REV_`, `EXECUTION_ID_`, `PROC_INST_ID_`, `PROC_DEF_ID_`, `TASK_DEF_ID_`, `SCOPE_ID_`, `SUB_SCOPE_ID_`, `SCOPE_TYPE_`, `SCOPE_DEFINITION_ID_`, `PROPAGATED_STAGE_INST_ID_`, `NAME_`, `PARENT_TASK_ID_`, `DESCRIPTION_`, `TASK_DEF_KEY_`, `OWNER_`, `ASSIGNEE_`, `DELEGATION_`, `PRIORITY_`, `CREATE_TIME_`, `DUE_DATE_`, `CATEGORY_`, `SUSPENSION_STATE_`, `TENANT_ID_`, `FORM_KEY_`, `CLAIM_TIME_`, `IS_COUNT_ENABLED_`, `VAR_COUNT_`, `ID_LINK_COUNT_`, `SUB_TASK_COUNT_`)
+VALUES
+	(X'38616664383238622D633633352D313165652D393763312D336131383235363037623062',1,X'38616632356565652D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,NULL,X'E59088E5908CE5AEA1E689B9',NULL,NULL,X'7369642D31343432433237412D303233452D344146332D423942352D463533384533353337303342',NULL,X'636F6E747261637475736572',NULL,50,'2024-02-08 11:52:56.250',NULL,NULL,1,X'',NULL,NULL,1,0,0,0),
+	(X'39303834353538392D636630322D313165652D396436652D336131383235363037623062',1,X'31313363303461372D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'7469656E6368696E5F636F6E74726163745F617070726F76653A313A36323066373361612D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,NULL,X'E68F90E4BAA4E59088E5908C',NULL,NULL,X'7375626D6974436F6E74726163745461736B',NULL,X'61646D696E',NULL,50,'2024-02-19 16:40:41.653',NULL,NULL,1,X'',NULL,NULL,1,0,0,0);
+
+/*!40000 ALTER TABLE `ACT_RU_TASK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 ACT_RU_TIMER_JOB
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_TIMER_JOB`;
+
+CREATE TABLE `ACT_RU_TIMER_JOB` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `EXCLUSIVE_` tinyint(1) DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `RETRIES_` int(11) DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_TIMER_JOB_EXCEPTION_STACK_ID` (`EXCEPTION_STACK_ID_`),
+  KEY `ACT_IDX_TIMER_JOB_CUSTOM_VALUES_ID` (`CUSTOM_VALUES_ID_`),
+  KEY `ACT_IDX_TIMER_JOB_CORRELATION_ID` (`CORRELATION_ID_`),
+  KEY `ACT_IDX_TIMER_JOB_DUEDATE` (`DUEDATE_`),
+  KEY `ACT_IDX_TJOB_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_TJOB_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_TJOB_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_FK_TIMER_JOB_EXECUTION` (`EXECUTION_ID_`),
+  KEY `ACT_FK_TIMER_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
+  KEY `ACT_FK_TIMER_JOB_PROC_DEF` (`PROC_DEF_ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 ACT_RU_VARIABLE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ACT_RU_VARIABLE`;
+
+CREATE TABLE `ACT_RU_VARIABLE` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `NAME_` varchar(255) COLLATE utf8_bin NOT NULL,
+  `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TASK_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `BYTEARRAY_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `DOUBLE_` double DEFAULT NULL,
+  `LONG_` bigint(20) DEFAULT NULL,
+  `TEXT_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  `TEXT2_` varchar(4000) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  KEY `ACT_IDX_RU_VAR_SCOPE_ID_TYPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_IDX_RU_VAR_SUB_ID_TYPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
+  KEY `ACT_FK_VAR_BYTEARRAY` (`BYTEARRAY_ID_`),
+  KEY `ACT_IDX_VARIABLE_TASK_ID` (`TASK_ID_`),
+  KEY `ACT_FK_VAR_EXE` (`EXECUTION_ID_`),
+  KEY `ACT_FK_VAR_PROCINST` (`PROC_INST_ID_`),
+  CONSTRAINT `ACT_FK_VAR_BYTEARRAY` FOREIGN KEY (`BYTEARRAY_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_VAR_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_VAR_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `ACT_RU_VARIABLE` WRITE;
+/*!40000 ALTER TABLE `ACT_RU_VARIABLE` DISABLE KEYS */;
+
+INSERT INTO `ACT_RU_VARIABLE` (`ID_`, `REV_`, `TYPE_`, `NAME_`, `EXECUTION_ID_`, `PROC_INST_ID_`, `TASK_ID_`, `SCOPE_ID_`, `SUB_SCOPE_ID_`, `SCOPE_TYPE_`, `BYTEARRAY_ID_`, `DOUBLE_`, `LONG_`, `TEXT_`, `TEXT2_`)
+VALUES
+	(X'31313363303461362D636234322D313165652D613634352D373235636638366233386332',1,X'737472696E67',X'63757272656E7455736572',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL),
+	(X'31313436313663652D636234322D313165652D613634352D373235636638366233386332',1,X'696E7465676572',X'636F6E74726163744964',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,NULL,11,X'3131',NULL),
+	(X'31313436313663662D636234322D313165652D613634352D373235636638366233386332',1,X'737472696E67',X'617070726F766555736572',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL),
+	(X'31313436313664302D636234322D313165652D613634352D373235636638366233386332',1,X'696E7465676572',X'617070726F7665557365724964',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,NULL,1,X'31',NULL),
+	(X'35616231646439362D636234322D313165652D613634352D373235636638366233386332',3,X'737472696E67',X'726561736F6E',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,NULL,NULL,X'35353535',NULL),
+	(X'35616232303461372D636234322D313165652D613634352D373235636638366233386332',1,X'626F6F6C65616E',X'617070726F7665',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',X'31313362646439342D636234322D313165652D613634352D373235636638366233386332',NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL),
+	(X'38616632333764642D633633352D313165652D393763312D336131383235363037623062',1,X'737472696E67',X'63757272656E7455736572',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,NULL,NULL,X'61646D696E',NULL),
+	(X'38616663373131352D633633352D313165652D393763312D336131383235363037623062',1,X'696E7465676572',X'636F6E74726163744964',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,NULL,7,X'37',NULL),
+	(X'38616663373131362D633633352D313165652D393763312D336131383235363037623062',1,X'737472696E67',X'617070726F766555736572',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,NULL,NULL,X'636F6E747261637475736572',NULL),
+	(X'38616663373131372D633633352D313165652D393763312D336131383235363037623062',1,X'696E7465676572',X'617070726F7665557365724964',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',X'38616632313063622D633633352D313165652D393763312D336131383235363037623062',NULL,NULL,NULL,NULL,NULL,NULL,7,X'37',NULL);
+
+/*!40000 ALTER TABLE `ACT_RU_VARIABLE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 FLW_CHANNEL_DEFINITION
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_CHANNEL_DEFINITION`;
+
+CREATE TABLE `FLW_CHANNEL_DEFINITION` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `VERSION_` int(11) DEFAULT NULL,
+  `KEY_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) DEFAULT NULL,
+  `TYPE_` varchar(255) DEFAULT NULL,
+  `IMPLEMENTATION_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_IDX_CHANNEL_DEF_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 FLW_EV_DATABASECHANGELOG
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_EV_DATABASECHANGELOG`;
+
+CREATE TABLE `FLW_EV_DATABASECHANGELOG` (
+  `ID` varchar(255) NOT NULL,
+  `AUTHOR` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) NOT NULL,
+  `MD5SUM` varchar(35) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `COMMENTS` varchar(255) DEFAULT NULL,
+  `TAG` varchar(255) DEFAULT NULL,
+  `LIQUIBASE` varchar(20) DEFAULT NULL,
+  `CONTEXTS` varchar(255) DEFAULT NULL,
+  `LABELS` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `FLW_EV_DATABASECHANGELOG` WRITE;
+/*!40000 ALTER TABLE `FLW_EV_DATABASECHANGELOG` DISABLE KEYS */;
+
+INSERT INTO `FLW_EV_DATABASECHANGELOG` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`)
+VALUES
+	('1','flowable','org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml','2024-02-08 11:51:42',1,'EXECUTED','8:1b0c48c9cf7945be799d868a2626d687','createTable tableName=FLW_EVENT_DEPLOYMENT; createTable tableName=FLW_EVENT_RESOURCE; createTable tableName=FLW_EVENT_DEFINITION; createIndex indexName=ACT_IDX_EVENT_DEF_UNIQ, tableName=FLW_EVENT_DEFINITION; createTable tableName=FLW_CHANNEL_DEFIN...','',NULL,'4.3.5',NULL,NULL,'7364302546'),
+	('2','flowable','org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml','2024-02-08 11:51:42',2,'EXECUTED','8:0ea825feb8e470558f0b5754352b9cda','addColumn tableName=FLW_CHANNEL_DEFINITION; addColumn tableName=FLW_CHANNEL_DEFINITION','',NULL,'4.3.5',NULL,NULL,'7364302546'),
+	('3','flowable','org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml','2024-02-08 11:51:42',3,'EXECUTED','8:3c2bb293350b5cbe6504331980c9dcee','customChange','',NULL,'4.3.5',NULL,NULL,'7364302546');
+
+/*!40000 ALTER TABLE `FLW_EV_DATABASECHANGELOG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 FLW_EV_DATABASECHANGELOGLOCK
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_EV_DATABASECHANGELOGLOCK`;
+
+CREATE TABLE `FLW_EV_DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `FLW_EV_DATABASECHANGELOGLOCK` WRITE;
+/*!40000 ALTER TABLE `FLW_EV_DATABASECHANGELOGLOCK` DISABLE KEYS */;
+
+INSERT INTO `FLW_EV_DATABASECHANGELOGLOCK` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`)
+VALUES
+	(1,b'0',NULL,NULL);
+
+/*!40000 ALTER TABLE `FLW_EV_DATABASECHANGELOGLOCK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 FLW_EVENT_DEFINITION
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_EVENT_DEFINITION`;
+
+CREATE TABLE `FLW_EVENT_DEFINITION` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `VERSION_` int(11) DEFAULT NULL,
+  `KEY_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`),
+  UNIQUE KEY `ACT_IDX_EVENT_DEF_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 FLW_EVENT_DEPLOYMENT
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_EVENT_DEPLOYMENT`;
+
+CREATE TABLE `FLW_EVENT_DEPLOYMENT` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `CATEGORY_` varchar(255) DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) DEFAULT NULL,
+  `TENANT_ID_` varchar(255) DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 FLW_EVENT_RESOURCE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_EVENT_RESOURCE`;
+
+CREATE TABLE `FLW_EVENT_RESOURCE` (
+  `ID_` varchar(255) NOT NULL,
+  `NAME_` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob,
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# 转储表 FLW_RU_BATCH
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_RU_BATCH`;
+
+CREATE TABLE `FLW_RU_BATCH` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `TYPE_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `SEARCH_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SEARCH_KEY2_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NOT NULL,
+  `COMPLETE_TIME_` datetime(3) DEFAULT NULL,
+  `STATUS_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `BATCH_DOC_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 FLW_RU_BATCH_PART
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `FLW_RU_BATCH_PART`;
+
+CREATE TABLE `FLW_RU_BATCH_PART` (
+  `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `REV_` int(11) DEFAULT NULL,
+  `BATCH_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TYPE_` varchar(64) COLLATE utf8_bin NOT NULL,
+  `SCOPE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `SEARCH_KEY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `SEARCH_KEY2_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NOT NULL,
+  `COMPLETE_TIME_` datetime(3) DEFAULT NULL,
+  `STATUS_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `RESULT_DOC_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
+  PRIMARY KEY (`ID_`),
+  KEY `FLW_IDX_BATCH_PART` (`BATCH_ID_`),
+  CONSTRAINT `FLW_FK_BATCH_PART_PARENT` FOREIGN KEY (`BATCH_ID_`) REFERENCES `FLW_RU_BATCH` (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+# 转储表 gen_table
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `gen_table`;
+
+CREATE TABLE `gen_table` (
+  `table_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `table_name` varchar(200) DEFAULT '' COMMENT '表名称',
+  `table_comment` varchar(500) DEFAULT '' COMMENT '表描述',
+  `sub_table_name` varchar(64) DEFAULT NULL COMMENT '关联子表的表名',
+  `sub_table_fk_name` varchar(64) DEFAULT NULL COMMENT '子表关联的外键名',
+  `class_name` varchar(100) DEFAULT '' COMMENT '实体类名称',
+  `tpl_category` varchar(200) DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
+  `package_name` varchar(100) DEFAULT NULL COMMENT '生成包路径',
+  `module_name` varchar(30) DEFAULT NULL COMMENT '生成模块名',
+  `business_name` varchar(30) DEFAULT NULL COMMENT '生成业务名',
+  `function_name` varchar(50) DEFAULT NULL COMMENT '生成功能名',
+  `function_author` varchar(50) DEFAULT NULL COMMENT '生成功能作者',
+  `gen_type` char(1) DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
+  `gen_path` varchar(200) DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
+  `options` varchar(1000) DEFAULT NULL COMMENT '其它生成选项',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`table_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码生成业务表';
+
+
+
+# 转储表 gen_table_column
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `gen_table_column`;
+
+CREATE TABLE `gen_table_column` (
+  `column_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `table_id` varchar(64) DEFAULT NULL COMMENT '归属表编号',
+  `column_name` varchar(200) DEFAULT NULL COMMENT '列名称',
+  `column_comment` varchar(500) DEFAULT NULL COMMENT '列描述',
+  `column_type` varchar(100) DEFAULT NULL COMMENT '列类型',
+  `java_type` varchar(500) DEFAULT NULL COMMENT 'JAVA类型',
+  `java_field` varchar(200) DEFAULT NULL COMMENT 'JAVA字段名',
+  `is_pk` char(1) DEFAULT NULL COMMENT '是否主键（1是）',
+  `is_increment` char(1) DEFAULT NULL COMMENT '是否自增（1是）',
+  `is_required` char(1) DEFAULT NULL COMMENT '是否必填（1是）',
+  `is_insert` char(1) DEFAULT NULL COMMENT '是否为插入字段（1是）',
+  `is_edit` char(1) DEFAULT NULL COMMENT '是否编辑字段（1是）',
+  `is_list` char(1) DEFAULT NULL COMMENT '是否列表字段（1是）',
+  `is_query` char(1) DEFAULT NULL COMMENT '是否查询字段（1是）',
+  `query_type` varchar(200) DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
+  `html_type` varchar(200) DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
+  `dict_type` varchar(200) DEFAULT '' COMMENT '字典类型',
+  `sort` int(11) DEFAULT NULL COMMENT '排序',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`column_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码生成业务表字段';
+
+
+
+# 转储表 sys_config
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_config`;
+
+CREATE TABLE `sys_config` (
+  `config_id` int(5) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+  `config_name` varchar(100) DEFAULT '' COMMENT '参数名称',
+  `config_key` varchar(100) DEFAULT '' COMMENT '参数键名',
+  `config_value` varchar(500) DEFAULT '' COMMENT '参数键值',
+  `config_type` char(1) DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`config_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='参数配置表';
+
+LOCK TABLES `sys_config` WRITE;
+/*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
+
+INSERT INTO `sys_config` (`config_id`, `config_name`, `config_key`, `config_value`, `config_type`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,'主框架页-默认皮肤样式名称','sys.index.skinName','skin-blue','Y','admin','2023-07-04 20:58:17','',NULL,'蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow'),
+	(2,'用户管理-账号初始密码','sys.user.initPassword','123456','Y','admin','2023-07-04 20:58:17','',NULL,'初始化密码 123456'),
+	(3,'主框架页-侧边栏主题','sys.index.sideTheme','theme-dark','Y','admin','2023-07-04 20:58:17','',NULL,'深色主题theme-dark，浅色主题theme-light'),
+	(4,'账号自助-验证码开关','sys.account.captchaEnabled','false','Y','admin','2023-07-04 20:58:17','',NULL,'是否开启验证码功能（true开启，false关闭）'),
+	(5,'账号自助-是否开启用户注册功能','sys.account.registerUser','false','Y','admin','2023-07-04 20:58:17','',NULL,'是否开启注册用户功能（true开启，false关闭）'),
+	(6,'用户登录-黑名单列表','sys.login.blackIPList','','Y','admin','2023-07-04 20:58:17','',NULL,'设置登录IP黑名单限制，多个匹配项以;分隔，支持匹配（*通配、网段）');
+
+/*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_dept
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_dept`;
+
+CREATE TABLE `sys_dept` (
+  `dept_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',
+  `parent_id` bigint(20) DEFAULT '0' COMMENT '父部门id',
+  `ancestors` varchar(50) DEFAULT '' COMMENT '祖级列表',
+  `dept_name` varchar(30) DEFAULT '' COMMENT '部门名称',
+  `order_num` int(4) DEFAULT '0' COMMENT '显示顺序',
+  `leader` varchar(20) DEFAULT NULL COMMENT '负责人',
+  `phone` varchar(11) DEFAULT NULL COMMENT '联系电话',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `status` char(1) DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`dept_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='部门表';
+
+LOCK TABLES `sys_dept` WRITE;
+/*!40000 ALTER TABLE `sys_dept` DISABLE KEYS */;
+
+INSERT INTO `sys_dept` (`dept_id`, `parent_id`, `ancestors`, `dept_name`, `order_num`, `leader`, `phone`, `email`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`)
+VALUES
+	(100,0,'0','TeinChin健身科技',0,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(101,100,'0,100','深圳总公司',1,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(102,100,'0,100','长沙分公司',2,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(103,101,'0,100,101','研发部门',1,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(104,101,'0,100,101','市场部门',2,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(105,101,'0,100,101','测试部门',3,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(106,101,'0,100,101','财务部门',4,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(107,101,'0,100,101','运维部门',5,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(108,102,'0,100,102','市场部门',1,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL),
+	(109,102,'0,100,102','财务部门',2,'TeinChin健身','15888888888','ry@qq.com','0','0','admin','2023-07-04 20:58:16','',NULL);
+
+/*!40000 ALTER TABLE `sys_dept` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_dict_data
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_dict_data`;
+
+CREATE TABLE `sys_dict_data` (
+  `dict_code` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典编码',
+  `dict_sort` int(4) DEFAULT '0' COMMENT '字典排序',
+  `dict_label` varchar(100) DEFAULT '' COMMENT '字典标签',
+  `dict_value` varchar(100) DEFAULT '' COMMENT '字典键值',
+  `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
+  `css_class` varchar(100) DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
+  `list_class` varchar(100) DEFAULT NULL COMMENT '表格回显样式',
+  `is_default` char(1) DEFAULT 'N' COMMENT '是否默认（Y是 N否）',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`dict_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典数据表';
+
+LOCK TABLES `sys_dict_data` WRITE;
+/*!40000 ALTER TABLE `sys_dict_data` DISABLE KEYS */;
+
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,1,'男','0','sys_user_sex','','','Y','0','admin','2023-07-04 20:58:17','',NULL,'性别男'),
+	(2,2,'女','1','sys_user_sex','','','N','0','admin','2023-07-04 20:58:17','',NULL,'性别女'),
+	(3,3,'未知','2','sys_user_sex','','','N','0','admin','2023-07-04 20:58:17','',NULL,'性别未知'),
+	(4,1,'显示','0','sys_show_hide','','primary','Y','0','admin','2023-07-04 20:58:17','',NULL,'显示菜单'),
+	(5,2,'隐藏','1','sys_show_hide','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'隐藏菜单'),
+	(6,1,'正常','0','sys_normal_disable','','primary','Y','0','admin','2023-07-04 20:58:17','',NULL,'正常状态'),
+	(7,2,'停用','1','sys_normal_disable','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'停用状态'),
+	(8,1,'正常','0','sys_job_status','','primary','Y','0','admin','2023-07-04 20:58:17','',NULL,'正常状态'),
+	(9,2,'暂停','1','sys_job_status','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'停用状态'),
+	(10,1,'默认','DEFAULT','sys_job_group','','','Y','0','admin','2023-07-04 20:58:17','',NULL,'默认分组'),
+	(11,2,'系统','SYSTEM','sys_job_group','','','N','0','admin','2023-07-04 20:58:17','',NULL,'系统分组'),
+	(12,1,'是','Y','sys_yes_no','','primary','Y','0','admin','2023-07-04 20:58:17','',NULL,'系统默认是'),
+	(13,2,'否','N','sys_yes_no','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'系统默认否'),
+	(14,1,'通知','1','sys_notice_type','','warning','Y','0','admin','2023-07-04 20:58:17','',NULL,'通知'),
+	(15,2,'公告','2','sys_notice_type','','success','N','0','admin','2023-07-04 20:58:17','',NULL,'公告'),
+	(16,1,'正常','0','sys_notice_status','','primary','Y','0','admin','2023-07-04 20:58:17','',NULL,'正常状态'),
+	(17,2,'关闭','1','sys_notice_status','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'关闭状态'),
+	(18,99,'其他','0','sys_oper_type','','info','N','0','admin','2023-07-04 20:58:17','',NULL,'其他操作'),
+	(19,1,'新增','1','sys_oper_type','','info','N','0','admin','2023-07-04 20:58:17','',NULL,'新增操作'),
+	(20,2,'修改','2','sys_oper_type','','info','N','0','admin','2023-07-04 20:58:17','',NULL,'修改操作'),
+	(21,3,'删除','3','sys_oper_type','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'删除操作'),
+	(22,4,'授权','4','sys_oper_type','','primary','N','0','admin','2023-07-04 20:58:17','',NULL,'授权操作'),
+	(23,5,'导出','5','sys_oper_type','','warning','N','0','admin','2023-07-04 20:58:17','',NULL,'导出操作'),
+	(24,6,'导入','6','sys_oper_type','','warning','N','0','admin','2023-07-04 20:58:17','',NULL,'导入操作'),
+	(25,7,'强退','7','sys_oper_type','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'强退操作'),
+	(26,8,'生成代码','8','sys_oper_type','','warning','N','0','admin','2023-07-04 20:58:17','',NULL,'生成操作'),
+	(27,9,'清空数据','9','sys_oper_type','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'清空操作'),
+	(28,1,'成功','0','sys_common_status','','primary','N','0','admin','2023-07-04 20:58:17','',NULL,'正常状态'),
+	(29,2,'失败','1','sys_common_status','','danger','N','0','admin','2023-07-04 20:58:17','',NULL,'停用状态'),
+	(30,1,'线上渠道','1','channel_type',NULL,'primary','N','0','admin','2023-09-18 10:33:36','',NULL,NULL),
+	(31,2,'线下渠道','2','channel_type',NULL,'success','N','0','admin','2023-09-18 10:33:49','',NULL,NULL),
+	(32,0,'正常','1','channel_status',NULL,'success','N','0','admin','2023-09-22 15:49:12','',NULL,NULL),
+	(33,0,'禁用','0','channel_status',NULL,'info','N','0','admin','2023-09-22 15:49:47','',NULL,NULL),
+	(34,1,'折扣券','1','activity_type',NULL,'primary','N','0','admin','2023-10-03 16:59:26','admin','2023-10-03 17:00:24',''),
+	(35,2,'代金券','2','activity_type',NULL,'success','N','0','admin','2023-10-03 17:00:05','admin','2023-10-03 17:00:13',NULL),
+	(36,0,'正在进行','1','activity_status',NULL,'primary','N','0','admin','2023-10-03 17:13:22','admin','2023-10-14 11:05:19',NULL),
+	(37,0,'尚未开始','0','activity_status',NULL,'success','N','0','admin','2023-10-03 17:13:41','admin','2023-10-14 11:05:39',NULL),
+	(38,0,'已过期','2','activity_status',NULL,'warning','N','0','admin','2023-10-12 11:37:51','admin','2023-10-14 11:05:58',NULL),
+	(39,0,'舞蹈类','1','course_type',NULL,'primary','N','0','admin','2023-10-15 10:44:05','admin','2023-10-15 10:46:47',NULL),
+	(40,0,'游泳类','2','course_type',NULL,'primary','N','0','admin','2023-10-15 10:44:15','admin','2023-10-15 10:46:51',NULL),
+	(41,0,'拳击类','3','course_type',NULL,'primary','N','0','admin','2023-10-15 10:44:33','admin','2023-10-15 10:46:54',NULL),
+	(42,0,'中小学生','1','course_apply_to',NULL,'success','N','0','admin','2023-10-15 10:45:39','admin','2023-10-15 10:46:24',NULL),
+	(43,0,'上班族','2','course_apply_to',NULL,'success','N','0','admin','2023-10-15 10:45:47','admin','2023-10-15 10:46:31',NULL),
+	(44,0,'小白用户','3','course_apply_to',NULL,'success','N','0','admin','2023-10-15 10:45:57','admin','2023-10-15 10:46:36',NULL),
+	(45,0,'达人','4','course_apply_to',NULL,'success','N','0','admin','2023-10-15 10:46:10','admin','2023-10-15 10:46:39',NULL),
+	(46,1,'近期报名','1','clue_level',NULL,'primary','N','0','admin','2023-10-16 16:23:59','',NULL,NULL),
+	(47,2,'报名考虑中','2','clue_level',NULL,'primary','N','0','admin','2023-10-16 16:24:12','admin','2023-10-16 16:25:13',NULL),
+	(48,3,'了解一下','3','clue_level',NULL,'primary','N','0','admin','2023-10-16 16:24:21','admin','2023-10-16 16:25:03',NULL),
+	(49,4,'打酱油','4','clue_level',NULL,'primary','N','0','admin','2023-10-16 16:25:26','',NULL,NULL),
+	(50,1,'已分配','1','clue_status',NULL,'success','N','0','admin','2023-10-16 16:26:54','admin','2023-10-16 16:27:17',NULL),
+	(51,2,'跟进中','2','clue_status',NULL,'primary','N','0','admin','2023-10-16 16:27:12','',NULL,NULL),
+	(52,3,'回收','3','clue_status',NULL,'info','N','0','admin','2023-10-16 16:27:36','',NULL,NULL),
+	(53,4,'伪线索','4','clue_status',NULL,'warning','N','0','admin','2023-10-16 16:37:00','',NULL,NULL),
+	(54,0,'空号 ','1','clue_invalidate',NULL,'primary','N','0','admin','2024-01-20 15:29:08','',NULL,NULL),
+	(55,0,'停机','2','clue_invalidate',NULL,'primary','N','0','admin','2024-01-20 15:29:18','',NULL,NULL),
+	(56,0,'无法联系','3','clue_invalidate',NULL,'primary','N','0','admin','2024-01-20 15:29:28','',NULL,NULL),
+	(57,0,'其他','4','clue_invalidate',NULL,'primary','N','0','admin','2024-01-20 15:29:37','',NULL,NULL),
+	(58,1,'已分配','1','business_status',NULL,'default','N','0','admin','2024-01-23 10:13:27','',NULL,NULL),
+	(59,2,'进行中','2','business_status',NULL,'default','N','0','admin','2024-01-23 10:13:41','',NULL,NULL),
+	(60,3,'回收','3','business_status',NULL,'default','N','0','admin','2024-01-23 10:13:53','',NULL,NULL),
+	(61,0,'无','0','business_occupation',NULL,'default','N','0','admin','2024-01-28 21:03:03','',NULL,NULL),
+	(62,0,'技术','1','business_occupation',NULL,'default','N','0','admin','2024-01-28 21:03:08','',NULL,NULL),
+	(63,0,'产品','2','business_occupation',NULL,'default','N','0','admin','2024-01-28 21:03:13','',NULL,NULL),
+	(64,0,'设计','3','business_occupation',NULL,'default','N','0','admin','2024-01-28 21:03:22','',NULL,NULL),
+	(65,0,'运营','4','business_occupation',NULL,'default','N','0','admin','2024-01-28 21:03:29','',NULL,NULL),
+	(66,0,'市场','5','business_occupation',NULL,'default','N','0','admin','2024-01-28 21:03:40','',NULL,NULL),
+	(67,0,'销售','6','business_occupation',NULL,'default','N','0','admin','2024-01-28 21:03:45','',NULL,NULL),
+	(68,0,'小学','0','business_education',NULL,'default','N','0','admin','2024-01-28 21:34:30','admin','2024-01-28 21:34:44',NULL),
+	(69,0,'初中','1','business_education',NULL,'default','N','0','admin','2024-01-28 21:34:38','',NULL,NULL),
+	(70,0,'高中','2','business_education',NULL,'default','N','0','admin','2024-01-28 21:34:49','',NULL,NULL),
+	(71,0,'中专','3','business_education',NULL,'default','N','0','admin','2024-01-28 21:35:00','',NULL,NULL),
+	(72,0,'大专','4','business_education',NULL,'default','N','0','admin','2024-01-28 21:35:05','',NULL,NULL),
+	(73,0,'本科','5','business_education',NULL,'default','N','0','admin','2024-01-28 21:35:09','',NULL,NULL),
+	(74,0,'硕士','6','business_education',NULL,'default','N','0','admin','2024-01-28 21:35:15','',NULL,NULL),
+	(75,0,'博士','7','business_education',NULL,'default','N','0','admin','2024-01-28 21:35:19','',NULL,NULL),
+	(76,0,'价格敏感','0','business_focus',NULL,'default','N','0','admin','2024-01-28 22:17:30','',NULL,NULL),
+	(77,0,'位置敏感','1','business_focus',NULL,'default','N','0','admin','2024-01-28 22:17:40','',NULL,NULL),
+	(78,0,'课程敏感','3','business_focus',NULL,'default','N','0','admin','2024-01-28 22:17:54','',NULL,NULL),
+	(79,0,'时间敏感','2','business_focus',NULL,'default','N','0','admin','2024-01-28 22:18:15','',NULL,NULL),
+	(80,0,'教练敏感','4','business_focus',NULL,'default','N','0','admin','2024-01-28 22:18:23','',NULL,NULL),
+	(81,0,'环境敏感','6','business_focus',NULL,'default','N','0','admin','2024-01-28 22:18:44','',NULL,NULL),
+	(82,0,'待审核','1','contract_status',NULL,'primary','N','0','admin','2024-02-03 09:57:23','admin','2024-02-03 09:58:13',NULL),
+	(83,0,'已通过','2','contract_status',NULL,'success','N','0','admin','2024-02-03 09:57:36','admin','2024-02-03 09:57:55',NULL),
+	(84,0,'被驳回','3','contract_status',NULL,'warning','N','0','admin','2024-02-03 09:57:48','',NULL,NULL);
+
+/*!40000 ALTER TABLE `sys_dict_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_dict_type
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_dict_type`;
+
+CREATE TABLE `sys_dict_type` (
+  `dict_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典主键',
+  `dict_name` varchar(100) DEFAULT '' COMMENT '字典名称',
+  `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`dict_id`),
+  UNIQUE KEY `dict_type` (`dict_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典类型表';
+
+LOCK TABLES `sys_dict_type` WRITE;
+/*!40000 ALTER TABLE `sys_dict_type` DISABLE KEYS */;
+
+INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,'用户性别','sys_user_sex','0','admin','2023-07-04 20:58:17','',NULL,'用户性别列表'),
+	(2,'菜单状态','sys_show_hide','0','admin','2023-07-04 20:58:17','',NULL,'菜单状态列表'),
+	(3,'系统开关','sys_normal_disable','0','admin','2023-07-04 20:58:17','',NULL,'系统开关列表'),
+	(4,'任务状态','sys_job_status','0','admin','2023-07-04 20:58:17','',NULL,'任务状态列表'),
+	(5,'任务分组','sys_job_group','0','admin','2023-07-04 20:58:17','',NULL,'任务分组列表'),
+	(6,'系统是否','sys_yes_no','0','admin','2023-07-04 20:58:17','',NULL,'系统是否列表'),
+	(7,'通知类型','sys_notice_type','0','admin','2023-07-04 20:58:17','',NULL,'通知类型列表'),
+	(8,'通知状态','sys_notice_status','0','admin','2023-07-04 20:58:17','',NULL,'通知状态列表'),
+	(9,'操作类型','sys_oper_type','0','admin','2023-07-04 20:58:17','',NULL,'操作类型列表'),
+	(10,'系统状态','sys_common_status','0','admin','2023-07-04 20:58:17','',NULL,'登录状态列表'),
+	(11,'渠道类型','channel_type','0','admin','2023-09-18 10:28:10','',NULL,'推广渠道类型'),
+	(12,'渠道状态','channel_status','0','admin','2023-09-22 15:48:17','',NULL,'渠道目前是否可用'),
+	(13,'活动类型','activity_type','0','admin','2023-10-03 16:58:02','',NULL,'活动类型：1表示折扣券、2表示代金券'),
+	(14,'活动状态','activity_status','0','admin','2023-10-03 17:12:45','admin','2023-10-07 11:53:58','0禁用1正常'),
+	(15,'课程类型','course_type','0','admin','2023-10-15 10:43:35','',NULL,NULL),
+	(16,'课程适用人群','course_apply_to','0','admin','2023-10-15 10:45:24','',NULL,NULL),
+	(17,'客户意向等级','clue_level','0','admin','2023-10-16 16:22:52','',NULL,NULL),
+	(18,'线索状态','clue_status','0','admin','2023-10-16 16:26:32','',NULL,NULL),
+	(19,'无效线索类型','clue_invalidate','0','admin','2024-01-20 15:28:22','',NULL,NULL),
+	(20,'商机状态','business_status','0','admin','2024-01-23 10:12:45','',NULL,NULL),
+	(21,'职业种类','business_occupation','0','admin','2024-01-28 21:02:32','',NULL,NULL),
+	(22,'学历','business_education','0','admin','2024-01-28 21:33:38','',NULL,NULL),
+	(23,'商机沟通重点','business_focus','0','admin','2024-01-28 22:17:13','',NULL,NULL),
+	(24,'合同状态','contract_status','0','admin','2024-02-03 09:56:47','',NULL,NULL);
+
+/*!40000 ALTER TABLE `sys_dict_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_job
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_job`;
+
+CREATE TABLE `sys_job` (
+  `job_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `job_name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `job_group` varchar(64) NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
+  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
+  `misfire_policy` varchar(20) DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+  `concurrent` char(1) DEFAULT '1' COMMENT '是否并发执行（0允许 1禁止）',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1暂停）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`job_id`,`job_name`,`job_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务调度表';
+
+LOCK TABLES `sys_job` WRITE;
+/*!40000 ALTER TABLE `sys_job` DISABLE KEYS */;
+
+INSERT INTO `sys_job` (`job_id`, `job_name`, `job_group`, `invoke_target`, `cron_expression`, `misfire_policy`, `concurrent`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,'系统默认（无参）','DEFAULT','ryTask.ryNoParams','0/10 * * * * ?','3','1','1','admin','2023-07-04 20:58:17','',NULL,''),
+	(2,'系统默认（有参）','DEFAULT','ryTask.ryParams(\'ry\')','0/15 * * * * ?','3','1','1','admin','2023-07-04 20:58:17','',NULL,''),
+	(3,'系统默认（多参）','DEFAULT','ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)','0/20 * * * * ?','3','1','1','admin','2023-07-04 20:58:17','',NULL,'');
+
+/*!40000 ALTER TABLE `sys_job` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_job_log
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_job_log`;
+
+CREATE TABLE `sys_job_log` (
+  `job_log_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
+  `job_name` varchar(64) NOT NULL COMMENT '任务名称',
+  `job_group` varchar(64) NOT NULL COMMENT '任务组名',
+  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `job_message` varchar(500) DEFAULT NULL COMMENT '日志信息',
+  `status` char(1) DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
+  `exception_info` varchar(2000) DEFAULT '' COMMENT '异常信息',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`job_log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务调度日志表';
+
+
+
+# 转储表 sys_logininfor
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_logininfor`;
+
+CREATE TABLE `sys_logininfor` (
+  `info_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '访问ID',
+  `user_name` varchar(50) DEFAULT '' COMMENT '用户账号',
+  `ipaddr` varchar(128) DEFAULT '' COMMENT '登录IP地址',
+  `login_location` varchar(255) DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) DEFAULT '' COMMENT '操作系统',
+  `status` char(1) DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
+  `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
+  `login_time` datetime DEFAULT NULL COMMENT '访问时间',
+  PRIMARY KEY (`info_id`),
+  KEY `idx_sys_logininfor_s` (`status`),
+  KEY `idx_sys_logininfor_lt` (`login_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
+
+LOCK TABLES `sys_logininfor` WRITE;
+/*!40000 ALTER TABLE `sys_logininfor` DISABLE KEYS */;
+
+INSERT INTO `sys_logininfor` (`info_id`, `user_name`, `ipaddr`, `login_location`, `browser`, `os`, `status`, `msg`, `login_time`)
+VALUES
+	(100,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-07-04 21:20:31'),
+	(101,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','1','验证码已失效','2023-07-05 11:28:04'),
+	(102,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','1','验证码已失效','2023-07-05 11:30:58'),
+	(103,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-05 11:31:07'),
+	(104,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-05 12:10:07'),
+	(105,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-05 21:23:15'),
+	(106,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-07-05 21:29:55'),
+	(107,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-05 21:30:01'),
+	(108,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-07-05 21:31:44'),
+	(109,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-05 21:31:49'),
+	(110,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-19 20:17:15'),
+	(111,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 20:32:36'),
+	(112,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 21:26:27'),
+	(113,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 21:31:54'),
+	(114,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 21:37:18'),
+	(115,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 22:20:01'),
+	(116,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 22:21:02'),
+	(117,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 22:23:07'),
+	(118,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-19 23:06:56'),
+	(119,'javaboytest','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-07-20 00:05:54'),
+	(120,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-21 21:22:23'),
+	(121,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-07-21 21:22:46'),
+	(122,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-21 21:22:53'),
+	(123,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2023-07-24 22:38:24'),
+	(124,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','退出成功','2023-07-24 22:38:39'),
+	(125,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-24 22:40:49'),
+	(126,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','1','验证码错误','2023-07-27 12:14:22'),
+	(127,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-27 12:14:28'),
+	(128,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-07-28 13:54:33'),
+	(129,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','1','验证码错误','2023-09-16 15:43:53'),
+	(130,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','1','验证码错误','2023-09-16 15:43:59'),
+	(131,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-16 15:44:45'),
+	(132,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','1','验证码已失效','2023-09-16 20:52:11'),
+	(133,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-16 20:52:15'),
+	(134,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-16 20:56:05'),
+	(135,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-16 20:56:20'),
+	(136,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-16 21:15:23'),
+	(137,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-16 21:15:26'),
+	(138,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','1','验证码错误','2023-09-16 22:06:03'),
+	(139,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-16 22:06:09'),
+	(140,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-16 22:24:40'),
+	(141,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-16 22:24:44'),
+	(142,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-17 10:24:30'),
+	(143,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-17 10:33:16'),
+	(144,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-17 10:33:23'),
+	(145,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-18 09:55:42'),
+	(146,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-18 10:27:18'),
+	(147,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-18 16:40:21'),
+	(148,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2023-09-18 19:45:04'),
+	(149,'admin','127.0.0.1','内网IP','Unknown','Unknown','1','验证码已失效','2023-09-20 20:35:51'),
+	(150,'admin','127.0.0.1','内网IP','Unknown','Unknown','1','验证码已失效','2023-09-20 20:35:53'),
+	(151,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-20 20:48:15'),
+	(152,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-20 21:21:15'),
+	(153,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-20 21:23:12'),
+	(154,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-20 21:39:27'),
+	(155,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 09:50:31'),
+	(156,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-22 10:06:32'),
+	(157,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 10:06:33'),
+	(158,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 10:07:00'),
+	(159,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 10:09:18'),
+	(160,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 10:19:16'),
+	(161,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 10:22:41'),
+	(162,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 10:30:32'),
+	(163,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 10:42:35'),
+	(164,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 10:55:29'),
+	(165,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 11:08:00'),
+	(166,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 11:10:04'),
+	(167,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 11:19:12'),
+	(168,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 11:21:03'),
+	(169,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 14:30:33'),
+	(170,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 14:45:35'),
+	(171,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 14:45:46'),
+	(172,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 14:46:55'),
+	(173,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 15:47:29'),
+	(174,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-22 16:16:59'),
+	(175,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 16:17:03'),
+	(176,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 19:52:24'),
+	(177,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-22 20:02:12'),
+	(178,'qudao','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 20:02:18'),
+	(179,'qudao','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-22 20:06:01'),
+	(180,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 20:06:04'),
+	(181,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-22 20:06:27'),
+	(182,'qudao','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 20:06:33'),
+	(183,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-22 21:09:11'),
+	(184,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 22:36:52'),
+	(185,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-22 22:43:14'),
+	(186,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-23 11:03:32'),
+	(187,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-23 11:44:35'),
+	(188,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-23 12:03:19'),
+	(189,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-23 14:20:55'),
+	(190,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-23 14:47:54'),
+	(191,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-23 15:40:35'),
+	(192,'qudao','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-23 16:04:58'),
+	(193,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-24 17:24:26'),
+	(194,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-24 17:31:53'),
+	(195,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-26 13:12:55'),
+	(196,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-26 18:22:44'),
+	(197,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-26 18:57:26'),
+	(198,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-26 20:02:12'),
+	(199,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-09-29 15:44:02'),
+	(200,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-29 15:58:27'),
+	(201,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-29 22:16:23'),
+	(202,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-09-29 22:23:47'),
+	(203,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-29 22:23:49'),
+	(204,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-29 23:29:17'),
+	(205,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-29 23:30:15'),
+	(206,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-30 10:37:54'),
+	(207,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-30 11:18:11'),
+	(208,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-09-30 21:31:30'),
+	(209,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-03 11:09:05'),
+	(210,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-03 16:08:08'),
+	(211,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-07 11:03:21'),
+	(212,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-07 11:44:17'),
+	(213,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-07 11:48:02'),
+	(214,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-07 15:52:16'),
+	(215,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-07 16:02:58'),
+	(216,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-07 16:02:59'),
+	(217,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-07 16:04:57'),
+	(218,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-07 16:08:12'),
+	(219,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-09 20:27:22'),
+	(220,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-10 15:24:57'),
+	(221,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-12 08:56:38'),
+	(222,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-12 11:10:45'),
+	(223,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-12 11:52:05'),
+	(224,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-12 16:28:39'),
+	(225,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-12 16:31:29'),
+	(226,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-12 16:36:40'),
+	(227,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-12 16:36:42'),
+	(228,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 09:54:22'),
+	(229,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-13 10:29:10'),
+	(230,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 10:46:26'),
+	(231,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-13 10:55:11'),
+	(232,'huodong','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 10:55:18'),
+	(233,'huodong','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-13 10:55:34'),
+	(234,'qudao','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 10:56:12'),
+	(235,'qudao','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-13 10:56:30'),
+	(236,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 10:56:34'),
+	(237,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-13 10:58:03'),
+	(238,'huodong','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 10:58:10'),
+	(239,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-13 12:36:31'),
+	(240,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 13:13:56'),
+	(241,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-13 13:19:36'),
+	(242,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-13 13:56:06'),
+	(243,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 13:56:08'),
+	(244,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-13 13:57:29'),
+	(245,'huodong','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 14:15:58'),
+	(246,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-13 14:43:32'),
+	(247,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 22:31:49'),
+	(248,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-13 23:27:54'),
+	(249,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-13 23:34:48'),
+	(250,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-14 09:25:29'),
+	(251,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-14 10:26:18'),
+	(252,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-14 10:57:36'),
+	(253,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-14 19:53:38'),
+	(254,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-14 20:04:35'),
+	(255,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-15 10:42:04'),
+	(256,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-15 11:28:21'),
+	(257,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-15 11:55:23'),
+	(258,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-15 14:57:10'),
+	(259,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-15 15:30:49'),
+	(260,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-15 16:56:20'),
+	(261,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-15 17:01:30'),
+	(262,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-15 20:02:23'),
+	(263,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-15 20:18:59'),
+	(264,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2023-10-15 20:46:54'),
+	(265,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-16 08:51:00'),
+	(266,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-16 16:20:37'),
+	(267,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-16 16:22:04'),
+	(268,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-16 17:12:16'),
+	(269,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-16 20:04:24'),
+	(270,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-16 20:33:02'),
+	(271,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-17 16:12:59'),
+	(272,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-17 16:20:57'),
+	(273,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-18 09:41:49'),
+	(274,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','退出成功','2023-10-18 09:56:31'),
+	(275,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-18 09:56:33'),
+	(276,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-10-18 10:05:27'),
+	(277,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-10-26 10:55:54'),
+	(278,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-03 15:52:30'),
+	(279,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-11-03 16:35:51'),
+	(280,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-03 16:56:26'),
+	(281,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-04 09:53:15'),
+	(282,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-11-04 10:03:34'),
+	(283,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-04 10:50:40'),
+	(284,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-04 16:14:59'),
+	(285,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-11-04 17:00:17'),
+	(286,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-04 20:34:32'),
+	(287,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-04 22:04:20'),
+	(288,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-11-05 15:27:09'),
+	(289,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-11-05 15:59:52'),
+	(290,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2023-11-05 16:05:00'),
+	(291,'admin','127.0.0.1','内网IP','Chrome 11','Mac OS X','0','登录成功','2023-11-05 20:32:59'),
+	(292,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-17 18:47:23'),
+	(293,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-18 14:17:42'),
+	(294,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 02:37:59'),
+	(295,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 03:33:45'),
+	(296,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2024-01-19 03:52:52'),
+	(297,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 11:26:17'),
+	(298,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-01-19 12:02:55'),
+	(299,'xiansuoguanli','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 12:03:11'),
+	(300,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 13:22:44'),
+	(301,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-19 14:59:07'),
+	(302,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 15:23:50'),
+	(303,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-19 15:45:12'),
+	(304,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 16:28:10'),
+	(305,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 20:46:49'),
+	(306,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-19 22:51:42'),
+	(307,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-20 10:58:39'),
+	(308,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-20 12:04:56'),
+	(309,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-20 12:36:54'),
+	(310,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-20 12:40:02'),
+	(311,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-20 14:58:50'),
+	(312,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-20 17:28:39'),
+	(313,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-21 10:32:58'),
+	(314,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-21 14:55:47'),
+	(315,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-21 15:54:57'),
+	(316,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-21 20:37:52'),
+	(317,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-21 22:17:16'),
+	(318,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2024-01-22 09:08:44'),
+	(319,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2024-01-22 10:01:37'),
+	(320,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-22 11:34:24'),
+	(321,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-22 13:04:43'),
+	(322,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-22 14:34:44'),
+	(323,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-22 16:44:48'),
+	(324,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-23 10:12:13'),
+	(325,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-23 10:18:56'),
+	(326,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-25 12:38:27'),
+	(327,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 08:56:00'),
+	(328,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 09:26:29'),
+	(329,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-26 09:48:03'),
+	(330,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 11:27:22'),
+	(331,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 16:19:36'),
+	(332,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 18:55:44'),
+	(333,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 19:35:32'),
+	(334,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 20:10:06'),
+	(335,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 20:53:13'),
+	(336,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-26 21:24:30'),
+	(337,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-28 10:40:52'),
+	(338,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-28 19:06:13'),
+	(339,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-28 21:00:20'),
+	(340,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-28 21:32:43'),
+	(341,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-28 23:17:21'),
+	(342,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-28 23:33:44'),
+	(343,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2024-01-29 09:46:02'),
+	(344,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-29 09:57:07'),
+	(345,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-29 10:45:30'),
+	(346,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-29 10:49:18'),
+	(347,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-01-29 11:24:35'),
+	(348,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-29 11:24:59'),
+	(349,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-29 18:00:18'),
+	(350,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-29 19:58:33'),
+	(351,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-01-29 21:31:28'),
+	(352,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-02 19:58:20'),
+	(353,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-02 21:16:44'),
+	(354,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-02 22:15:44'),
+	(355,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-03 09:13:04'),
+	(356,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-03 09:55:20'),
+	(357,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-03 22:02:15'),
+	(358,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-03 23:25:49'),
+	(359,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-04 20:29:43'),
+	(360,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-04 23:14:49'),
+	(361,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-02-05 19:32:30'),
+	(362,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-05 19:54:35'),
+	(363,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-05 21:47:24'),
+	(364,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-06 22:16:06'),
+	(365,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-06 23:53:27'),
+	(366,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-07 00:41:31'),
+	(367,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-07 10:19:42'),
+	(368,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-07 20:09:15'),
+	(369,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 00:31:15'),
+	(370,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-02-08 00:51:23'),
+	(371,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-08 01:13:55'),
+	(372,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 01:14:05'),
+	(373,'admin','127.0.0.1','内网IP','Safari','Mac OS X','0','登录成功','2024-02-08 01:14:44'),
+	(374,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 01:49:07'),
+	(375,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-08 01:57:11'),
+	(376,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 01:57:13'),
+	(377,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-08 02:00:18'),
+	(378,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 02:00:27'),
+	(379,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 11:16:38'),
+	(380,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-08 11:20:03'),
+	(381,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','1','用户不存在/密码错误','2024-02-08 11:20:25'),
+	(382,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','1','密码输入错误1次','2024-02-08 11:20:25'),
+	(383,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 11:20:29'),
+	(384,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 11:52:14'),
+	(385,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-08 11:53:00'),
+	(386,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 11:53:08'),
+	(387,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 12:28:36'),
+	(388,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-08 12:29:24'),
+	(389,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 12:29:32'),
+	(390,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 13:41:16'),
+	(391,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-08 13:41:25'),
+	(392,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 13:41:35'),
+	(393,'contractuser','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-08 14:40:32'),
+	(394,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-09 09:17:37'),
+	(395,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-09 11:07:23'),
+	(396,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-09 12:15:02'),
+	(397,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-09 13:24:55'),
+	(398,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-02-09 14:06:31'),
+	(399,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-09 14:07:03'),
+	(400,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','退出成功','2024-02-09 14:07:12'),
+	(401,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-09 14:25:03'),
+	(402,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-09 16:32:08'),
+	(403,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-12 14:58:34'),
+	(404,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-12 15:54:06'),
+	(405,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-12 16:44:58'),
+	(406,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-14 21:11:23'),
+	(407,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-14 22:58:30'),
+	(408,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-15 00:01:22'),
+	(409,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-16 15:46:31'),
+	(410,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-17 14:36:27'),
+	(411,'admin','127.0.0.1','内网IP','Unknown','Unknown','0','登录成功','2024-02-17 15:51:25'),
+	(412,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-17 16:02:02'),
+	(413,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-17 18:04:24'),
+	(414,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-17 19:39:08'),
+	(415,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-19 15:10:09'),
+	(416,'admin','127.0.0.1','内网IP','Chrome 12','Mac OS X','0','登录成功','2024-02-19 16:38:44');
+
+/*!40000 ALTER TABLE `sys_logininfor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_menu
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_menu`;
+
+CREATE TABLE `sys_menu` (
+  `menu_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `menu_name` varchar(50) NOT NULL COMMENT '菜单名称',
+  `parent_id` bigint(20) DEFAULT '0' COMMENT '父菜单ID',
+  `order_num` int(4) DEFAULT '0' COMMENT '显示顺序',
+  `path` varchar(200) DEFAULT '' COMMENT '路由地址',
+  `component` varchar(255) DEFAULT NULL COMMENT '组件路径',
+  `query` varchar(255) DEFAULT NULL COMMENT '路由参数',
+  `is_frame` int(1) DEFAULT '1' COMMENT '是否为外链（0是 1否）',
+  `is_cache` int(1) DEFAULT '0' COMMENT '是否缓存（0缓存 1不缓存）',
+  `menu_type` char(1) DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
+  `visible` char(1) DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
+  `status` char(1) DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
+  `perms` varchar(100) DEFAULT NULL COMMENT '权限标识',
+  `icon` varchar(100) DEFAULT '#' COMMENT '菜单图标',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注',
+  PRIMARY KEY (`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
+
+LOCK TABLES `sys_menu` WRITE;
+/*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
+
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,'系统管理',0,100,'system',NULL,'',1,0,'M','0','0','','system','admin','2023-07-04 20:58:16','admin','2023-09-16 15:51:46','系统管理目录'),
+	(2,'系统监控',1,10,'monitor',NULL,'',1,0,'M','0','0','','monitor','admin','2023-07-04 20:58:16','admin','2023-09-16 15:49:04','系统监控目录'),
+	(3,'系统工具',1,11,'tool',NULL,'',1,0,'M','0','0','','tool','admin','2023-07-04 20:58:16','admin','2023-09-16 15:49:25','系统工具目录'),
+	(4,'Github',0,101,'https://github.com/wangxy98c',NULL,'',0,0,'M','0','0','','github','admin','2023-07-04 20:58:16','admin','2023-09-16 15:51:51','TeinChin健身官网地址'),
+	(100,'用户管理',1,1,'user','system/user/index','',1,0,'C','0','0','system:user:list','user','admin','2023-07-04 20:58:16','',NULL,'用户管理菜单'),
+	(101,'角色管理',1,2,'role','system/role/index','',1,0,'C','0','0','system:role:list','peoples','admin','2023-07-04 20:58:16','',NULL,'角色管理菜单'),
+	(102,'菜单管理',1,3,'menu','system/menu/index','',1,0,'C','0','0','system:menu:list','tree-table','admin','2023-07-04 20:58:16','',NULL,'菜单管理菜单'),
+	(103,'部门管理',1,4,'dept','system/dept/index','',1,0,'C','0','0','system:dept:list','tree','admin','2023-07-04 20:58:16','',NULL,'部门管理菜单'),
+	(104,'岗位管理',1,5,'post','system/post/index','',1,0,'C','0','0','system:post:list','post','admin','2023-07-04 20:58:16','',NULL,'岗位管理菜单'),
+	(105,'字典管理',1,6,'dict','system/dict/index','',1,0,'C','0','0','system:dict:list','dict','admin','2023-07-04 20:58:16','',NULL,'字典管理菜单'),
+	(106,'参数设置',1,7,'config','system/config/index','',1,0,'C','0','0','system:config:list','edit','admin','2023-07-04 20:58:16','',NULL,'参数设置菜单'),
+	(107,'通知公告',1,8,'notice','system/notice/index','',1,0,'C','0','0','system:notice:list','message','admin','2023-07-04 20:58:16','',NULL,'通知公告菜单'),
+	(108,'日志管理',1,9,'log','','',1,0,'M','0','0','','log','admin','2023-07-04 20:58:16','',NULL,'日志管理菜单'),
+	(109,'在线用户',2,1,'online','monitor/online/index','',1,0,'C','0','0','monitor:online:list','online','admin','2023-07-04 20:58:16','',NULL,'在线用户菜单'),
+	(110,'定时任务',2,2,'job','monitor/job/index','',1,0,'C','0','0','monitor:job:list','job','admin','2023-07-04 20:58:16','',NULL,'定时任务菜单'),
+	(111,'数据监控',2,3,'druid','monitor/druid/index','',1,0,'C','0','0','monitor:druid:list','druid','admin','2023-07-04 20:58:16','',NULL,'数据监控菜单'),
+	(112,'服务监控',2,4,'server','monitor/server/index','',1,0,'C','0','0','monitor:server:list','server','admin','2023-07-04 20:58:16','',NULL,'服务监控菜单'),
+	(113,'缓存监控',2,5,'cache','monitor/cache/index','',1,0,'C','0','0','monitor:cache:list','redis','admin','2023-07-04 20:58:16','',NULL,'缓存监控菜单'),
+	(114,'缓存列表',2,6,'cacheList','monitor/cache/list','',1,0,'C','0','0','monitor:cache:list','redis-list','admin','2023-07-04 20:58:16','',NULL,'缓存列表菜单'),
+	(115,'表单构建',3,1,'build','tool/build/index','',1,0,'C','0','0','tool:build:list','build','admin','2023-07-04 20:58:16','',NULL,'表单构建菜单'),
+	(116,'代码生成',3,2,'gen','tool/gen/index','',1,0,'C','0','0','tool:gen:list','code','admin','2023-07-04 20:58:16','',NULL,'代码生成菜单'),
+	(117,'系统接口',3,3,'swagger','tool/swagger/index','',1,0,'C','0','0','tool:swagger:list','swagger','admin','2023-07-04 20:58:16','',NULL,'系统接口菜单'),
+	(500,'操作日志',108,1,'operlog','monitor/operlog/index','',1,0,'C','0','0','monitor:operlog:list','form','admin','2023-07-04 20:58:16','',NULL,'操作日志菜单'),
+	(501,'登录日志',108,2,'logininfor','monitor/logininfor/index','',1,0,'C','0','0','monitor:logininfor:list','logininfor','admin','2023-07-04 20:58:16','',NULL,'登录日志菜单'),
+	(1000,'用户查询',100,1,'','','',1,0,'F','0','0','system:user:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1001,'用户新增',100,2,'','','',1,0,'F','0','0','system:user:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1002,'用户修改',100,3,'','','',1,0,'F','0','0','system:user:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1003,'用户删除',100,4,'','','',1,0,'F','0','0','system:user:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1004,'用户导出',100,5,'','','',1,0,'F','0','0','system:user:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1005,'用户导入',100,6,'','','',1,0,'F','0','0','system:user:import','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1006,'重置密码',100,7,'','','',1,0,'F','0','0','system:user:resetPwd','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1007,'角色查询',101,1,'','','',1,0,'F','0','0','system:role:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1008,'角色新增',101,2,'','','',1,0,'F','0','0','system:role:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1009,'角色修改',101,3,'','','',1,0,'F','0','0','system:role:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1010,'角色删除',101,4,'','','',1,0,'F','0','0','system:role:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1011,'角色导出',101,5,'','','',1,0,'F','0','0','system:role:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1012,'菜单查询',102,1,'','','',1,0,'F','0','0','system:menu:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1013,'菜单新增',102,2,'','','',1,0,'F','0','0','system:menu:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1014,'菜单修改',102,3,'','','',1,0,'F','0','0','system:menu:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1015,'菜单删除',102,4,'','','',1,0,'F','0','0','system:menu:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1016,'部门查询',103,1,'','','',1,0,'F','0','0','system:dept:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1017,'部门新增',103,2,'','','',1,0,'F','0','0','system:dept:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1018,'部门修改',103,3,'','','',1,0,'F','0','0','system:dept:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1019,'部门删除',103,4,'','','',1,0,'F','0','0','system:dept:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1020,'岗位查询',104,1,'','','',1,0,'F','0','0','system:post:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1021,'岗位新增',104,2,'','','',1,0,'F','0','0','system:post:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1022,'岗位修改',104,3,'','','',1,0,'F','0','0','system:post:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1023,'岗位删除',104,4,'','','',1,0,'F','0','0','system:post:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1024,'岗位导出',104,5,'','','',1,0,'F','0','0','system:post:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1025,'字典查询',105,1,'#','','',1,0,'F','0','0','system:dict:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1026,'字典新增',105,2,'#','','',1,0,'F','0','0','system:dict:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1027,'字典修改',105,3,'#','','',1,0,'F','0','0','system:dict:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1028,'字典删除',105,4,'#','','',1,0,'F','0','0','system:dict:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1029,'字典导出',105,5,'#','','',1,0,'F','0','0','system:dict:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1030,'参数查询',106,1,'#','','',1,0,'F','0','0','system:config:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1031,'参数新增',106,2,'#','','',1,0,'F','0','0','system:config:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1032,'参数修改',106,3,'#','','',1,0,'F','0','0','system:config:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1033,'参数删除',106,4,'#','','',1,0,'F','0','0','system:config:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1034,'参数导出',106,5,'#','','',1,0,'F','0','0','system:config:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1035,'公告查询',107,1,'#','','',1,0,'F','0','0','system:notice:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1036,'公告新增',107,2,'#','','',1,0,'F','0','0','system:notice:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1037,'公告修改',107,3,'#','','',1,0,'F','0','0','system:notice:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1038,'公告删除',107,4,'#','','',1,0,'F','0','0','system:notice:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1039,'操作查询',500,1,'#','','',1,0,'F','0','0','monitor:operlog:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1040,'操作删除',500,2,'#','','',1,0,'F','0','0','monitor:operlog:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1041,'日志导出',500,3,'#','','',1,0,'F','0','0','monitor:operlog:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1042,'登录查询',501,1,'#','','',1,0,'F','0','0','monitor:logininfor:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1043,'登录删除',501,2,'#','','',1,0,'F','0','0','monitor:logininfor:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1044,'日志导出',501,3,'#','','',1,0,'F','0','0','monitor:logininfor:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1045,'账户解锁',501,4,'#','','',1,0,'F','0','0','monitor:logininfor:unlock','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1046,'在线查询',109,1,'#','','',1,0,'F','0','0','monitor:online:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1047,'批量强退',109,2,'#','','',1,0,'F','0','0','monitor:online:batchLogout','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1048,'单条强退',109,3,'#','','',1,0,'F','0','0','monitor:online:forceLogout','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1049,'任务查询',110,1,'#','','',1,0,'F','0','0','monitor:job:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1050,'任务新增',110,2,'#','','',1,0,'F','0','0','monitor:job:add','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1051,'任务修改',110,3,'#','','',1,0,'F','0','0','monitor:job:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1052,'任务删除',110,4,'#','','',1,0,'F','0','0','monitor:job:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1053,'状态修改',110,5,'#','','',1,0,'F','0','0','monitor:job:changeStatus','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1054,'任务导出',110,6,'#','','',1,0,'F','0','0','monitor:job:export','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1055,'生成查询',116,1,'#','','',1,0,'F','0','0','tool:gen:query','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1056,'生成修改',116,2,'#','','',1,0,'F','0','0','tool:gen:edit','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1057,'生成删除',116,3,'#','','',1,0,'F','0','0','tool:gen:remove','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1058,'导入代码',116,4,'#','','',1,0,'F','0','0','tool:gen:import','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1059,'预览代码',116,5,'#','','',1,0,'F','0','0','tool:gen:preview','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1060,'生成代码',116,6,'#','','',1,0,'F','0','0','tool:gen:code','#','admin','2023-07-04 20:58:16','',NULL,''),
+	(1061,'线索管理',0,1,'clue','tienchin/clue/index',NULL,1,0,'C','0','0','tienchin:clue:list','checkbox','admin','2023-09-16 15:59:18','',NULL,''),
+	(1062,'商机管理',0,2,'business','tienchin/business/index',NULL,1,0,'C','0','0','tienchin:business:list','documentation','admin','2023-09-16 16:01:35','',NULL,''),
+	(1063,'合同管理',0,3,'contract','tienchin/contract/index',NULL,1,0,'C','0','0','tienchin:contract:list','clipboard','admin','2023-09-16 16:02:59','',NULL,''),
+	(1064,'促销活动',0,4,'activity','tienchin/activity/index',NULL,1,0,'C','0','0','tienchin:activity:list','peoples','admin','2023-09-16 16:04:13','admin','2023-10-03 16:38:45',''),
+	(1066,'统计分析',0,6,'analysis','tienchin/analysis/index',NULL,1,0,'C','0','0','tienchin:analysis:list','chart','admin','2023-09-16 16:07:23','',NULL,''),
+	(1067,'渠道管理',0,7,'channel','tienchin/channel/index',NULL,1,0,'C','0','0','tienchin:channel:list','example','admin','2023-09-16 16:08:55','admin','2023-09-22 19:56:03',''),
+	(1068,'轮转管理',0,8,'transfer','tienchin/transfer/index',NULL,1,0,'C','0','0','tienchin:transfer:list','list','admin','2023-09-16 16:11:16','admin','2023-09-22 19:56:19',''),
+	(1069,'课程管理',0,5,'course','tienchin/course/index',NULL,1,0,'C','0','0','tienchin:course:list','date','admin','2023-09-16 16:19:35','admin','2023-09-16 16:26:51',''),
+	(1070,'添加渠道',1067,1,'',NULL,NULL,1,0,'F','0','0','tienchin:channel:add','#','admin','2023-09-18 09:57:38','admin','2023-09-22 20:06:21',''),
+	(1071,'查询渠道',1067,2,'',NULL,NULL,1,0,'F','0','0','tienchin:channel:list','#','admin','2023-09-22 19:53:41','',NULL,''),
+	(1072,'修改渠道',1067,3,'',NULL,NULL,1,0,'F','0','0','tienchin:channel:edit','#','admin','2023-09-22 19:54:05','',NULL,''),
+	(1073,'删除渠道',1067,4,'',NULL,NULL,1,0,'F','0','0','tienchin:channel:remove','#','admin','2023-09-22 19:54:36','',NULL,''),
+	(1074,'导入渠道',1067,5,'',NULL,NULL,1,0,'F','0','0','tienchin:channel:import','#','admin','2023-09-22 19:55:17','',NULL,''),
+	(1075,'导出渠道',1067,6,'',NULL,NULL,1,0,'F','0','0','tienchin:channel:export','#','admin','2023-09-22 19:55:42','',NULL,''),
+	(1076,'添加活动',1064,1,'',NULL,NULL,1,0,'F','0','0','tienchin:activity:create','#','admin','2023-10-03 16:33:11','',NULL,''),
+	(1077,'删除活动',1064,2,'',NULL,NULL,1,0,'F','0','0','tienchin:activity:remove','#','admin','2023-10-03 16:36:06','',NULL,''),
+	(1078,'修改活动',1064,3,'',NULL,NULL,1,0,'F','0','0','tienchin:activity:edit','#','admin','2023-10-03 16:36:46','',NULL,''),
+	(1079,'查询活动',1064,4,'',NULL,NULL,1,0,'F','0','0','tienchin:activity:list','#','admin','2023-10-03 16:37:18','',NULL,''),
+	(1080,'导出活动',1064,5,'',NULL,NULL,1,0,'F','0','0','tienchin:activity:export','#','admin','2023-10-03 16:37:49','',NULL,''),
+	(1081,'导入活动',1064,6,'',NULL,NULL,1,0,'F','0','0','tienchin:activity:import','#','admin','2023-10-03 16:38:09','',NULL,''),
+	(1082,'添加课程',1069,1,'',NULL,NULL,1,0,'F','0','0','tienchin:course:create','#','admin','2023-10-15 10:57:10','',NULL,''),
+	(1083,'修改课程',1069,2,'',NULL,NULL,1,0,'F','0','0','tienchin:course:edit','#','admin','2023-10-15 10:57:40','',NULL,''),
+	(1084,'删除课程',1069,3,'',NULL,NULL,1,0,'F','0','0','tienchin:course:remove','#','admin','2023-10-15 10:58:07','',NULL,''),
+	(1085,'课程导出',1069,4,'',NULL,NULL,1,0,'F','0','0','tienchin:course:export','#','admin','2023-10-15 10:58:29','',NULL,''),
+	(1086,'课程查询',1069,5,'',NULL,NULL,1,0,'F','0','0','tienchin:course:list','#','admin','2023-10-15 11:01:08','',NULL,''),
+	(1087,'导入课程',1069,6,'',NULL,NULL,1,0,'F','0','0','tienchin:course:import','#','admin','2023-10-15 11:01:29','',NULL,''),
+	(1088,'查询线索',1061,1,'',NULL,NULL,1,0,'F','0','0','tienchin:clue:list','#','admin','2023-10-16 08:52:08','admin','2023-10-16 08:53:44',''),
+	(1089,'添加线索',1061,2,'',NULL,NULL,1,0,'F','0','0','tienchin:clue:create','#','admin','2023-10-16 08:52:23','admin','2023-10-16 08:53:49',''),
+	(1090,'编辑线索',1061,3,'',NULL,NULL,1,0,'F','0','0','tienchin:clue:edit','#','admin','2023-10-16 08:52:49','admin','2023-10-16 08:53:58',''),
+	(1091,'删除线索',1061,4,'',NULL,NULL,1,0,'F','0','0','tienchin:clue:delete','#','admin','2023-10-16 08:53:20','admin','2023-10-16 08:54:07',''),
+	(1092,'跟进线索',1061,5,'',NULL,NULL,1,0,'F','0','0','tienchin:clue:follow','#','admin','2023-10-16 08:54:35','',NULL,''),
+	(1093,'分配线索',1061,6,'',NULL,NULL,1,0,'F','0','0','tienchin:clue:assign','#','admin','2023-10-16 08:57:20','admin','2024-01-19 13:23:37',''),
+	(1094,'查看线索',1061,8,'',NULL,NULL,1,0,'F','0','0','tienchin:clue:view','#','admin','2024-01-18 15:02:56','',NULL,''),
+	(1095,'查询商机',1062,1,'',NULL,NULL,1,0,'F','0','0','tienchin:business:list','#','admin','2024-01-22 09:09:40','admin','2024-01-22 09:09:59',''),
+	(1096,'添加商机',1062,2,'',NULL,NULL,1,0,'F','0','0','tienchin:business:create','#','admin','2024-01-22 09:10:22','',NULL,''),
+	(1097,'删除商机',1062,3,'',NULL,NULL,1,0,'F','0','0','tienchin:business:remove','#','admin','2024-01-22 09:10:53','',NULL,''),
+	(1098,'修改商机',1062,4,'',NULL,NULL,1,0,'F','0','0','tienchin:business:edit','#','admin','2024-01-22 09:11:10','',NULL,''),
+	(1099,'跟进商机',1062,5,'',NULL,NULL,1,0,'F','0','0','tienchin:business:follow','#','admin','2024-01-22 09:11:41','',NULL,''),
+	(1100,'分配商机',1062,6,'',NULL,NULL,1,0,'F','0','0','tienchin:business:assign','#','admin','2024-01-22 09:12:03','',NULL,''),
+	(1101,'查看商机',1062,7,'',NULL,NULL,1,0,'F','0','0','tienchin:business:view','#','admin','2024-01-22 09:12:22','',NULL,''),
+	(1102,'查询合同',1063,1,'',NULL,NULL,1,0,'F','0','0','tienchin:contract:list','#','admin','2024-02-03 10:07:37','',NULL,''),
+	(1103,'添加合同',1063,2,'',NULL,NULL,1,0,'F','0','0','tienchin:contract:create','#','admin','2024-02-03 10:08:02','',NULL,''),
+	(1104,'删除合同',1063,3,'',NULL,NULL,1,0,'F','0','0','tienchin:contract:remove','#','admin','2024-02-03 10:08:21','',NULL,''),
+	(1105,'修改合同',1063,4,'',NULL,NULL,1,0,'F','0','0','tienchin:contract:edit','#','admin','2024-02-03 10:08:37','',NULL,''),
+	(1106,'预览合同',1063,5,'',NULL,NULL,1,0,'F','0','0','tienchin:contract:view','#','admin','2024-02-03 10:09:00','',NULL,''),
+	(1107,'查看详情',1063,6,'',NULL,NULL,1,0,'F','0','0','tienchin:contract:details','#','admin','2024-02-03 10:09:52','',NULL,''),
+	(1108,'合同审批',1063,7,'',NULL,NULL,1,0,'F','0','0','tienchin:contract:approve','#','admin','2024-02-03 10:10:22','',NULL,'');
+
+/*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_notice
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_notice`;
+
+CREATE TABLE `sys_notice` (
+  `notice_id` int(4) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `notice_title` varchar(50) NOT NULL COMMENT '公告标题',
+  `notice_type` char(1) NOT NULL COMMENT '公告类型（1通知 2公告）',
+  `notice_content` longblob COMMENT '公告内容',
+  `status` char(1) DEFAULT '0' COMMENT '公告状态（0正常 1关闭）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`notice_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通知公告表';
+
+LOCK TABLES `sys_notice` WRITE;
+/*!40000 ALTER TABLE `sys_notice` DISABLE KEYS */;
+
+INSERT INTO `sys_notice` (`notice_id`, `notice_title`, `notice_type`, `notice_content`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,'温馨提醒：2018-07-01 TeinChin健身新版本发布啦','2',X'E696B0E78988E69CACE58685E5AEB9','0','admin','2023-07-04 20:58:17','',NULL,'管理员'),
+	(2,'维护通知：2018-07-01 TeinChin健身系统凌晨维护','1',X'E7BBB4E68AA4E58685E5AEB9','0','admin','2023-07-04 20:58:17','',NULL,'管理员');
+
+/*!40000 ALTER TABLE `sys_notice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_oper_log
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_oper_log`;
+
+CREATE TABLE `sys_oper_log` (
+  `oper_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志主键',
+  `title` varchar(50) DEFAULT '' COMMENT '模块标题',
+  `business_type` int(2) DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `method` varchar(100) DEFAULT '' COMMENT '方法名称',
+  `request_method` varchar(10) DEFAULT '' COMMENT '请求方式',
+  `operator_type` int(1) DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `oper_name` varchar(50) DEFAULT '' COMMENT '操作人员',
+  `dept_name` varchar(50) DEFAULT '' COMMENT '部门名称',
+  `oper_url` varchar(255) DEFAULT '' COMMENT '请求URL',
+  `oper_ip` varchar(128) DEFAULT '' COMMENT '主机地址',
+  `oper_location` varchar(255) DEFAULT '' COMMENT '操作地点',
+  `oper_param` varchar(2000) DEFAULT '' COMMENT '请求参数',
+  `json_result` varchar(2000) DEFAULT '' COMMENT '返回参数',
+  `status` int(1) DEFAULT '0' COMMENT '操作状态（0正常 1异常）',
+  `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
+  `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `cost_time` bigint(20) DEFAULT '0' COMMENT '消耗时间',
+  PRIMARY KEY (`oper_id`),
+  KEY `idx_sys_oper_log_bt` (`business_type`),
+  KEY `idx_sys_oper_log_s` (`status`),
+  KEY `idx_sys_oper_log_ot` (`oper_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
+
+LOCK TABLES `sys_oper_log` WRITE;
+/*!40000 ALTER TABLE `sys_oper_log` DISABLE KEYS */;
+
+INSERT INTO `sys_oper_log` (`oper_id`, `title`, `business_type`, `method`, `request_method`, `operator_type`, `oper_name`, `dept_name`, `oper_url`, `oper_ip`, `oper_location`, `oper_param`, `json_result`, `status`, `error_msg`, `oper_time`, `cost_time`)
+VALUES
+	(1,'用户管理',1,'com.wangxy.teinchin.web.controller.system.SysUserController.add()','POST',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptId\":103,\"nickName\":\"javaboytest\",\"params\":{},\"postIds\":[],\"roleIds\":[],\"status\":\"0\",\"userId\":3,\"userName\":\"javaboytest\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-07-19 20:28:16',100),
+	(2,'用户管理',2,'com.wangxy.teinchin.web.controller.system.SysUserController.edit()','PUT',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2023-07-19 20:28:16\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":103,\"deptName\":\"研发部门\",\"leader\":\"TeinChin健身\",\"orderNum\":1,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"javaboytest\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[2],\"roles\":[],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":3,\"userName\":\"javaboytest\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-07-19 20:28:53',20),
+	(3,'角色管理',1,'com.wangxy.teinchin.web.controller.system.SysRoleController.add()','POST',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045],\"params\":{},\"roleId\":3,\"roleKey\":\"test_role-1\",\"roleName\":\"测试角色1\",\"roleSort\":0,\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-07-19 20:31:14',28),
+	(4,'用户管理',2,'com.wangxy.teinchin.web.controller.system.SysUserController.edit()','PUT',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2023-07-19 20:28:16\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":103,\"deptName\":\"研发部门\",\"leader\":\"TeinChin健身\",\"orderNum\":1,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"javaboytest\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[3],\"roles\":[{\"admin\":false,\"dataScope\":\"2\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":2,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":3,\"userName\":\"javaboytest\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-07-19 20:31:29',30),
+	(5,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"monitor\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2,\"menuName\":\"系统监控\",\"menuType\":\"M\",\"orderNum\":2,\"params\":{},\"parentId\":1,\"path\":\"monitor\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:47:40',31),
+	(6,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"tool\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3,\"menuName\":\"系统工具\",\"menuType\":\"M\",\"orderNum\":3,\"params\":{},\"parentId\":1,\"path\":\"tool\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:47:52',7),
+	(7,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"monitor\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2,\"menuName\":\"系统监控\",\"menuType\":\"M\",\"orderNum\":10,\"params\":{},\"parentId\":1,\"path\":\"monitor\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:49:04',6),
+	(8,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"tool\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3,\"menuName\":\"系统工具\",\"menuType\":\"M\",\"orderNum\":11,\"params\":{},\"parentId\":1,\"path\":\"tool\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:49:25',13),
+	(9,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"github\",\"isCache\":\"0\",\"isFrame\":\"0\",\"menuId\":4,\"menuName\":\"Github主页\",\"menuType\":\"M\",\"orderNum\":4,\"params\":{},\"parentId\":0,\"path\":\"https://github.com/wangxy98c\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:50:36',19),
+	(10,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"github\",\"isCache\":\"0\",\"isFrame\":\"0\",\"menuId\":4,\"menuName\":\"Github\",\"menuType\":\"M\",\"orderNum\":4,\"params\":{},\"parentId\":0,\"path\":\"https://github.com/wangxy98c\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:51:03',15),
+	(11,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"system\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1,\"menuName\":\"系统管理\",\"menuType\":\"M\",\"orderNum\":100,\"params\":{},\"parentId\":0,\"path\":\"system\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:51:46',24),
+	(12,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-07-04 20:58:16\",\"icon\":\"github\",\"isCache\":\"0\",\"isFrame\":\"0\",\"menuId\":4,\"menuName\":\"Github\",\"menuType\":\"M\",\"orderNum\":101,\"params\":{},\"parentId\":0,\"path\":\"https://github.com/wangxy98c\",\"perms\":\"\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:51:51',21),
+	(13,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/clue/index\",\"createBy\":\"admin\",\"icon\":\"checkbox\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"线索管理\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"clue\",\"perms\":\"tienchin:clue:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 15:59:18',12),
+	(14,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/business/index\",\"createBy\":\"admin\",\"icon\":\"documentation\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"商机管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"business\",\"perms\":\"tienchin:business:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:01:35',12),
+	(15,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/contract/index\",\"createBy\":\"admin\",\"icon\":\"clipboard\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"合同管理\",\"menuType\":\"C\",\"orderNum\":3,\"params\":{},\"parentId\":0,\"path\":\"contract\",\"perms\":\"tienchin:contract:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:02:59',9),
+	(16,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/activith/index\",\"createBy\":\"admin\",\"icon\":\"peoples\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"促销活动\",\"menuType\":\"C\",\"orderNum\":4,\"params\":{},\"parentId\":0,\"path\":\"activity\",\"perms\":\"tienchin:activity:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:04:13',25),
+	(17,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/course/index\",\"createBy\":\"admin\",\"icon\":\"list\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"私教课程\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"course\",\"perms\":\"tienchin:course:list\",\"query\":\" \",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:05:29',49),
+	(18,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/analysis/index\",\"createBy\":\"admin\",\"icon\":\"chart\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"统计分析\",\"menuType\":\"C\",\"orderNum\":6,\"params\":{},\"parentId\":0,\"path\":\"analysis\",\"perms\":\"tienchin:analysis:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:07:23',13),
+	(19,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/channel/index\",\"createBy\":\"admin\",\"icon\":\"example\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"渠道管理\",\"menuType\":\"C\",\"orderNum\":7,\"params\":{},\"parentId\":0,\"path\":\"channel\",\"perms\":\"tienchin:channel:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:08:55',19),
+	(20,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/transfer/index\",\"createBy\":\"admin\",\"icon\":\"slider\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"轮转管理\",\"menuType\":\"C\",\"orderNum\":8,\"params\":{},\"parentId\":0,\"path\":\"transfer\",\"perms\":\"tienchin:transfer:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:11:16',15),
+	(21,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/course/index\",\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"课程管理\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"course\",\"perms\":\"tienchin:course:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:19:35',72),
+	(22,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/course/index\",\"createTime\":\"2023-09-16 16:19:35\",\"icon\":\"date\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1069,\"menuName\":\"课程管理\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"course\",\"perms\":\"tienchin:course:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:26:51',13),
+	(23,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/transfer/index\",\"createTime\":\"2023-09-16 16:11:16\",\"icon\":\"example\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1068,\"menuName\":\"轮转管理\",\"menuType\":\"C\",\"orderNum\":8,\"params\":{},\"parentId\":0,\"path\":\"transfer\",\"perms\":\"tienchin:transfer:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:27:01',5),
+	(24,'菜单管理',2,'com.wangxy.teinchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/channel/index\",\"createTime\":\"2023-09-16 16:08:55\",\"icon\":\"online\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1067,\"menuName\":\"渠道管理\",\"menuType\":\"C\",\"orderNum\":7,\"params\":{},\"parentId\":0,\"path\":\"channel\",\"perms\":\"tienchin:channel:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-16 16:27:16',6),
+	(25,'菜单管理',1,'com.wangxy.teinchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"添加渠道\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1067,\"perms\":\"tienchin:channel:create\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-18 09:57:38',17),
+	(26,'字典类型',1,'com.wangxy.teinchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"渠道类型\",\"dictType\":\"channel_type\",\"params\":{},\"remark\":\"推广渠道类型\",\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-18 10:28:10',11),
+	(27,'字典数据',1,'com.wangxy.teinchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"线上渠道\",\"dictSort\":1,\"dictType\":\"channel_type\",\"dictValue\":\"1\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-18 10:33:36',54),
+	(28,'字典数据',1,'com.wangxy.teinchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"线下渠道\",\"dictSort\":2,\"dictType\":\"channel_type\",\"dictValue\":\"2\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-18 10:33:49',7),
+	(29,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"渠道状态\",\"dictType\":\"channel_status\",\"params\":{},\"remark\":\"渠道目前是否可用\",\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 15:48:17',10),
+	(30,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"正常\",\"dictSort\":0,\"dictType\":\"channel_status\",\"dictValue\":\"1\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 15:49:12',24),
+	(31,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"禁用\",\"dictSort\":0,\"dictType\":\"channel_status\",\"dictValue\":\"0\",\"listClass\":\"info\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 15:49:47',22),
+	(32,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查询渠道\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":1067,\"perms\":\"tienchin:channel:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:53:41',22),
+	(33,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"修改渠道\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":1067,\"perms\":\"tienchin:channel:edit\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:54:05',8),
+	(34,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"删除渠道\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":1067,\"perms\":\"tienchin:channel:remove\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:54:36',28),
+	(35,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"导入渠道\",\"menuType\":\"F\",\"orderNum\":5,\"params\":{},\"parentId\":1067,\"perms\":\"tienchin:channel:import\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:55:17',16),
+	(36,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"导出渠道\",\"menuType\":\"F\",\"orderNum\":6,\"params\":{},\"parentId\":1067,\"perms\":\"tienchin:channel:export\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:55:42',22),
+	(37,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/channel/index\",\"createTime\":\"2023-09-16 16:08:55\",\"icon\":\"example\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1067,\"menuName\":\"渠道管理\",\"menuType\":\"C\",\"orderNum\":7,\"params\":{},\"parentId\":0,\"path\":\"channel\",\"perms\":\"tienchin:channel:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:56:03',50),
+	(38,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/transfer/index\",\"createTime\":\"2023-09-16 16:11:16\",\"icon\":\"list\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1068,\"menuName\":\"轮转管理\",\"menuType\":\"C\",\"orderNum\":8,\"params\":{},\"parentId\":0,\"path\":\"transfer\",\"perms\":\"tienchin:transfer:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:56:19',12),
+	(39,'用户管理',1,'com.wangxy.tienchin.web.controller.system.SysUserController.add()','POST',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptId\":105,\"nickName\":\"渠道管理员\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[4],\"roleIds\":[],\"sex\":\"0\",\"status\":\"0\",\"userId\":4,\"userName\":\"qudao\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 19:59:31',135),
+	(40,'角色管理',1,'com.wangxy.tienchin.web.controller.system.SysRoleController.add()','POST',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1067,1070],\"params\":{},\"roleId\":4,\"roleKey\":\"qudao_role\",\"roleName\":\"渠道管理员\",\"roleSort\":0,\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 20:01:37',29),
+	(41,'用户管理',2,'com.wangxy.tienchin.web.controller.system.SysUserController.edit()','PUT',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2023-09-22 19:59:31\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":105,\"deptName\":\"测试部门\",\"leader\":\"TeinChin健身\",\"orderNum\":3,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":105,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"渠道管理员\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[4],\"roleIds\":[4],\"roles\":[],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":4,\"userName\":\"qudao\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 20:01:53',16),
+	(42,'角色管理',2,'com.wangxy.tienchin.web.controller.system.SysRoleController.edit()','PUT',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createTime\":\"2023-09-22 20:01:37\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1067,1070,1071],\"params\":{},\"roleId\":4,\"roleKey\":\"qudao_role\",\"roleName\":\"渠道管理员\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 20:02:06',13),
+	(43,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-09-18 09:57:38\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1070,\"menuName\":\"添加渠道\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1067,\"path\":\"\",\"perms\":\"tienchin:channel:add\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 20:06:21',5),
+	(44,'角色管理',2,'com.wangxy.tienchin.web.controller.system.SysRoleController.edit()','PUT',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createTime\":\"2023-09-22 20:01:37\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1067,1070,1071,1072,1073,1074,1075],\"params\":{},\"roleId\":4,\"roleKey\":\"qudao_role\",\"roleName\":\"渠道管理员\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-22 21:09:31',12),
+	(45,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-22 22:43:45',16),
+	(46,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-22 22:50:30',14),
+	(47,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-22 22:51:23',14),
+	(48,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-22 22:51:59',13),
+	(49,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-22 22:52:51',17),
+	(50,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-23 11:03:47',14),
+	(51,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-23 11:05:07',0),
+	(52,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-23 11:07:09',14),
+	(53,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-23 11:44:46',14),
+	(54,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-23 11:45:33',14),
+	(55,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-23 12:03:27',14),
+	(56,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.selectList','2023-09-23 14:29:53',528284),
+	(57,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}',NULL,1,'Invalid bound statement (not found): com.wangxy.tienchin.channel.mapper.ChannelMapper.insert','2023-09-23 14:48:06',16),
+	(58,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小程序推广\",\"params\":{}}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-09-23 15:40:47',69),
+	(59,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"小红书渠道\",\"params\":{},\"remark\":\"无\",\"status\":1,\"type\":1}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-09-26 20:29:30',67),
+	(60,'添加渠道',1,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.add()','POST',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"testChannel\",\"params\":{},\"status\":0,\"type\":2}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-09-29 15:46:06',38),
+	(61,'渠道管理',2,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.edit()','PUT',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelName\":\"testChannel\",\"params\":{},\"status\":0,\"type\":2}','{\"msg\":\"更新失败\",\"code\":500}',0,NULL,'2023-09-29 15:52:11',8),
+	(62,'渠道管理',2,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.edit()','PUT',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelId\":5,\"channelName\":\"testCC\",\"params\":{},\"status\":0,\"type\":2}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2023-09-29 15:52:55',12),
+	(63,'渠道管理',2,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.edit()','PUT',1,'admin',NULL,'/tienchin/channel','127.0.0.1','内网IP','{\"channelId\":5,\"channelName\":\"testCC\",\"createBy\":\"admin\",\"createTime\":\"2023-09-29T15:46:06\",\"delFlag\":0,\"params\":{},\"status\":1,\"type\":2,\"updateBy\":\"admin\",\"updateTime\":\"2023-09-29T15:52:55\"}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2023-09-29 23:30:36',15),
+	(64,'角色管理',3,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.remove()','DELETE',1,'admin',NULL,'/tienchin/channel/5','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-09-30 10:40:28',21),
+	(65,'角色管理',5,'com.wangxy.tienchin.web.controller.system.SysRoleController.export()','POST',1,'admin',NULL,'/system/role/export','127.0.0.1','内网IP','{\"pageSize\":\"10\",\"pageNum\":\"1\"}',NULL,0,NULL,'2023-09-30 21:31:37',1097),
+	(66,'渠道导出',5,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.export()','POST',1,'admin',NULL,'/tienchin/channel/export','127.0.0.1','内网IP','{\"pageSize\":\"10\",\"pageNum\":\"1\"}',NULL,0,NULL,'2023-09-30 21:33:30',611),
+	(67,'渠道导出',5,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.export()','POST',1,'admin',NULL,'/tienchin/channel/export','127.0.0.1','内网IP','{\"pageSize\":\"10\",\"type\":\"1\",\"pageNum\":\"1\"}',NULL,0,NULL,'2023-09-30 21:34:23',45),
+	(68,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"添加活动\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1064,\"perms\":\"tienchin:activity:create\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:33:11',21),
+	(69,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"删除活动\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":1064,\"perms\":\"tienchin:activity:remove\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:36:06',14),
+	(70,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"修改活动\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":1064,\"perms\":\"tienchin:activity:edit\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:36:46',29),
+	(71,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查询活动\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":1064,\"perms\":\"tienchin:activity:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:37:19',7),
+	(72,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"导出活动\",\"menuType\":\"F\",\"orderNum\":5,\"params\":{},\"parentId\":1064,\"perms\":\"tienchin:activity:export\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:37:49',15),
+	(73,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"导入活动\",\"menuType\":\"F\",\"orderNum\":6,\"params\":{},\"parentId\":1064,\"perms\":\"tienchin:activity:import\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:38:09',12),
+	(74,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"component\":\"tienchin/activity/index\",\"createTime\":\"2023-09-16T16:04:13\",\"icon\":\"peoples\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1064,\"menuName\":\"促销活动\",\"menuType\":\"C\",\"orderNum\":4,\"params\":{},\"parentId\":0,\"path\":\"activity\",\"perms\":\"tienchin:activity:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:38:45',6),
+	(75,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"活动类型\",\"dictType\":\"activity_type\",\"params\":{},\"remark\":\"活动类型：1表示折扣券、2表示代金券\",\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:58:02',19),
+	(76,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"discount\",\"dictSort\":1,\"dictType\":\"activity_type\",\"dictValue\":\"1\",\"listClass\":\"primary\",\"params\":{},\"remark\":\"折扣券\",\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 16:59:27',20),
+	(77,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"代金券\",\"dictSort\":2,\"dictType\":\"activity_type\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"remark\":\"\",\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 17:00:05',21),
+	(78,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03T17:00:05\",\"default\":false,\"dictCode\":35,\"dictLabel\":\"代金券\",\"dictSort\":2,\"dictType\":\"activity_type\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 17:00:13',15),
+	(79,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03T16:59:26\",\"default\":false,\"dictCode\":34,\"dictLabel\":\"折扣券\",\"dictSort\":1,\"dictType\":\"activity_type\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 17:00:24',4),
+	(80,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"活动状态\",\"dictType\":\"type_status\",\"params\":{},\"remark\":\"0禁用1正常\",\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 17:12:45',11),
+	(81,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"正常\",\"dictSort\":0,\"dictType\":\"type_status\",\"dictValue\":\"1\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 17:13:23',15),
+	(82,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"禁用\",\"dictSort\":0,\"dictType\":\"type_status\",\"dictValue\":\"0\",\"listClass\":\"danger\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 17:13:41',9),
+	(83,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03T17:13:41\",\"default\":false,\"dictCode\":37,\"dictLabel\":\"禁用\",\"dictSort\":0,\"dictType\":\"type_status\",\"dictValue\":\"0\",\"isDefault\":\"N\",\"listClass\":\"info\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-03 17:14:05',22),
+	(84,'字典类型',2,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.edit()','PUT',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03T17:12:45\",\"dictId\":14,\"dictName\":\"活动状态\",\"dictType\":\"activity_status\",\"params\":{},\"remark\":\"0禁用1正常\",\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-07 11:53:58',22),
+	(85,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03T17:13:22\",\"default\":false,\"dictCode\":36,\"dictLabel\":\"活动中\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-07 15:52:50',56),
+	(86,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03T17:13:41\",\"default\":false,\"dictCode\":37,\"dictLabel\":\"过期了\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"0\",\"isDefault\":\"N\",\"listClass\":\"info\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-07 15:52:59',7),
+	(87,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":null,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"testactivity\",\"params\":{},\"status\":0,\"type\":2,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-09 20:55:55',122),
+	(88,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-13 12:00:00\",\"channelId\":2,\"discount\":3.0,\"endTime\":\"2023-10-13 12:00:00\",\"name\":\"test\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 09:33:45',31),
+	(89,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-13 12:00:00\",\"channelId\":3,\"discount\":1.0,\"endTime\":\"2023-10-13 12:00:00\",\"info\":\"活动简介\",\"name\":\"testxxxxx\",\"params\":{},\"remark\":\"备注信息\",\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 09:34:26',18),
+	(90,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-13 12:00:00\",\"channelId\":1,\"discount\":2.0,\"endTime\":\"2023-10-27 12:00:00\",\"info\":\"活动简介\",\"name\":\"testA\",\"params\":{},\"remark\":\"备注信息\",\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 10:24:47',16),
+	(91,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03 17:13:41\",\"default\":false,\"dictCode\":37,\"dictLabel\":\"未开始\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"0\",\"isDefault\":\"N\",\"listClass\":\"info\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-12 11:37:30',63),
+	(92,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"过期了\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"2\",\"listClass\":\"warning\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-12 11:37:51',18),
+	(93,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-16 12:00:00\",\"channelId\":1,\"discount\":4.0,\"endTime\":\"2023-10-24 12:00:00\",\"info\":\"10.12测试还未开始\",\"name\":\"testB\",\"params\":{},\"remark\":\"没什么可写的备注\",\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 11:46:10',99),
+	(94,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-17 12:00:00\",\"channelId\":4,\"discount\":3.0,\"endTime\":\"2023-10-26 12:00:00\",\"name\":\"测试\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 11:47:15',18),
+	(95,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-13 12:00:00\",\"channelId\":3,\"discount\":2.0,\"endTime\":\"2023-10-19 12:00:00\",\"name\":\"测一测\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 11:48:19',12),
+	(96,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-13 12:00:00\",\"channelId\":3,\"discount\":2.0,\"endTime\":\"2023-10-19 12:00:00\",\"name\":\"测一测\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 11:52:26',12),
+	(97,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":2.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"tessssssss\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":20.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 11:54:54',17),
+	(98,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":2.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"tessxxx\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":20.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 11:57:21',131),
+	(99,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":2.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"tmmm\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":20.0}',NULL,1,'Cannot invoke \"java.time.LocalDateTime.toString()\" because the return value of \"com.wangxy.tienchin.activity.domain.Activity.getBeginTime()\" is null','2023-10-12 11:59:04',17),
+	(100,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":2.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"tmmm\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":20.0}',NULL,1,'Cannot invoke \"java.time.LocalDateTime.toString()\" because the return value of \"com.wangxy.tienchin.activity.domain.Activity.getBeginTime()\" is null','2023-10-12 12:01:02',16),
+	(101,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":2.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"tmxxxm\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":20.0}',NULL,1,'Cannot invoke \"java.time.LocalDateTime.toString()\" because the return value of \"com.wangxy.tienchin.activity.domain.Activity.getBeginTime()\" is null','2023-10-12 12:07:01',17),
+	(102,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":2.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"t1\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":20.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 16:28:58',25),
+	(103,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-20 12:00:00\",\"channelId\":3,\"discount\":null,\"endTime\":\"2023-10-25 12:00:00\",\"name\":\"未开始测试\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":200.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 16:32:21',21),
+	(104,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":2.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"t1\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":20.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 16:35:44',107),
+	(105,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-19 12:00:00\",\"channelId\":2,\"discount\":null,\"endTime\":\"2023-10-26 12:00:00\",\"name\":\"测试未开始活动\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":200.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 16:37:09',9),
+	(106,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-11 12:00:00\",\"channelId\":1,\"discount\":2.0,\"endTime\":\"2023-10-18 12:00:00\",\"name\":\"测试正在进行的活动\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 16:37:37',12),
+	(107,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-03 12:00:00\",\"channelId\":4,\"discount\":null,\"endTime\":\"2023-10-10 12:00:00\",\"name\":\"测试过期活动\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":500.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-12 16:38:01',8),
+	(108,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-20 12:00:00\",\"channelId\":2,\"discount\":3.0,\"endTime\":\"2023-10-25 12:00:00\",\"name\":\"分组校验测试\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-13 09:54:47',30),
+	(109,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":15,\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":5.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"t1\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":200.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 10:35:49',47),
+	(110,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":5.0,\"endTime\":\"2023-10-10 15:40:47\",\"name\":\"t1t\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":200.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-13 10:36:21',23),
+	(111,'用户管理',1,'com.wangxy.tienchin.web.controller.system.SysUserController.add()','POST',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptId\":106,\"nickName\":\"huodong\",\"params\":{},\"phonenumber\":\"18856344444\",\"postIds\":[4],\"roleIds\":[],\"sex\":\"0\",\"status\":\"0\",\"userId\":5,\"userName\":\"huodong\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-13 10:48:02',134),
+	(112,'角色管理',1,'com.wangxy.tienchin.web.controller.system.SysRoleController.add()','POST',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1064,1076,1077,1078,1079,1080,1081],\"params\":{},\"roleId\":5,\"roleKey\":\"activity_role\",\"roleName\":\"活动管理员\",\"roleSort\":4,\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-13 10:49:26',23),
+	(113,'角色管理',2,'com.wangxy.tienchin.web.controller.system.SysRoleController.edit()','PUT',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createTime\":\"2023-10-13 10:49:26\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1064,1076,1077,1078,1079,1080,1081],\"params\":{},\"roleId\":5,\"roleKey\":\"activity_role\",\"roleName\":\"活动管理员\",\"roleSort\":6,\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-13 10:57:27',16),
+	(114,'用户管理',2,'com.wangxy.tienchin.web.controller.system.SysUserController.edit()','PUT',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2023-10-13 10:48:02\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":106,\"deptName\":\"财务部门\",\"leader\":\"TeinChin健身\",\"orderNum\":4,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":106,\"email\":\"\",\"loginDate\":\"2023-10-13 10:55:19\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"huodong\",\"params\":{},\"phonenumber\":\"18856344444\",\"postIds\":[4],\"roleIds\":[5],\"roles\":[],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":5,\"userName\":\"huodong\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-13 10:58:00',10),
+	(115,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-27 12:00:00\",\"channelId\":1,\"discount\":3.0,\"endTime\":\"2023-10-28 12:00:00\",\"name\":\"aaaa\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-13 13:27:13',19),
+	(116,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-27 12:00:00\",\"channelId\":3,\"discount\":5.0,\"endTime\":\"2023-10-28 12:00:00\",\"name\":\"aaaa\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-13 13:49:41',70),
+	(117,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2023-10-12 12:00:00\",\"channelId\":1,\"discount\":2.0,\"endTime\":\"2023-10-16 12:00:00\",\"name\":\"关于时间格式\",\"params\":{},\"status\":1,\"type\":1,\"voucher\":null}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-13 13:56:42',14),
+	(118,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":23,\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":5.0,\"endTime\":\"2023-10-10 15:40:47\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":200.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 13:58:45',8),
+	(119,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'huodong',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":23,\"beginTime\":\"2023-10-20 12:00:00\",\"channelId\":5,\"createBy\":\"admin\",\"delFlag\":0,\"discount\":5.0,\"endTime\":\"2023-10-21 12:00:00\",\"name\":\"关于时间格式\",\"params\":{},\"status\":2,\"type\":2,\"updateBy\":\"admin\",\"voucher\":200.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 15:03:30',15),
+	(120,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'huodong',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":23,\"beginTime\":\"2023-10-12 12:00:00\",\"channelId\":5,\"createBy\":\"admin\",\"delFlag\":0,\"discount\":5.0,\"endTime\":\"2023-10-14 12:00:00\",\"name\":\"关于时间格式\",\"params\":{},\"status\":0,\"type\":2,\"updateBy\":\"huodong\",\"voucher\":200.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 15:17:16',14),
+	(121,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'huodong',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":23,\"beginTime\":\"2023-10-05 12:00:00\",\"channelId\":5,\"createBy\":\"admin\",\"delFlag\":0,\"discount\":5.0,\"endTime\":\"2023-10-27 12:00:00\",\"name\":\"关于时间格式\",\"params\":{},\"status\":0,\"type\":2,\"updateBy\":\"huodong\",\"voucher\":2999.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 15:17:36',9),
+	(122,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'huodong',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":23,\"beginTime\":\"2023-10-10 12:00:00\",\"channelId\":5,\"createBy\":\"admin\",\"delFlag\":0,\"discount\":5.0,\"endTime\":\"2023-10-18 12:00:00\",\"name\":\"关于时间格式\",\"params\":{},\"status\":0,\"type\":2,\"updateBy\":\"huodong\",\"voucher\":2999.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 15:18:06',8),
+	(123,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":23,\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":5.0,\"endTime\":\"2023-10-10 15:40:47\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":200.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 23:35:19',19),
+	(124,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":23,\"beginTime\":\"2023-10-09 20:31:00\",\"channelId\":5,\"discount\":5.0,\"endTime\":\"2023-10-10 15:40:47\",\"params\":{},\"status\":1,\"type\":2,\"voucher\":1000.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-13 23:35:27',6),
+	(125,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":19,\"beginTime\":\"2023-10-20 12:00:00\",\"channelId\":1,\"createBy\":\"admin\",\"delFlag\":0,\"discount\":3.0,\"endTime\":\"2023-10-25 12:00:00\",\"name\":\"分组校验测试\",\"params\":{},\"status\":0,\"type\":1,\"voucher\":null}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2023-10-14 10:00:00',22),
+	(126,'活动管理',3,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.remove()','DELETE',1,'admin',NULL,'/tienchin/activity/22','127.0.0.1','内网IP','{}','{\"msg\":\"操作失败\",\"code\":500}',0,NULL,'2023-10-14 10:28:08',36),
+	(127,'活动管理',3,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.remove()','DELETE',1,'admin',NULL,'/tienchin/activity/1','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-14 10:28:49',11),
+	(128,'活动管理',3,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.remove()','DELETE',1,'admin',NULL,'/tienchin/activity/22','127.0.0.1','内网IP','{}','{\"msg\":\"操作失败\",\"code\":500}',0,NULL,'2023-10-14 10:28:57',13),
+	(129,'活动管理',3,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.remove()','DELETE',1,'admin',NULL,'/tienchin/activity/22','127.0.0.1','内网IP','{}','{\"msg\":\"操作失败\",\"code\":500}',0,NULL,'2023-10-14 10:30:44',16),
+	(130,'活动管理',3,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.remove()','DELETE',1,'admin',NULL,'/tienchin/activity/22','127.0.0.1','内网IP','{}','{\"msg\":\"操作失败\",\"code\":500}',0,NULL,'2023-10-14 10:31:10',21),
+	(131,'活动管理',3,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.remove()','DELETE',1,'admin',NULL,'/tienchin/activity/22','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-14 10:33:00',8),
+	(132,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03 17:13:22\",\"default\":false,\"dictCode\":36,\"dictLabel\":\"正在进行\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-14 11:05:02',17),
+	(133,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03 17:13:22\",\"default\":false,\"dictCode\":36,\"dictLabel\":\"正在进行\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-14 11:05:10',17),
+	(134,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03 17:13:22\",\"default\":false,\"dictCode\":36,\"dictLabel\":\"正在进行\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-14 11:05:19',25),
+	(135,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-03 17:13:41\",\"default\":false,\"dictCode\":37,\"dictLabel\":\"尚未开始\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"0\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-14 11:05:39',17),
+	(136,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-12 11:37:51\",\"default\":false,\"dictCode\":38,\"dictLabel\":\"已过期\",\"dictSort\":0,\"dictType\":\"activity_status\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"warning\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-14 11:05:58',18),
+	(137,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 11:46:35',1148),
+	(138,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 11:49:44',705),
+	(139,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 11:51:35',676),
+	(140,'渠道导出',5,'com.wangxy.tienchin.web.controller.tienchin.ChannelController.export()','POST',1,'admin',NULL,'/tienchin/channel/export','127.0.0.1','内网IP','{\"pageSize\":\"10\",\"pageNum\":\"1\"}',NULL,0,NULL,'2023-10-14 11:53:05',69),
+	(141,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 19:53:48',817),
+	(142,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 19:55:53',590),
+	(143,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 20:01:41',616),
+	(144,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 20:05:08',527),
+	(145,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 20:19:22',663),
+	(146,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 20:21:24',60),
+	(147,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 20:27:55',708),
+	(148,'活动导出',5,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.export()','POST',1,'admin',NULL,'/tienchin/activity/export','127.0.0.1','内网IP','{\"discount\":null,\"params\":{},\"voucher\":null}',NULL,0,NULL,'2023-10-14 20:42:13',695),
+	(149,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"课程类型\",\"dictType\":\"course_type\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:43:35',18),
+	(150,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"舞蹈类\",\"dictSort\":0,\"dictType\":\"course_type\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:44:05',12),
+	(151,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"游泳类\",\"dictSort\":0,\"dictType\":\"course_type\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:44:15',11),
+	(152,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"拳击类\",\"dictSort\":0,\"dictType\":\"course_type\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:44:33',25),
+	(153,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"课程适用人群\",\"dictType\":\"course_apply_to\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:45:24',11),
+	(154,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"中小学生\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:45:39',36),
+	(155,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"上班族\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:45:47',27),
+	(156,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"小白用户\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:45:57',10),
+	(157,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"达人\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"4\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:10',5),
+	(158,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-15 10:45:39\",\"default\":false,\"dictCode\":42,\"dictLabel\":\"中小学生\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:24',8),
+	(159,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-15 10:45:47\",\"default\":false,\"dictCode\":43,\"dictLabel\":\"上班族\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:31',18),
+	(160,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-15 10:45:57\",\"default\":false,\"dictCode\":44,\"dictLabel\":\"小白用户\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"3\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:36',15),
+	(161,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-15 10:46:10\",\"default\":false,\"dictCode\":45,\"dictLabel\":\"达人\",\"dictSort\":0,\"dictType\":\"course_apply_to\",\"dictValue\":\"4\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:39',7),
+	(162,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-15 10:44:05\",\"default\":false,\"dictCode\":39,\"dictLabel\":\"舞蹈类\",\"dictSort\":0,\"dictType\":\"course_type\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:47',21),
+	(163,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-15 10:44:15\",\"default\":false,\"dictCode\":40,\"dictLabel\":\"游泳类\",\"dictSort\":0,\"dictType\":\"course_type\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:51',8),
+	(164,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-15 10:44:33\",\"default\":false,\"dictCode\":41,\"dictLabel\":\"拳击类\",\"dictSort\":0,\"dictType\":\"course_type\",\"dictValue\":\"3\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:46:54',13),
+	(165,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"添加课程\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1069,\"perms\":\"tienchin:course:create\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:57:10',17),
+	(166,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"修改课程\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":1069,\"perms\":\"tienchin:course:edit\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:57:40',8),
+	(167,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"删除课程\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":1069,\"perms\":\"tienchin:course:remove\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:58:07',20),
+	(168,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"课程导出\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":1069,\"perms\":\"tienchin:course:export\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 10:58:29',8),
+	(169,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"课程查询\",\"menuType\":\"F\",\"orderNum\":5,\"params\":{},\"parentId\":1069,\"perms\":\"tienchin:course:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 11:01:08',9),
+	(170,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"导入课程\",\"menuType\":\"F\",\"orderNum\":6,\"params\":{},\"parentId\":1069,\"perms\":\"tienchin:course:import\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 11:01:29',10),
+	(171,'字典类型',9,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.refreshCache()','DELETE',1,'admin',NULL,'/system/dict/type/refreshCache','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 15:26:34',20),
+	(172,'添加课程',1,'com.wangxy.tienchin.web.controller.tienchin.CourseController.add()','POST',1,'admin',NULL,'/tienchin/course/','127.0.0.1','内网IP','{\"applyTo\":1,\"courseId\":3,\"createBy\":\"admin\",\"createTime\":\"2023-10-15 16:56:51.250288\",\"info\":\"infomessage\",\"name\":\"test\",\"price\":3000.0,\"type\":1}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-15 16:56:51',25),
+	(173,'添加课程',1,'com.wangxy.tienchin.web.controller.tienchin.CourseController.add()','POST',1,'admin',NULL,'/tienchin/course','127.0.0.1','内网IP','{\"applyTo\":1,\"courseId\":4,\"createBy\":\"admin\",\"createTime\":\"2023-10-15 17:23:14.416848\",\"info\":\"青少年游泳课\",\"name\":\"游泳训练课\",\"price\":800.0,\"type\":2}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-15 17:23:14',16),
+	(174,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course/','127.0.0.1','内网IP','{\"applyTo\":1,\"info\":\"infomessage\",\"name\":\"testupdate\",\"price\":3000.0,\"type\":1,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:03:03.858585\"}','{\"msg\":\"更新失败\",\"code\":500}',0,NULL,'2023-10-15 20:03:03',19),
+	(175,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course/','127.0.0.1','内网IP','{\"applyTo\":1,\"info\":\"infomessage\",\"name\":\"testupdate\",\"price\":3000.0,\"type\":1,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:06:02.913979\"}','{\"msg\":\"更新失败\",\"code\":500}',0,NULL,'2023-10-15 20:06:02',24),
+	(176,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course/','127.0.0.1','内网IP','{\"applyTo\":1,\"info\":\"infomessage\",\"name\":\"testupdate\",\"price\":3000.0,\"type\":1,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:06:26.548483\"}','{\"msg\":\"更新失败\",\"code\":500}',0,NULL,'2023-10-15 20:06:26',7),
+	(177,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course/','127.0.0.1','内网IP','{\"applyTo\":1,\"courseId\":3,\"info\":\"infomessage\",\"name\":\"testupdate\",\"price\":3000.0,\"type\":2,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:07:40.363406\"}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2023-10-15 20:07:40',35),
+	(178,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course','127.0.0.1','内网IP','{\"applyTo\":1,\"courseId\":3,\"info\":\"infomessage\",\"name\":\"少年暑假游泳班\",\"price\":1888.0,\"type\":2,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:26:57.373512\"}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2023-10-15 20:26:57',20),
+	(179,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course','127.0.0.1','内网IP','{\"applyTo\":2,\"courseId\":4,\"info\":\"青少年游泳课\",\"name\":\"游泳训练课\",\"price\":800.0,\"type\":2,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:51:59.912946\"}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2023-10-15 20:51:59',5),
+	(180,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course','127.0.0.1','内网IP','{\"applyTo\":1,\"courseId\":1,\"info\":\"入门\",\"name\":\"爵士舞蹈\",\"price\":2999.0,\"type\":2,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:52:10.129430\"}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2023-10-15 20:52:10',3),
+	(181,'课程管理',2,'com.wangxy.tienchin.web.controller.tienchin.CourseController.edit()','PUT',1,'admin',NULL,'/tienchin/course','127.0.0.1','内网IP','{\"applyTo\":1,\"courseId\":1,\"info\":\"入门\",\"name\":\"爵士舞蹈\",\"price\":2999.0,\"type\":1,\"updateBy\":\"admin\",\"updateTime\":\"2023-10-15 20:52:15.029766\"}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2023-10-15 20:52:15',11),
+	(182,'添加课程',1,'com.wangxy.tienchin.web.controller.tienchin.CourseController.add()','POST',1,'admin',NULL,'/tienchin/course','127.0.0.1','内网IP','{\"applyTo\":4,\"courseId\":5,\"createBy\":\"admin\",\"createTime\":\"2023-10-15 20:56:47.560711\",\"info\":\"删除测试\",\"name\":\"测试删除\",\"price\":400.0,\"type\":3}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2023-10-15 20:56:47',72),
+	(183,'课程管理',3,'com.wangxy.tienchin.web.controller.tienchin.CourseController.remove()','DELETE',1,'admin',NULL,'/tienchin/course/5','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-15 20:56:57',32),
+	(184,'课程导出',5,'com.wangxy.tienchin.web.controller.tienchin.CourseController.export()','POST',1,'admin',NULL,'/tienchin/course/export','127.0.0.1','内网IP','{\"pageSize\":\"10\",\"pageNum\":\"1\"}',NULL,0,NULL,'2023-10-15 21:01:50',827),
+	(185,'课程导出',5,'com.wangxy.tienchin.web.controller.tienchin.CourseController.export()','POST',1,'admin',NULL,'/tienchin/course/export','127.0.0.1','内网IP','{\"pageSize\":\"10\",\"pageNum\":\"1\"}',NULL,0,NULL,'2023-10-15 21:19:41',618),
+	(186,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"线索查询\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1061,\"perms\":\"tienchin:clue:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:52:08',13),
+	(187,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"线索添加\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":1061,\"perms\":\"tienchin:clue:create\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:52:23',17),
+	(188,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"线索编辑\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":1061,\"perms\":\"tienchin:clue:edit\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:52:49',11),
+	(189,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"线索删除\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":1061,\"perms\":\"tienchin:clue:delete\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:53:20',21),
+	(190,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-10-16 08:52:08\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1088,\"menuName\":\"查询线索\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1061,\"path\":\"\",\"perms\":\"tienchin:clue:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:53:44',11),
+	(191,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-10-16 08:52:23\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1089,\"menuName\":\"添加线索\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":1061,\"path\":\"\",\"perms\":\"tienchin:clue:create\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:53:49',9),
+	(192,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-10-16 08:52:49\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1090,\"menuName\":\"编辑线索\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":1061,\"path\":\"\",\"perms\":\"tienchin:clue:edit\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:53:58',14),
+	(193,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-10-16 08:53:20\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1091,\"menuName\":\"删除线索\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":1061,\"path\":\"\",\"perms\":\"tienchin:clue:delete\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:54:07',9),
+	(194,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"跟进线索\",\"menuType\":\"F\",\"orderNum\":5,\"params\":{},\"parentId\":1061,\"perms\":\"tienchin:clue:follow\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:54:35',4),
+	(195,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"分配线索\",\"menuType\":\"F\",\"orderNum\":6,\"params\":{},\"parentId\":1061,\"perms\":\"tienchin:clue;assign\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 08:57:20',8),
+	(196,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue/','127.0.0.1','内网IP','{\"clueId\":1,\"createBy\":\"admin\",\"createTime\":\"2023-10-16 16:21:23.708678\",\"name\":\"tt\",\"phone\":\"12345678\"}','{\"msg\":\"录入成功\",\"code\":200}',0,NULL,'2023-10-16 16:21:23',29),
+	(197,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue/','127.0.0.1','内网IP','{\"name\":\"ttcf\",\"phone\":\"12345678\"}','{\"msg\":\"手机号码重复，客户此前已经登记过了\",\"code\":500}',0,NULL,'2023-10-16 16:21:32',21),
+	(198,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"客户意向等级\",\"dictType\":\"clue_level\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:22:52',31),
+	(199,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"近期报名\",\"dictSort\":1,\"dictType\":\"clue_level\",\"dictValue\":\"1\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:23:59',19),
+	(200,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"打算报名\",\"dictSort\":2,\"dictType\":\"clue_level\",\"dictValue\":\"2\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:24:12',5),
+	(201,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"考虑中\",\"dictSort\":3,\"dictType\":\"clue_level\",\"dictValue\":\"3\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:24:21',11),
+	(202,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-16 16:24:12\",\"default\":false,\"dictCode\":47,\"dictLabel\":\"打算报名，考虑中\",\"dictSort\":2,\"dictType\":\"clue_level\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:24:40',19),
+	(203,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-16 16:24:21\",\"default\":false,\"dictCode\":48,\"dictLabel\":\"了解一下\",\"dictSort\":3,\"dictType\":\"clue_level\",\"dictValue\":\"3\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:25:03',20),
+	(204,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-16 16:24:12\",\"default\":false,\"dictCode\":47,\"dictLabel\":\"报名考虑中\",\"dictSort\":2,\"dictType\":\"clue_level\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:25:13',9),
+	(205,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"打酱油\",\"dictSort\":4,\"dictType\":\"clue_level\",\"dictValue\":\"4\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:25:26',22),
+	(206,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"线索状态\",\"dictType\":\"clue_status\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:26:32',9),
+	(207,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"已分配\",\"dictSort\":1,\"dictType\":\"clue_status\",\"dictValue\":\"1\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:26:54',30),
+	(208,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"跟进中\",\"dictSort\":2,\"dictType\":\"clue_status\",\"dictValue\":\"2\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:27:12',16),
+	(209,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2023-10-16 16:26:54\",\"default\":false,\"dictCode\":50,\"dictLabel\":\"已分配\",\"dictSort\":1,\"dictType\":\"clue_status\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:27:17',16),
+	(210,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"回收\",\"dictSort\":3,\"dictType\":\"clue_status\",\"dictValue\":\"3\",\"listClass\":\"info\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:27:36',35),
+	(211,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"伪线索\",\"dictSort\":4,\"dictType\":\"clue_status\",\"dictValue\":\"4\",\"listClass\":\"warning\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2023-10-16 16:37:00',21),
+	(212,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue','127.0.0.1','内网IP','{\"age\":20,\"clueId\":2,\"createBy\":\"admin\",\"createTime\":\"2023-10-16 20:09:28.996733\",\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"phone\":\"12341234123\",\"qq\":\"442432156\",\"weixin\":\"wxwxwxw\"}','{\"msg\":\"录入成功\",\"code\":200}',0,NULL,'2023-10-16 20:09:29',39),
+	(213,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue','127.0.0.1','内网IP','{\"activityId\":17,\"age\":20,\"channelId\":1,\"clueId\":3,\"createBy\":\"admin\",\"createTime\":\"2023-10-18 10:13:22.170015\",\"gender\":0,\"level\":1,\"name\":\"最终测1\",\"nextTime\":\"2023-10-21 02:13:17\",\"phone\":\"12341234111\"}','{\"msg\":\"录入成功\",\"code\":200}',0,NULL,'2023-10-18 10:13:22',38),
+	(214,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue','127.0.0.1','内网IP','{\"name\":\"测试重复号码\",\"phone\":\"12341234111\"}','{\"msg\":\"手机号码重复，客户此前已经登记过了\",\"code\":500}',0,NULL,'2023-10-18 10:13:56',11),
+	(215,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue','127.0.0.1','内网IP','{\"age\":14,\"clueId\":4,\"createBy\":\"admin\",\"createTime\":\"2023-11-03 15:55:16.558335\",\"gender\":0,\"name\":\"wxy\",\"phone\":\"12345678901\"}','{\"msg\":\"录入成功\",\"code\":200}',0,NULL,'2023-11-03 15:55:16',46),
+	(216,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue','127.0.0.1','内网IP','{\"clueId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-17 18:49:42.629607\",\"name\":\"客户x\",\"phone\":\"1234567891\"}','{\"msg\":\"录入成功\",\"code\":200}',0,NULL,'2024-01-17 18:49:42',65),
+	(217,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":1,\"beginTime\":\"2023-09-23 15:40:47\",\"channelId\":1,\"delFlag\":0,\"discount\":3.0,\"endTime\":\"2023-10-07 16:15:00\",\"name\":\"test\",\"params\":{},\"status\":2,\"type\":1,\"voucher\":5.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2024-01-17 19:27:41',14),
+	(218,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查看线索\",\"menuType\":\"F\",\"orderNum\":8,\"params\":{},\"parentId\":1061,\"perms\":\"tienchin:clue:view\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-18 15:02:56',20),
+	(219,'角色管理',1,'com.wangxy.tienchin.web.controller.system.SysRoleController.add()','POST',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1061,1094],\"params\":{},\"roleId\":6,\"roleKey\":\"clue_role\",\"roleName\":\"线索管理员\",\"roleSort\":0,\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-19 12:00:14',31),
+	(220,'角色管理',2,'com.wangxy.tienchin.web.controller.system.SysRoleController.edit()','PUT',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createTime\":\"2024-01-19 12:00:14\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1061,1088,1089,1090,1091,1092,1093,1094],\"params\":{},\"roleId\":6,\"roleKey\":\"clue_role\",\"roleName\":\"线索管理员\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-19 12:00:35',14),
+	(221,'角色管理',2,'com.wangxy.tienchin.web.controller.system.SysRoleController.edit()','PUT',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createTime\":\"2024-01-19 12:00:14\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1061,1088,1089,1090,1091,1093,1094],\"params\":{},\"roleId\":6,\"roleKey\":\"clue_role\",\"roleName\":\"线索管理员\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-19 12:00:48',24),
+	(222,'用户管理',1,'com.wangxy.tienchin.web.controller.system.SysUserController.add()','POST',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"nickName\":\"xiansuoguanli\",\"params\":{},\"postIds\":[],\"roleIds\":[],\"status\":\"0\",\"userId\":6,\"userName\":\"xiansuoguanli\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-19 12:02:15',106),
+	(223,'用户管理',4,'com.wangxy.tienchin.web.controller.system.SysUserController.insertAuthRole()','PUT',1,'admin',NULL,'/system/user/authRole','127.0.0.1','内网IP','{\"roleIds\":\"6\",\"userId\":\"6\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-19 12:02:36',9),
+	(224,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2023-10-16 08:57:20\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1093,\"menuName\":\"分配线索\",\"menuType\":\"F\",\"orderNum\":6,\"params\":{},\"parentId\":1061,\"path\":\"\",\"perms\":\"tienchin:clue:assign\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-19 13:23:37',16),
+	(225,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"无效线索类型\",\"dictType\":\"clue_invalidate\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-20 15:28:23',87),
+	(226,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"空号 \",\"dictSort\":0,\"dictType\":\"clue_invalidate\",\"dictValue\":\"1\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-20 15:29:08',7),
+	(227,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"停机\",\"dictSort\":0,\"dictType\":\"clue_invalidate\",\"dictValue\":\"2\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-20 15:29:18',25),
+	(228,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"无法联系\",\"dictSort\":0,\"dictType\":\"clue_invalidate\",\"dictValue\":\"3\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-20 15:29:28',19),
+	(229,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"其他\",\"dictSort\":0,\"dictType\":\"clue_invalidate\",\"dictValue\":\"4\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-20 15:29:37',6),
+	(230,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue','127.0.0.1','内网IP','{\"channelId\":2,\"clueId\":5,\"createBy\":\"admin\",\"level\":1,\"name\":\"客户x\",\"nextTime\":\"2025-01-19 03:26:49\",\"phone\":\"1234567891\",\"qq\":\"999999\",\"status\":1}','{\"msg\":\"手机号码重复，客户此前已经登记过了\",\"code\":500}',0,NULL,'2024-01-21 10:53:36',13),
+	(231,'添加线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.add()','POST',1,'admin',NULL,'/tienchin/clue','127.0.0.1','内网IP','{\"age\":70,\"clueId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-17 18:49:43\",\"delFlag\":0,\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"客户x\",\"nextTime\":\"2025-01-19 03:26:49\",\"phone\":\"1234567891\",\"qq\":\"999999999\",\"remark\":\"更新1\",\"status\":1,\"subject\":\"3\",\"weixin\":\"999999999\"}','{\"msg\":\"手机号码重复，客户此前已经登记过了\",\"code\":500}',0,NULL,'2024-01-21 11:11:46',23),
+	(232,'修改线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.updateClue()','PUT',1,'admin',NULL,'/tienchin/clue/','127.0.0.1','内网IP','{\"age\":70,\"channelId\":4,\"clueId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-17 18:49:43\",\"delFlag\":0,\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"客户x\",\"nextTime\":\"2025-01-19 03:26:49\",\"phone\":\"1234567891\",\"qq\":\"999999999\",\"status\":1,\"subject\":\"3\",\"weixin\":\"999999999\"}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2024-01-21 11:13:56',24),
+	(233,'删除线索',3,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.deleteClue()','DELETE',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-21 14:57:28',20),
+	(234,'删除线索',3,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.deleteClue()','DELETE',1,'admin',NULL,'/tienchin/clue/3,4','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-21 15:07:49',18),
+	(235,'添加活动',1,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.add()','POST',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"beginTime\":\"2024-01-24 12:00:00\",\"channelId\":1,\"discount\":null,\"endTime\":\"2024-01-26 12:00:00\",\"name\":\"timeTest\",\"params\":{},\"type\":2,\"voucher\":20.0}','{\"msg\":\"添加成功\",\"code\":200}',0,NULL,'2024-01-21 21:12:35',77),
+	(236,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查询商机\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1062,\"perms\":\"tienchin:business:query\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:09:40',20),
+	(237,'菜单管理',2,'com.wangxy.tienchin.web.controller.system.SysMenuController.edit()','PUT',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createTime\":\"2024-01-22 09:09:40\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1095,\"menuName\":\"查询商机\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1062,\"path\":\"\",\"perms\":\"tienchin:business:list\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:09:59',25),
+	(238,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"添加商机\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":1062,\"perms\":\"tienchin:business:create\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:10:22',9),
+	(239,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"删除商机\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":1062,\"perms\":\"tienchin:business:remove\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:10:53',18),
+	(240,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"修改商机\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":1062,\"perms\":\"tienchin:business:edit\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:11:10',16),
+	(241,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"跟进商机\",\"menuType\":\"F\",\"orderNum\":5,\"params\":{},\"parentId\":1062,\"perms\":\"tienchin:business:follow\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:11:41',18),
+	(242,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"分配商机\",\"menuType\":\"F\",\"orderNum\":6,\"params\":{},\"parentId\":1062,\"perms\":\"tienchin:business:assign\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:12:03',18),
+	(243,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查看商机\",\"menuType\":\"F\",\"orderNum\":7,\"params\":{},\"parentId\":1062,\"perms\":\"tienchin:business:view\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-22 09:12:22',14),
+	(244,'线索转为商机',0,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.clue2Bussiness()','POST',1,'admin',NULL,'/tienchin/clue/to_business/2','127.0.0.1','内网IP','',NULL,1,'Source must not be null','2024-01-22 11:37:35',46),
+	(245,'线索转为商机',0,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.clue2Bussiness()','POST',1,'admin',NULL,'/tienchin/clue/tobusiness/2','127.0.0.1','内网IP','',NULL,1,'Source must not be null','2024-01-22 11:39:13',19),
+	(246,'线索转为商机',0,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.clue2Bussiness()','POST',1,'admin',NULL,'/tienchin/clue/tobusiness/2','127.0.0.1','内网IP','',NULL,1,'Source must not be null','2024-01-22 11:43:21',28),
+	(247,'线索转为商机',0,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.clue2Bussiness()','POST',1,'admin',NULL,'/tienchin/clue/tobusiness/2','127.0.0.1','内网IP','2','{\"msg\":\"转化成功\",\"code\":200}',0,NULL,'2024-01-22 11:48:58',167),
+	(248,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'\n### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where tc.del_flag!=1\' at line 2\n### The error may exist in file [/Users/wangxy/project/tienchin/tienchin-clue/target/classes/mapper/ClueMapper.xml]\n### The error may involve defaultParameterMap\n### The error occurred while setting parameters\n### SQL: select tc.clue_id,tc.name,tc.gender,tc.age,tc.weixin,tc.qq,tc.phone,tc.level,tc.subject,tc.status,tc.fail_count,tc.next_time,tch.channel_name,tas.create_by as allocator,ta.name as activity_name,ta.info as activity_info,tas.user_name  as owner,tas.create_time as belong_time,tc.create_time         from tienchin_clue tc left join tienchin_activity ta on tc.activity_id=ta.activity_id left join tienchin_channel tch on tc.channel_id=tch.channel_id left join tienchin_assign tas on tc.clue_id=tas.assign_id and tas.latest=true where tc.clue_id=? where tc.del_flag!=1\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where tc.del_flag!=1\' at line 2\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where tc.del_flag!=1\' at line 2','2024-01-22 13:05:12',57),
+	(249,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":20,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:13\",\"clueId\":2,\"createTime\":\"2023-10-16 20:09:29\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"owner\":\"javaboytest\",\"phone\":\"12341234123\",\"qq\":\"99\",\"status\":4,\"subject\":\"1\",\"weixin\":\"wxwxwxw\"}}',0,NULL,'2024-01-22 13:09:47',18),
+	(250,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":20,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:13\",\"clueId\":2,\"createTime\":\"2023-10-16 20:09:29\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"owner\":\"javaboytest\",\"phone\":\"12341234123\",\"qq\":\"99\",\"status\":4,\"subject\":\"1\",\"weixin\":\"wxwxwxw\"}}',0,NULL,'2024-01-22 13:09:54',16),
+	(251,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:34:01\",\"clueId\":1,\"createTime\":\"2023-10-16 16:21:24\",\"failCount\":3,\"name\":\"tt\",\"owner\":\"admin\",\"phone\":\"12345678\",\"status\":4}}',0,NULL,'2024-01-22 13:10:08',18),
+	(252,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:34:01\",\"clueId\":1,\"createTime\":\"2023-10-16 16:21:24\",\"failCount\":3,\"name\":\"tt\",\"owner\":\"admin\",\"phone\":\"12345678\",\"status\":4}}',0,NULL,'2024-01-22 13:10:46',10),
+	(253,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":20,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:13\",\"clueId\":2,\"createTime\":\"2023-10-16 20:09:29\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"owner\":\"javaboytest\",\"phone\":\"12341234123\",\"qq\":\"99\",\"status\":4,\"subject\":\"1\",\"weixin\":\"wxwxwxw\"}}',0,NULL,'2024-01-22 13:10:55',18),
+	(254,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/5','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":70,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:33\",\"channelName\":\"小红书渠道\",\"clueId\":5,\"createTime\":\"2024-01-17 18:49:43\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"客户x\",\"nextTime\":\"2025-01-19 03:26:49\",\"owner\":\"javaboytest\",\"phone\":\"1234567891\",\"qq\":\"999999999\",\"status\":1,\"subject\":\"3\",\"weixin\":\"999999999\"}}',0,NULL,'2024-01-22 13:11:02',13),
+	(255,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/4','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":14,\"allocator\":\"admin\",\"belongTime\":\"2024-01-18 14:32:27\",\"clueId\":4,\"createTime\":\"2023-11-03 15:55:17\",\"failCount\":0,\"gender\":0,\"name\":\"wxy\",\"owner\":\"qudao\",\"phone\":\"12345678901\",\"status\":2}}',0,NULL,'2024-01-22 13:11:09',12),
+	(256,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/5','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":70,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:33\",\"channelName\":\"小红书渠道\",\"clueId\":5,\"createTime\":\"2024-01-17 18:49:43\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"客户x\",\"nextTime\":\"2025-01-19 03:26:49\",\"owner\":\"javaboytest\",\"phone\":\"1234567891\",\"qq\":\"999999999\",\"status\":1,\"subject\":\"3\",\"weixin\":\"999999999\"}}',0,NULL,'2024-01-22 13:11:30',5),
+	(257,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/5','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":70,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:33\",\"channelName\":\"小红书渠道\",\"clueId\":5,\"createTime\":\"2024-01-17 18:49:43\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"客户x\",\"nextTime\":\"2025-01-19 03:26:49\",\"owner\":\"javaboytest\",\"phone\":\"1234567891\",\"qq\":\"999999999\",\"status\":1,\"subject\":\"3\",\"weixin\":\"999999999\"}}',0,NULL,'2024-01-22 13:12:08',8),
+	(258,'线索转为商机',0,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.clue2Bussiness()','POST',1,'admin',NULL,'/tienchin/clue/tobusiness/5','127.0.0.1','内网IP','5','{\"msg\":\"转化成功\",\"code\":200}',0,NULL,'2024-01-22 13:12:13',47),
+	(259,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"商机状态\",\"dictType\":\"business_status\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-23 10:12:45',11),
+	(260,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"已分配\",\"dictSort\":1,\"dictType\":\"business_status\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-23 10:13:27',12),
+	(261,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"进行中\",\"dictSort\":2,\"dictType\":\"business_status\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-23 10:13:41',13),
+	(262,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"回收\",\"dictSort\":3,\"dictType\":\"business_status\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-23 10:13:53',26),
+	(263,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":20,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:13\",\"clueId\":2,\"createTime\":\"2023-10-16 20:09:29\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"owner\":\"javaboytest\",\"phone\":\"12341234123\",\"qq\":\"99\",\"status\":4,\"subject\":\"1\",\"weixin\":\"wxwxwxw\"}}',0,NULL,'2024-01-25 12:40:48',14),
+	(264,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":20,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:13\",\"clueId\":2,\"createTime\":\"2023-10-16 20:09:29\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"owner\":\"javaboytest\",\"phone\":\"12341234123\",\"qq\":\"99\",\"status\":4,\"subject\":\"1\",\"weixin\":\"wxwxwxw\"}}',0,NULL,'2024-01-25 12:40:57',26),
+	(265,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":20,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:13\",\"clueId\":2,\"createTime\":\"2023-10-16 20:09:29\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"owner\":\"javaboytest\",\"phone\":\"12341234123\",\"qq\":\"99\",\"status\":4,\"subject\":\"1\",\"weixin\":\"wxwxwxw\"}}',0,NULL,'2024-01-25 12:41:03',9),
+	(266,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":20,\"allocator\":\"admin\",\"belongTime\":\"2024-01-17 20:26:13\",\"clueId\":2,\"createTime\":\"2023-10-16 20:09:29\",\"failCount\":0,\"gender\":0,\"level\":1,\"name\":\"testqd\",\"nextTime\":\"2023-10-19 12:09:08\",\"owner\":\"javaboytest\",\"phone\":\"12341234123\",\"qq\":\"99\",\"status\":4,\"subject\":\"1\",\"weixin\":\"wxwxwxw\"}}',0,NULL,'2024-01-26 08:58:37',11),
+	(267,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":17,\"beginTime\":\"2023-12-14 12:00:00\",\"channelId\":1,\"createBy\":\"admin\",\"delFlag\":0,\"discount\":2.0,\"endTime\":\"2024-03-21 12:00:00\",\"name\":\"测试正在进行的活动\",\"params\":{},\"status\":2,\"type\":1,\"voucher\":null}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2024-01-26 09:39:46',17),
+	(268,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":18,\"beginTime\":\"2023-10-19 12:00:00\",\"channelId\":4,\"createBy\":\"admin\",\"delFlag\":0,\"discount\":null,\"endTime\":\"2024-05-16 12:00:00\",\"info\":\"活动简介是怎么回事\",\"name\":\"测试过期活动\",\"params\":{},\"status\":2,\"type\":2,\"voucher\":500.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2024-01-26 09:40:02',4),
+	(269,'活动管理',2,'com.wangxy.tienchin.web.controller.tienchin.ActivityController.edit()','PUT',1,'admin',NULL,'/tienchin/activity','127.0.0.1','内网IP','{\"activityId\":1,\"beginTime\":\"2023-09-15 12:00:00\",\"channelId\":1,\"delFlag\":0,\"discount\":3.0,\"endTime\":\"2024-05-17 12:00:00\",\"name\":\"test\",\"params\":{},\"status\":2,\"type\":1,\"updateBy\":\"admin\",\"voucher\":5.0}','{\"msg\":\"活动更新成功\",\"code\":200}',0,NULL,'2024-01-26 09:40:11',12),
+	(270,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"activityId\":16,\"age\":33,\"businessId\":3,\"channelId\":2,\"createBy\":\"admin\",\"createTime\":\"2024-01-26 11:42:35.467509\",\"gender\":0,\"height\":null,\"level\":3,\"name\":\"business测试\",\"nextTime\":\"2024-01-27 11:42:35.468004\",\"phone\":\"12345678901\",\"remark\":\"info\",\"status\":1,\"weight\":null,\"weixin\":\"business\"}','{\"msg\":\"商机添加成功\",\"code\":200}',0,NULL,'2024-01-26 11:42:35',64),
+	(271,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"businessId\":4,\"createBy\":\"admin\",\"createTime\":\"2024-01-26 16:44:41.690100\",\"height\":null,\"name\":\"test\",\"nextTime\":\"2024-01-27 16:44:41.690115\",\"phone\":\"12345678902\",\"status\":1,\"weight\":null}','{\"msg\":\"商机添加成功\",\"code\":200}',0,NULL,'2024-01-26 16:44:41',30),
+	(272,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-26 19:36:47',60),
+	(273,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-26 20:56:50',10),
+	(274,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-26 20:57:23',4),
+	(275,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-26 20:57:30',2),
+	(276,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-26 21:24:36',7),
+	(277,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-26 21:46:17',70),
+	(278,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 10:44:19',5),
+	(279,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 10:46:20',10),
+	(280,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 10:46:28',4),
+	(281,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:06:18',11),
+	(282,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:08:27',4),
+	(283,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:09:14',55),
+	(284,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:09:20',12),
+	(285,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:10:02',85),
+	(286,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:17:43',41),
+	(287,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:17:43',6),
+	(288,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 19:17:45',33),
+	(289,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 21:00:25',27),
+	(290,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 21:01:19',28),
+	(291,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"职业种类\",\"dictType\":\"business_occupation\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:02:33',17),
+	(292,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"无\",\"dictSort\":0,\"dictType\":\"business_occupation\",\"dictValue\":\"0\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:03:03',9),
+	(293,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"技术\",\"dictSort\":0,\"dictType\":\"business_occupation\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:03:09',40),
+	(294,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"产品\",\"dictSort\":0,\"dictType\":\"business_occupation\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:03:14',6),
+	(295,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"设计\",\"dictSort\":0,\"dictType\":\"business_occupation\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:03:22',14),
+	(296,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"运营\",\"dictSort\":0,\"dictType\":\"business_occupation\",\"dictValue\":\"4\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:03:29',32),
+	(297,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"市场\",\"dictSort\":0,\"dictType\":\"business_occupation\",\"dictValue\":\"5\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:03:40',6),
+	(298,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"销售\",\"dictSort\":0,\"dictType\":\"business_occupation\",\"dictValue\":\"6\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:03:45',49),
+	(299,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 21:32:48',9),
+	(300,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"学历\",\"dictType\":\"business_education\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:33:38',15),
+	(301,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"小学\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:34:30',23),
+	(302,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"初中\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:34:38',5),
+	(303,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2024-01-28 21:34:30\",\"default\":false,\"dictCode\":68,\"dictLabel\":\"小学\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"0\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:34:44',21),
+	(304,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"高中\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:34:49',16),
+	(305,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"中专\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:35:00',21),
+	(306,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"大专\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"4\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:35:05',20),
+	(307,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"本科\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"5\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:35:09',10),
+	(308,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"硕士\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"6\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:35:15',10),
+	(309,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"博士\",\"dictSort\":0,\"dictType\":\"business_education\",\"dictValue\":\"7\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 21:35:19',13),
+	(310,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 22:02:10',30),
+	(311,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 22:02:39',14),
+	(312,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"商机沟通重点\",\"dictType\":\"business_focus\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 22:17:13',7),
+	(313,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"价格敏感\",\"dictSort\":0,\"dictType\":\"business_focus\",\"dictValue\":\"0\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 22:17:30',11),
+	(314,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"位置敏感\",\"dictSort\":0,\"dictType\":\"business_focus\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 22:17:40',8),
+	(315,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"课程敏感\",\"dictSort\":0,\"dictType\":\"business_focus\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 22:17:54',8),
+	(316,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"时间敏感\",\"dictSort\":0,\"dictType\":\"business_focus\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 22:18:15',16),
+	(317,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"教练敏感\",\"dictSort\":0,\"dictType\":\"business_focus\",\"dictValue\":\"4\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 22:18:23',5),
+	(318,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"环境敏感\",\"dictSort\":0,\"dictType\":\"business_focus\",\"dictValue\":\"6\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-01-28 22:18:44',10),
+	(319,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 22:19:26',11),
+	(320,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 22:41:22',10),
+	(321,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 22:41:31',12),
+	(322,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 22:52:55',5),
+	(323,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 23:34:42',7),
+	(324,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 23:37:53',10),
+	(325,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 23:38:22',7),
+	(326,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-28 23:40:29',14),
+	(327,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 09:57:13',105),
+	(328,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 09:59:16',65),
+	(329,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 10:49:24',15),
+	(330,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:04:57',10),
+	(331,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:05:15',19),
+	(332,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:05:16',4),
+	(333,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:06:06',22),
+	(334,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:06:06',14),
+	(335,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:06:10',9),
+	(336,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:06:59',18),
+	(337,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:07:07',4),
+	(338,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/4','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":14,\"allocator\":\"admin\",\"belongTime\":\"2024-01-26 18:56:04\",\"clueId\":4,\"createTime\":\"2023-11-03 15:55:17\",\"failCount\":0,\"gender\":0,\"name\":\"wxy\",\"owner\":\"admin\",\"phone\":\"12345678901\",\"status\":2}}',0,NULL,'2024-01-29 22:10:02',10),
+	(339,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/2','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:10:07',9),
+	(340,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}',NULL,1,'nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2','2024-01-29 22:10:34',8),
+	(341,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/4','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":14,\"allocator\":\"admin\",\"belongTime\":\"2024-01-26 18:56:04\",\"clueId\":4,\"createTime\":\"2023-11-03 15:55:17\",\"failCount\":0,\"gender\":0,\"name\":\"wxy\",\"owner\":\"admin\",\"phone\":\"12345678901\",\"status\":2}}',0,NULL,'2024-01-29 22:22:02',11),
+	(342,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"businessId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-29 22:22:37.148111\",\"height\":null,\"money\":null,\"name\":\"business\",\"nextTime\":\"2024-01-30 22:22:37.148147\",\"phone\":\"12345678909\",\"status\":1,\"weight\":null}','{\"msg\":\"商机添加成功\",\"code\":200}',0,NULL,'2024-01-29 22:22:37',55),
+	(343,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"age\":33,\"businessId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-29 22:22:37\",\"delFlag\":0,\"failCount\":0,\"gender\":0,\"height\":null,\"money\":null,\"name\":\"business\",\"nextTime\":\"2024-04-28 10:30:56\",\"phone\":\"12345678909\",\"status\":1,\"updateBy\":\"admin\",\"updateTime\":\"2024-01-29 22:27:51\",\"weight\":null}','{\"msg\":\"手机号码重复，客户此前已经登记过了\",\"code\":500}',0,NULL,'2024-02-02 20:32:24',48),
+	(344,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"age\":40,\"businessId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-29 22:22:37\",\"delFlag\":0,\"failCount\":0,\"gender\":0,\"height\":null,\"money\":null,\"name\":\"business\",\"nextTime\":\"2024-04-28 10:30:56\",\"phone\":\"12345678909\",\"status\":1,\"updateBy\":\"admin\",\"updateTime\":\"2024-01-29 22:27:51\",\"weight\":null}','{\"msg\":\"手机号码重复，客户此前已经登记过了\",\"code\":500}',0,NULL,'2024-02-02 20:34:19',26),
+	(345,'修改商机',0,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.updateClue()','PUT',1,'admin',NULL,'/tienchin/business/','127.0.0.1','内网IP','{\"age\":55,\"businessId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-29 22:22:37\",\"delFlag\":0,\"failCount\":0,\"gender\":0,\"height\":null,\"money\":null,\"name\":\"business\",\"nextTime\":\"2024-04-24 10:30:56\",\"phone\":\"12345678909\",\"status\":1,\"updateBy\":\"admin\",\"updateTime\":\"2024-01-29 22:27:51\",\"weight\":null}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2024-02-02 20:43:55',24),
+	(346,'修改商机',0,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.updateClue()','PUT',1,'admin',NULL,'/tienchin/business/','127.0.0.1','内网IP','{\"age\":33,\"businessId\":5,\"createBy\":\"admin\",\"createTime\":\"2024-01-29 22:22:37\",\"delFlag\":0,\"failCount\":0,\"gender\":0,\"height\":null,\"money\":null,\"name\":\"business\",\"nextTime\":\"2024-04-24 10:30:56\",\"phone\":\"12345678909\",\"status\":1,\"updateBy\":\"admin\",\"updateTime\":\"2024-01-29 22:27:51\",\"weight\":null}','{\"msg\":\"更新成功\",\"code\":200}',0,NULL,'2024-02-02 20:44:06',8),
+	(347,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"businessId\":6,\"createBy\":\"admin\",\"createTime\":\"2024-02-02 21:17:01\",\"height\":null,\"money\":null,\"name\":\"用来删的\",\"nextTime\":\"2024-02-03 21:17:01\",\"phone\":\"213456789076\",\"status\":1,\"weight\":null}','{\"msg\":\"商机添加成功\",\"code\":200}',0,NULL,'2024-02-02 21:17:01',51),
+	(348,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"height\":null,\"money\":null,\"name\":\"用来删的3\",\"phone\":\"12345678901\",\"weight\":null}','{\"msg\":\"手机号码重复，客户此前已经登记过了\",\"code\":500}',0,NULL,'2024-02-02 21:17:12',12),
+	(349,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"businessId\":7,\"createBy\":\"admin\",\"createTime\":\"2024-02-02 21:17:15\",\"height\":null,\"money\":null,\"name\":\"用来删的3\",\"nextTime\":\"2024-02-03 21:17:15\",\"phone\":\"12345678904\",\"status\":1,\"weight\":null}','{\"msg\":\"商机添加成功\",\"code\":200}',0,NULL,'2024-02-02 21:17:15',35),
+	(350,'删除商机',3,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.deleteBusiness()','DELETE',1,'admin',NULL,'/tienchin/business/6,7','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-02 21:21:39',37),
+	(351,'添加商机',1,'com.wangxy.tienchin.web.controller.tienchin.business.BusinessController.add()','POST',1,'admin',NULL,'/tienchin/business','127.0.0.1','内网IP','{\"businessId\":8,\"createBy\":\"admin\",\"createTime\":\"2024-02-02 21:29:24\",\"height\":null,\"money\":null,\"name\":\"商机\",\"nextTime\":\"2024-02-03 21:29:24\",\"phone\":\"123456789084\",\"status\":1,\"weight\":null}','{\"msg\":\"商机添加成功\",\"code\":200}',0,NULL,'2024-02-02 21:29:24',47),
+	(352,'字典类型',1,'com.wangxy.tienchin.web.controller.system.SysDictTypeController.add()','POST',1,'admin',NULL,'/system/dict/type','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"dictName\":\"合同状态\",\"dictType\":\"contract_status\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 09:56:47',21),
+	(353,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"待审核\",\"dictSort\":0,\"dictType\":\"contract_status\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 09:57:23',16),
+	(354,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"已通过\",\"dictSort\":0,\"dictType\":\"contract_status\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 09:57:36',21),
+	(355,'字典数据',1,'com.wangxy.tienchin.web.controller.system.SysDictDataController.add()','POST',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"被驳回\",\"dictSort\":0,\"dictType\":\"contract_status\",\"dictValue\":\"3\",\"listClass\":\"warning\",\"params\":{},\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 09:57:48',17),
+	(356,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2024-02-03 09:57:36\",\"default\":false,\"dictCode\":83,\"dictLabel\":\"已通过\",\"dictSort\":0,\"dictType\":\"contract_status\",\"dictValue\":\"2\",\"isDefault\":\"N\",\"listClass\":\"success\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 09:57:55',10),
+	(357,'字典数据',2,'com.wangxy.tienchin.web.controller.system.SysDictDataController.edit()','PUT',1,'admin',NULL,'/system/dict/data','127.0.0.1','内网IP','{\"createBy\":\"admin\",\"createTime\":\"2024-02-03 09:57:23\",\"default\":false,\"dictCode\":82,\"dictLabel\":\"待审核\",\"dictSort\":0,\"dictType\":\"contract_status\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"primary\",\"params\":{},\"status\":\"0\",\"updateBy\":\"admin\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 09:58:13',6),
+	(358,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查询合同\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":1063,\"perms\":\"tienchin:contract:list\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 10:07:37',23),
+	(359,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"添加合同\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":1063,\"perms\":\"tienchin:contract:create\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 10:08:02',19),
+	(360,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"删除合同\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":1063,\"perms\":\"tienchin:contract:remove\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 10:08:21',16),
+	(361,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"修改合同\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":1063,\"perms\":\"tienchin:contract:edit\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 10:08:37',7),
+	(362,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"预览合同\",\"menuType\":\"F\",\"orderNum\":5,\"params\":{},\"parentId\":1063,\"perms\":\"tienchin:contract:view\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 10:09:01',7),
+	(363,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查看详情\",\"menuType\":\"F\",\"orderNum\":6,\"params\":{},\"parentId\":1063,\"perms\":\"tienchin:contract:details\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 10:09:52',23),
+	(364,'菜单管理',1,'com.wangxy.tienchin.web.controller.system.SysMenuController.add()','POST',1,'admin',NULL,'/system/menu','127.0.0.1','内网IP','{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"合同审批\",\"menuType\":\"F\",\"orderNum\":7,\"params\":{},\"parentId\":1063,\"perms\":\"tienchin:contract:approve\",\"status\":\"0\",\"visible\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-03 10:10:22',10),
+	(365,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"allocator\":\"admin\",\"belongTime\":\"2024-01-26 16:44:08\",\"clueId\":1,\"createTime\":\"2023-10-16 16:21:24\",\"failCount\":3,\"name\":\"tt\",\"owner\":\"qudao\",\"phone\":\"12345678\",\"status\":4}}',0,NULL,'2024-02-05 21:53:19',12),
+	(366,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/1','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"allocator\":\"admin\",\"belongTime\":\"2024-01-26 16:44:08\",\"clueId\":1,\"createTime\":\"2023-10-16 16:21:24\",\"failCount\":3,\"name\":\"tt\",\"owner\":\"qudao\",\"phone\":\"12345678\",\"status\":4}}',0,NULL,'2024-02-05 21:53:51',2),
+	(367,'跟进线索',1,'com.wangxy.tienchin.web.controller.tienchin.clue.ClueController.getClueDetailByClueId()','GET',1,'admin',NULL,'/tienchin/clue/4','127.0.0.1','内网IP','{}','{\"msg\":\"操作成功\",\"code\":200,\"data\":{\"age\":14,\"allocator\":\"admin\",\"belongTime\":\"2024-01-26 18:56:04\",\"clueId\":4,\"createTime\":\"2023-11-03 15:55:17\",\"failCount\":0,\"gender\":0,\"name\":\"wxy\",\"owner\":\"admin\",\"phone\":\"12345678901\",\"status\":2}}',0,NULL,'2024-02-05 21:54:28',11),
+	(368,'角色管理',1,'com.wangxy.tienchin.web.controller.system.SysRoleController.add()','POST',1,'admin',NULL,'/system/role','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1063,1102,1103,1104,1105,1106,1107,1108],\"params\":{},\"roleId\":7,\"roleKey\":\"contract_role\",\"roleName\":\"合同审批员\",\"roleSort\":0,\"status\":\"0\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-08 01:09:25',111),
+	(369,'用户管理',1,'com.wangxy.tienchin.web.controller.system.SysUserController.add()','POST',1,'admin',NULL,'/system/user','127.0.0.1','内网IP','{\"admin\":false,\"createBy\":\"admin\",\"deptId\":100,\"nickName\":\"合同审批员\",\"params\":{},\"postIds\":[],\"roleIds\":[],\"status\":\"0\",\"userId\":7,\"userName\":\"contractuser\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-08 01:10:27',175),
+	(370,'用户管理',4,'com.wangxy.tienchin.web.controller.system.SysUserController.insertAuthRole()','PUT',1,'admin',NULL,'/system/user/authRole','127.0.0.1','内网IP','{\"roleIds\":\"7\",\"userId\":\"7\"}','{\"msg\":\"操作成功\",\"code\":200}',0,NULL,'2024-02-08 01:10:40',10);
+
+/*!40000 ALTER TABLE `sys_oper_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_post
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_post`;
+
+CREATE TABLE `sys_post` (
+  `post_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+  `post_code` varchar(64) NOT NULL COMMENT '岗位编码',
+  `post_name` varchar(50) NOT NULL COMMENT '岗位名称',
+  `post_sort` int(4) NOT NULL COMMENT '显示顺序',
+  `status` char(1) NOT NULL COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`post_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='岗位信息表';
+
+LOCK TABLES `sys_post` WRITE;
+/*!40000 ALTER TABLE `sys_post` DISABLE KEYS */;
+
+INSERT INTO `sys_post` (`post_id`, `post_code`, `post_name`, `post_sort`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,'ceo','董事长',1,'0','admin','2023-07-04 20:58:16','',NULL,''),
+	(2,'se','项目经理',2,'0','admin','2023-07-04 20:58:16','',NULL,''),
+	(3,'hr','人力资源',3,'0','admin','2023-07-04 20:58:16','',NULL,''),
+	(4,'user','普通员工',4,'0','admin','2023-07-04 20:58:16','',NULL,'');
+
+/*!40000 ALTER TABLE `sys_post` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_role
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_role`;
+
+CREATE TABLE `sys_role` (
+  `role_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_name` varchar(30) NOT NULL COMMENT '角色名称',
+  `role_key` varchar(100) NOT NULL COMMENT '角色权限字符串',
+  `role_sort` int(4) NOT NULL COMMENT '显示顺序',
+  `data_scope` char(1) DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
+  `menu_check_strictly` tinyint(1) DEFAULT '1' COMMENT '菜单树选择项是否关联显示',
+  `dept_check_strictly` tinyint(1) DEFAULT '1' COMMENT '部门树选择项是否关联显示',
+  `status` char(1) NOT NULL COMMENT '角色状态（0正常 1停用）',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色信息表';
+
+LOCK TABLES `sys_role` WRITE;
+/*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
+
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+VALUES
+	(1,'超级管理员','admin',1,'1',1,1,'0','0','admin','2023-07-04 20:58:16','',NULL,'超级管理员'),
+	(2,'普通角色','common',2,'2',1,1,'0','0','admin','2023-07-04 20:58:16','',NULL,'普通角色'),
+	(3,'测试角色1','test_role-1',0,'1',1,1,'0','0','admin','2023-07-19 20:31:14','',NULL,NULL),
+	(4,'渠道管理员','qudao_role',0,'1',1,1,'0','0','admin','2023-09-22 20:01:37','admin','2023-09-22 21:09:31',NULL),
+	(5,'活动管理员','activity_role',6,'1',1,1,'0','0','admin','2023-10-13 10:49:26','admin','2023-10-13 10:57:27',NULL),
+	(6,'线索管理员','clue_role',0,'1',1,1,'0','0','admin','2024-01-19 12:00:14','admin','2024-01-19 12:00:48',NULL),
+	(7,'合同审批员','contract_role',0,'1',1,1,'0','0','admin','2024-02-08 01:09:25','',NULL,NULL);
+
+/*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_role_dept
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_role_dept`;
+
+CREATE TABLE `sys_role_dept` (
+  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+  `dept_id` bigint(20) NOT NULL COMMENT '部门ID',
+  PRIMARY KEY (`role_id`,`dept_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色和部门关联表';
+
+LOCK TABLES `sys_role_dept` WRITE;
+/*!40000 ALTER TABLE `sys_role_dept` DISABLE KEYS */;
+
+INSERT INTO `sys_role_dept` (`role_id`, `dept_id`)
+VALUES
+	(2,100),
+	(2,101),
+	(2,105);
+
+/*!40000 ALTER TABLE `sys_role_dept` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_role_menu
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_role_menu`;
+
+CREATE TABLE `sys_role_menu` (
+  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+  `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
+  PRIMARY KEY (`role_id`,`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色和菜单关联表';
+
+LOCK TABLES `sys_role_menu` WRITE;
+/*!40000 ALTER TABLE `sys_role_menu` DISABLE KEYS */;
+
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`)
+VALUES
+	(2,1),
+	(2,2),
+	(2,3),
+	(2,4),
+	(2,100),
+	(2,101),
+	(2,102),
+	(2,103),
+	(2,104),
+	(2,105),
+	(2,106),
+	(2,107),
+	(2,108),
+	(2,109),
+	(2,110),
+	(2,111),
+	(2,112),
+	(2,113),
+	(2,114),
+	(2,115),
+	(2,116),
+	(2,117),
+	(2,500),
+	(2,501),
+	(2,1000),
+	(2,1001),
+	(2,1002),
+	(2,1003),
+	(2,1004),
+	(2,1005),
+	(2,1006),
+	(2,1007),
+	(2,1008),
+	(2,1009),
+	(2,1010),
+	(2,1011),
+	(2,1012),
+	(2,1013),
+	(2,1014),
+	(2,1015),
+	(2,1016),
+	(2,1017),
+	(2,1018),
+	(2,1019),
+	(2,1020),
+	(2,1021),
+	(2,1022),
+	(2,1023),
+	(2,1024),
+	(2,1025),
+	(2,1026),
+	(2,1027),
+	(2,1028),
+	(2,1029),
+	(2,1030),
+	(2,1031),
+	(2,1032),
+	(2,1033),
+	(2,1034),
+	(2,1035),
+	(2,1036),
+	(2,1037),
+	(2,1038),
+	(2,1039),
+	(2,1040),
+	(2,1041),
+	(2,1042),
+	(2,1043),
+	(2,1044),
+	(2,1045),
+	(2,1046),
+	(2,1047),
+	(2,1048),
+	(2,1049),
+	(2,1050),
+	(2,1051),
+	(2,1052),
+	(2,1053),
+	(2,1054),
+	(2,1055),
+	(2,1056),
+	(2,1057),
+	(2,1058),
+	(2,1059),
+	(2,1060),
+	(3,1),
+	(3,100),
+	(3,102),
+	(3,103),
+	(3,104),
+	(3,105),
+	(3,106),
+	(3,107),
+	(3,108),
+	(3,500),
+	(3,501),
+	(3,1000),
+	(3,1001),
+	(3,1002),
+	(3,1003),
+	(3,1004),
+	(3,1005),
+	(3,1006),
+	(3,1012),
+	(3,1013),
+	(3,1014),
+	(3,1015),
+	(3,1016),
+	(3,1017),
+	(3,1018),
+	(3,1019),
+	(3,1020),
+	(3,1021),
+	(3,1022),
+	(3,1023),
+	(3,1024),
+	(3,1025),
+	(3,1026),
+	(3,1027),
+	(3,1028),
+	(3,1029),
+	(3,1030),
+	(3,1031),
+	(3,1032),
+	(3,1033),
+	(3,1034),
+	(3,1035),
+	(3,1036),
+	(3,1037),
+	(3,1038),
+	(3,1039),
+	(3,1040),
+	(3,1041),
+	(3,1042),
+	(3,1043),
+	(3,1044),
+	(3,1045),
+	(4,1067),
+	(4,1070),
+	(4,1071),
+	(4,1072),
+	(4,1073),
+	(4,1074),
+	(4,1075),
+	(5,1064),
+	(5,1076),
+	(5,1077),
+	(5,1078),
+	(5,1079),
+	(5,1080),
+	(5,1081),
+	(6,1061),
+	(6,1088),
+	(6,1089),
+	(6,1090),
+	(6,1091),
+	(6,1093),
+	(6,1094),
+	(7,1063),
+	(7,1102),
+	(7,1103),
+	(7,1104),
+	(7,1105),
+	(7,1106),
+	(7,1107),
+	(7,1108);
+
+/*!40000 ALTER TABLE `sys_role_menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_user
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_user`;
+
+CREATE TABLE `sys_user` (
+  `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
+  `user_name` varchar(30) NOT NULL COMMENT '用户账号',
+  `nick_name` varchar(30) NOT NULL COMMENT '用户昵称',
+  `user_type` varchar(2) DEFAULT '00' COMMENT '用户类型（00系统用户）',
+  `email` varchar(50) DEFAULT '' COMMENT '用户邮箱',
+  `phonenumber` varchar(11) DEFAULT '' COMMENT '手机号码',
+  `sex` char(1) DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+  `avatar` varchar(100) DEFAULT '' COMMENT '头像地址',
+  `password` varchar(100) DEFAULT '' COMMENT '密码',
+  `status` char(1) DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `login_ip` varchar(128) DEFAULT '' COMMENT '最后登录IP',
+  `login_date` datetime DEFAULT NULL COMMENT '最后登录时间',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+
+
+
+# 转储表 sys_user_post
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_user_post`;
+
+CREATE TABLE `sys_user_post` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `post_id` bigint(20) NOT NULL COMMENT '岗位ID',
+  PRIMARY KEY (`user_id`,`post_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与岗位关联表';
+
+LOCK TABLES `sys_user_post` WRITE;
+/*!40000 ALTER TABLE `sys_user_post` DISABLE KEYS */;
+
+INSERT INTO `sys_user_post` (`user_id`, `post_id`)
+VALUES
+	(1,1),
+	(2,2),
+	(4,4),
+	(5,4);
+
+/*!40000 ALTER TABLE `sys_user_post` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 sys_user_role
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sys_user_role`;
+
+CREATE TABLE `sys_user_role` (
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+  PRIMARY KEY (`user_id`,`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和角色关联表';
+
+LOCK TABLES `sys_user_role` WRITE;
+/*!40000 ALTER TABLE `sys_user_role` DISABLE KEYS */;
+
+INSERT INTO `sys_user_role` (`user_id`, `role_id`)
+VALUES
+	(1,1),
+	(2,2),
+	(3,3),
+	(4,4),
+	(5,5),
+	(6,6),
+	(7,7);
+
+/*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_activity
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_activity`;
+
+CREATE TABLE `tienchin_activity` (
+  `activity_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '活动的id',
+  `name` varchar(255) DEFAULT NULL COMMENT '活动名称',
+  `channel_id` int(11) DEFAULT NULL COMMENT '活动对应的渠道id',
+  `info` varchar(255) DEFAULT NULL COMMENT '活动简介',
+  `type` int(11) DEFAULT NULL COMMENT '活动类型,1折扣2代金',
+  `discount` double DEFAULT NULL COMMENT '折扣券折扣比例',
+  `voucher` double DEFAULT NULL COMMENT '代金券金额',
+  `status` int(11) DEFAULT '1' COMMENT '活动状态,0未开始,1正常,2过期',
+  `begin_time` datetime DEFAULT NULL COMMENT '活动开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '活动结束时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `create_time` datetime DEFAULT NULL,
+  `create_by` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `update_by` varchar(32) DEFAULT NULL,
+  `del_flag` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`activity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `tienchin_activity` WRITE;
+/*!40000 ALTER TABLE `tienchin_activity` DISABLE KEYS */;
+
+INSERT INTO `tienchin_activity` (`activity_id`, `name`, `channel_id`, `info`, `type`, `discount`, `voucher`, `status`, `begin_time`, `end_time`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`, `del_flag`)
+VALUES
+	(1,'test',1,NULL,1,3,5,1,'2023-09-15 12:00:00','2024-05-17 12:00:00',NULL,'2023-09-23 15:40:47',NULL,'2024-01-26 09:40:12','admin',0),
+	(15,'t1',5,'活动简介是怎么回事',2,5,200,2,'2023-10-09 20:31:00','2023-10-10 15:40:47',NULL,'2023-10-12 16:35:44','admin','2023-10-13 10:35:49','admin',0),
+	(16,'测试未开始活动',2,NULL,2,NULL,200,2,'2023-10-19 12:00:00','2023-10-26 12:00:00',NULL,'2023-10-12 16:37:09','admin',NULL,NULL,0),
+	(17,'测试正在进行的活动',1,NULL,1,2,NULL,1,'2023-12-14 12:00:00','2024-03-21 12:00:00',NULL,'2023-10-12 16:37:38','admin','2024-01-26 09:39:46','admin',0),
+	(18,'测试过期活动',4,'活动简介是怎么回事',2,NULL,500,1,'2023-10-19 12:00:00','2024-05-16 12:00:00',NULL,'2023-10-12 16:38:02','admin','2024-01-26 09:40:02','admin',0),
+	(19,'分组校验测试',1,NULL,1,3,NULL,2,'2023-10-20 12:00:00','2023-10-25 12:00:00',NULL,'2023-10-13 09:54:47','admin','2023-10-14 10:00:00','admin',0),
+	(22,'aaaa',3,NULL,1,5,NULL,2,'2023-10-27 12:00:00','2023-10-28 12:00:00',NULL,'2023-10-13 13:49:41','admin',NULL,NULL,1),
+	(23,'关于时间格式',5,NULL,2,5,1000,2,'2023-10-09 20:31:00','2023-10-10 15:40:47',NULL,'2023-10-13 13:56:42','admin','2023-10-13 23:35:28','admin',0),
+	(24,'timeTest',1,NULL,2,NULL,20,2,'2024-01-24 12:00:00','2024-01-26 12:00:00',NULL,'2024-01-21 21:12:35','admin',NULL,NULL,0);
+
+/*!40000 ALTER TABLE `tienchin_activity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_assign
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_assign`;
+
+CREATE TABLE `tienchin_assign` (
+  `aid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` int(11) DEFAULT NULL COMMENT '1线索2商机',
+  `assign_id` bigint(11) DEFAULT NULL COMMENT '线索或商机的Id',
+  `user_id` int(11) DEFAULT NULL COMMENT '分配给的用户',
+  `user_name` varchar(11) DEFAULT NULL COMMENT '分配给用户的用户名',
+  `dept_id` bigint(11) DEFAULT NULL COMMENT '分配用户的所属部门id',
+  `latest` tinyint(1) DEFAULT '1' COMMENT '是否是当前的最新分配人',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `create_by` varchar(32) DEFAULT NULL,
+  `update_by` varchar(32) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `del_flag` int(11) DEFAULT NULL,
+  PRIMARY KEY (`aid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `tienchin_assign` WRITE;
+/*!40000 ALTER TABLE `tienchin_assign` DISABLE KEYS */;
+
+INSERT INTO `tienchin_assign` (`aid`, `type`, `assign_id`, `user_id`, `user_name`, `dept_id`, `latest`, `create_time`, `update_time`, `create_by`, `update_by`, `remark`, `del_flag`)
+VALUES
+	(1,0,4,1,'admin',103,0,'2023-11-03 15:55:17',NULL,'admin',NULL,NULL,NULL),
+	(2,0,4,1,'admin',103,0,'2023-11-05 20:36:53',NULL,'admin',NULL,NULL,NULL),
+	(3,1,1,3,'javaboytest',103,0,'2023-11-05 20:37:24',NULL,'admin',NULL,NULL,NULL),
+	(4,0,5,1,'admin',103,0,'2024-01-17 18:49:43',NULL,'admin',NULL,NULL,NULL),
+	(5,0,4,3,'javaboytest',103,0,'2024-01-17 19:13:24',NULL,'admin',NULL,NULL,NULL),
+	(6,1,1,3,'javaboytest',103,0,'2024-01-17 19:13:53',NULL,'admin',NULL,NULL,NULL),
+	(7,0,2,2,'ry',105,0,'2024-01-17 19:24:15',NULL,'admin',NULL,NULL,NULL),
+	(8,0,3,5,'huodong',106,0,'2024-01-17 19:25:27',NULL,'admin',NULL,NULL,NULL),
+	(9,0,5,2,'ry',105,0,'2024-01-17 19:39:48',NULL,'admin',NULL,NULL,NULL),
+	(10,0,4,3,'javaboytest',103,0,'2024-01-17 19:40:21',NULL,'admin',NULL,NULL,NULL),
+	(11,0,2,3,'javaboytest',103,0,'2024-01-17 20:26:13',NULL,'admin',NULL,NULL,NULL),
+	(12,1,5,3,'javaboytest',103,0,'2024-01-17 20:26:33',NULL,'admin',NULL,NULL,NULL),
+	(13,0,3,3,'javaboytest',103,0,'2024-01-17 20:26:39',NULL,'admin',NULL,NULL,NULL),
+	(14,0,1,5,'huodong',106,0,'2024-01-17 20:28:05',NULL,'admin',NULL,NULL,NULL),
+	(15,1,1,1,'admin',103,0,'2024-01-17 20:34:01',NULL,'admin',NULL,NULL,NULL),
+	(16,0,4,4,'qudao',105,0,'2024-01-18 14:32:27',NULL,'admin',NULL,NULL,NULL),
+	(17,1,1,1,'admin',103,0,'2024-01-22 11:48:58',NULL,'admin',NULL,NULL,NULL),
+	(18,0,2,1,'admin',103,0,'2024-01-22 13:12:13',NULL,'admin',NULL,NULL,NULL),
+	(19,1,3,1,'admin',103,0,'2024-01-26 11:42:35',NULL,'admin',NULL,NULL,NULL),
+	(20,1,2,3,'javaboytest',103,0,'2024-01-26 16:25:21',NULL,'admin',NULL,NULL,NULL),
+	(21,0,3,4,'qudao',105,0,'2024-01-26 16:25:53',NULL,'admin',NULL,NULL,NULL),
+	(22,1,4,3,'javaboytest',103,0,'2024-01-26 16:43:58',NULL,'admin',NULL,NULL,NULL),
+	(23,0,1,4,'qudao',105,1,'2024-01-26 16:44:08',NULL,'admin',NULL,NULL,NULL),
+	(24,0,4,1,'admin',103,0,'2024-01-26 16:44:42',NULL,'admin',NULL,NULL,NULL),
+	(25,1,4,1,'admin',103,0,'2024-01-26 16:44:48',NULL,'admin',NULL,NULL,NULL),
+	(26,0,4,3,'javaboytest',103,0,'2024-01-26 16:48:33',NULL,'admin',NULL,NULL,NULL),
+	(27,0,4,1,'admin',103,1,'2024-01-26 18:56:04',NULL,'admin',NULL,NULL,NULL),
+	(28,1,3,1,'admin',103,0,'2024-01-26 18:56:41',NULL,'admin',NULL,NULL,NULL),
+	(29,1,5,1,'admin',103,1,'2024-01-29 22:22:37',NULL,'admin',NULL,NULL,NULL),
+	(30,1,6,1,'admin',103,1,'2024-02-02 21:17:02',NULL,'admin',NULL,NULL,NULL),
+	(31,1,7,1,'admin',103,1,'2024-02-02 21:17:16',NULL,'admin',NULL,NULL,NULL),
+	(32,1,8,1,'admin',103,1,'2024-02-02 21:29:24',NULL,'admin',NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `tienchin_assign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_business
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_business`;
+
+CREATE TABLE `tienchin_business` (
+  `business_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '客户姓名',
+  `channel_id` int(11) DEFAULT NULL COMMENT '从哪个渠道来的',
+  `activity_id` int(11) DEFAULT NULL COMMENT '从哪个活动来的',
+  `gender` int(11) DEFAULT NULL COMMENT '性别：0男1女2未知',
+  `age` int(11) DEFAULT NULL COMMENT '客户年龄',
+  `weixin` varchar(32) DEFAULT NULL COMMENT '客户微信',
+  `qq` varchar(16) DEFAULT NULL COMMENT '客户QQ',
+  `phone` varchar(16) DEFAULT NULL COMMENT '客户电话',
+  `level` int(11) DEFAULT NULL COMMENT '客户意向等级',
+  `subject` varchar(255) DEFAULT NULL COMMENT '意向课程',
+  `status` int(11) DEFAULT NULL COMMENT '线索状态：是否已分配1已分配2跟进中3回收4伪线索',
+  `fail_count` int(11) DEFAULT '0' COMMENT '伪线索失败次数，最大3次',
+  `next_time` datetime DEFAULT NULL COMMENT '下次跟进时间',
+  `end_time` datetime DEFAULT NULL COMMENT '线索失效时间：一定时限内所属销售业绩',
+  `transfer` tinyint(1) DEFAULT NULL COMMENT '线索是否需要转派',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL,
+  `create_by` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `city` varchar(32) DEFAULT NULL COMMENT '城市/市',
+  `area` varchar(32) DEFAULT NULL COMMENT '区域/区',
+  `update_by` varchar(32) DEFAULT NULL,
+  `del_flag` int(11) DEFAULT '0',
+  `province` varchar(32) DEFAULT NULL COMMENT '省份/省',
+  `course_id` int(11) DEFAULT NULL COMMENT '课程id',
+  `occupation` varchar(32) DEFAULT NULL COMMENT '职业',
+  `height` double DEFAULT NULL COMMENT '身高',
+  `weight` double DEFAULT NULL COMMENT '体重',
+  `reason` varchar(128) DEFAULT NULL COMMENT '锻炼原因',
+  `education` varchar(64) DEFAULT NULL COMMENT '学历',
+  `hours` int(11) DEFAULT NULL COMMENT '每周预计锻炼时间',
+  `other_intention` varchar(255) DEFAULT NULL COMMENT '其他意向',
+  `money` double DEFAULT NULL COMMENT '预算',
+  `clue_id` int(11) DEFAULT NULL COMMENT '线索ID',
+  PRIMARY KEY (`business_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `tienchin_business` WRITE;
+/*!40000 ALTER TABLE `tienchin_business` DISABLE KEYS */;
+
+INSERT INTO `tienchin_business` (`business_id`, `name`, `channel_id`, `activity_id`, `gender`, `age`, `weixin`, `qq`, `phone`, `level`, `subject`, `status`, `fail_count`, `next_time`, `end_time`, `transfer`, `remark`, `create_time`, `create_by`, `update_time`, `city`, `area`, `update_by`, `del_flag`, `province`, `course_id`, `occupation`, `height`, `weight`, `reason`, `education`, `hours`, `other_intention`, `money`, `clue_id`)
+VALUES
+	(1,'testqd',NULL,NULL,0,20,'wxwxwxw','99','12341234123',1,'1',1,0,'2024-02-28 09:48:35',NULL,NULL,NULL,'2024-01-22 11:48:58','admin','2024-01-29 21:40:37',NULL,'朝阳区','admin',0,'北京市',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2),
+	(2,'客户x',4,NULL,1,20,'999999999','999999999','1234567891',1,'3',2,0,'2025-01-28 09:49:24',NULL,NULL,'备注信息','2024-01-22 13:12:13','admin','2024-01-29 21:41:31',NULL,'东城区','admin',0,'北京市',1,NULL,160,50,'健身原因','小学',11,'其他意向',2000,5),
+	(3,'business测试',2,16,0,33,'business',NULL,'12345678901',3,NULL,1,0,'2024-01-27 11:42:35',NULL,NULL,'info','2024-01-26 11:42:35','admin',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(4,'test',NULL,NULL,NULL,NULL,NULL,NULL,'12345678902',NULL,NULL,1,0,'2024-01-27 16:44:42',NULL,NULL,NULL,'2024-01-26 16:44:42','admin',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(5,'business',NULL,NULL,0,33,NULL,NULL,'12345678909',NULL,NULL,1,0,'2024-04-24 10:30:56',NULL,NULL,NULL,'2024-01-29 22:22:37','admin','2024-01-29 22:27:51',NULL,NULL,'admin',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(6,'用来删的',NULL,NULL,NULL,NULL,NULL,NULL,'213456789076',NULL,NULL,1,0,'2024-02-03 21:17:02',NULL,NULL,NULL,'2024-02-02 21:17:02','admin',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(7,'用来删的3',NULL,NULL,NULL,NULL,NULL,NULL,'12345678904',NULL,NULL,1,0,'2024-02-03 21:17:16',NULL,NULL,NULL,'2024-02-02 21:17:16','admin',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(8,'商机',NULL,NULL,NULL,NULL,NULL,NULL,'123456789084',NULL,NULL,1,0,'2024-02-03 21:29:24',NULL,NULL,NULL,'2024-02-02 21:29:24','admin',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `tienchin_business` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_channel
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_channel`;
+
+CREATE TABLE `tienchin_channel` (
+  `channel_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `create_by` varchar(11) DEFAULT NULL COMMENT '创建人',
+  `status` tinyint(11) DEFAULT NULL COMMENT '渠道状态：Ruoyi中1表示可用。0表示禁用',
+  `channel_name` char(11) DEFAULT NULL COMMENT '渠道名称',
+  `remark` varchar(11) DEFAULT NULL COMMENT '备注信息',
+  `type` int(11) DEFAULT NULL COMMENT '渠道类型：1线上渠道2线下渠道',
+  `del_flag` int(11) DEFAULT '0' COMMENT '删除标志',
+  `update_by` varchar(11) DEFAULT NULL COMMENT '更新人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`channel_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `tienchin_channel` WRITE;
+/*!40000 ALTER TABLE `tienchin_channel` DISABLE KEYS */;
+
+INSERT INTO `tienchin_channel` (`channel_id`, `create_by`, `status`, `channel_name`, `remark`, `type`, `del_flag`, `update_by`, `create_time`, `update_time`)
+VALUES
+	(1,NULL,1,'百度竞价','百度推广',1,0,NULL,NULL,NULL),
+	(2,NULL,1,'地推','地推',2,0,NULL,NULL,NULL),
+	(3,'admin',NULL,'小程序推广',NULL,NULL,0,NULL,'2023-09-23 15:40:47',NULL),
+	(4,'admin',1,'小红书渠道','无',1,0,NULL,'2023-09-26 20:29:30',NULL),
+	(5,'admin',1,'testCC',NULL,2,1,'admin','2023-09-29 15:46:06','2023-09-29 23:30:37');
+
+/*!40000 ALTER TABLE `tienchin_channel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_clue
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_clue`;
+
+CREATE TABLE `tienchin_clue` (
+  `clue_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '客户姓名',
+  `channel_id` int(11) DEFAULT NULL COMMENT '从哪个渠道来的',
+  `activity_id` int(11) DEFAULT NULL COMMENT '从哪个活动来的',
+  `gender` int(11) DEFAULT NULL COMMENT '性别：0男1女2未知',
+  `age` int(11) DEFAULT NULL COMMENT '客户年龄',
+  `weixin` varchar(32) DEFAULT NULL COMMENT '客户微信',
+  `qq` varchar(16) DEFAULT NULL COMMENT '客户QQ',
+  `phone` varchar(16) DEFAULT NULL COMMENT '客户电话',
+  `level` int(11) DEFAULT NULL COMMENT '客户意向等级',
+  `subject` varchar(255) DEFAULT NULL COMMENT '意向课程',
+  `status` int(11) DEFAULT NULL COMMENT '线索状态：是否已分配1已分配2跟进中3回收4伪线索',
+  `fail_count` int(11) DEFAULT '0' COMMENT '伪线索失败次数，最大3次',
+  `next_time` datetime DEFAULT NULL COMMENT '下次跟进时间',
+  `end_time` datetime DEFAULT NULL COMMENT '线索失效时间：一定时限内所属销售业绩',
+  `transfer` tinyint(1) DEFAULT NULL COMMENT '线索是否需要转派',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL,
+  `create_by` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `update_by` varchar(32) DEFAULT NULL,
+  `del_flag` int(11) DEFAULT '0',
+  PRIMARY KEY (`clue_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `tienchin_clue` WRITE;
+/*!40000 ALTER TABLE `tienchin_clue` DISABLE KEYS */;
+
+INSERT INTO `tienchin_clue` (`clue_id`, `name`, `channel_id`, `activity_id`, `gender`, `age`, `weixin`, `qq`, `phone`, `level`, `subject`, `status`, `fail_count`, `next_time`, `end_time`, `transfer`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`, `del_flag`)
+VALUES
+	(1,'tt',NULL,NULL,NULL,NULL,NULL,NULL,'12345678',NULL,NULL,4,3,NULL,NULL,NULL,NULL,'2023-10-16 16:21:24','admin',NULL,NULL,0),
+	(2,'testqd',NULL,NULL,0,20,'wxwxwxw','99','12341234123',1,'1',4,0,'2023-10-19 12:09:08',NULL,NULL,NULL,'2023-10-16 20:09:29','admin',NULL,NULL,0),
+	(3,'最终测1',1,17,0,20,NULL,NULL,'12341234111',1,NULL,3,0,'2023-10-21 02:13:17',NULL,NULL,NULL,'2023-10-18 10:13:22','admin',NULL,NULL,0),
+	(4,'wxy',NULL,NULL,0,14,NULL,NULL,'12345678901',NULL,NULL,2,0,NULL,NULL,NULL,NULL,'2023-11-03 15:55:17','admin',NULL,NULL,0),
+	(5,'客户x',4,NULL,0,70,'999999999','999999999','1234567891',1,'3',1,0,'2025-01-19 03:26:49',NULL,NULL,NULL,'2024-01-17 18:49:43','admin',NULL,NULL,1);
+
+/*!40000 ALTER TABLE `tienchin_clue` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_contract
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_contract`;
+
+CREATE TABLE `tienchin_contract` (
+  `contract_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '合同编号',
+  `phone` varchar(16) DEFAULT NULL COMMENT '客户手机号码',
+  `name` varchar(32) DEFAULT NULL COMMENT '客户姓名',
+  `type` int(11) DEFAULT NULL COMMENT '课程分类',
+  `activity_id` int(11) DEFAULT NULL COMMENT '参加的活动id',
+  `activity_name` varchar(32) DEFAULT NULL COMMENT '参加的活动名称',
+  `course_id` int(11) DEFAULT NULL COMMENT '课程id',
+  `course_name` varchar(64) DEFAULT NULL COMMENT '课程名',
+  `channel_id` int(11) DEFAULT NULL COMMENT '渠道id',
+  `channel_name` varchar(32) DEFAULT NULL COMMENT '渠道名称',
+  `status` int(11) DEFAULT NULL COMMENT '合同状态1待审核2通过3驳回',
+  `file_path` varchar(255) DEFAULT NULL COMMENT '合同文件存档地址',
+  `contract_price` double DEFAULT NULL COMMENT '合同额/实际成交价',
+  `course_price` double DEFAULT NULL COMMENT '课程原本价格',
+  `discount_type` int(11) DEFAULT NULL COMMENT '折扣类型',
+  `process_instance_id` varchar(255) DEFAULT NULL COMMENT 'followable实例流程id',
+  `business_id` int(11) DEFAULT NULL COMMENT '对应的商机id',
+  `create_by` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_by` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `approve_dept_id` int(11) DEFAULT NULL COMMENT '审批部门id',
+  `remark` varchar(255) DEFAULT NULL,
+  `del_flag` int(11) DEFAULT '0',
+  `approve_dept_name` varchar(32) DEFAULT NULL COMMENT '审批部门名',
+  `approve_user_id` int(11) DEFAULT NULL,
+  `approve_user_name` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`contract_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `tienchin_contract` WRITE;
+/*!40000 ALTER TABLE `tienchin_contract` DISABLE KEYS */;
+
+INSERT INTO `tienchin_contract` (`contract_id`, `phone`, `name`, `type`, `activity_id`, `activity_name`, `course_id`, `course_name`, `channel_id`, `channel_name`, `status`, `file_path`, `contract_price`, `course_price`, `discount_type`, `process_instance_id`, `business_id`, `create_by`, `create_time`, `update_by`, `update_time`, `approve_dept_id`, `remark`, `del_flag`, `approve_dept_name`, `approve_user_id`, `approve_user_name`)
+VALUES
+	(1,'12345678904','htfollowtest',1,1,'test',1,'爵士舞蹈',1,'百度竞价',1,'http://localhost:8080/tienchin/contract/views/2024/02/07/6b949f4f-9dc2-42ca-9889-5c8f5c81d6e4-PPT目录.pdf',2500,2999,1,NULL,7,'admin','2024-02-07 20:17:09',NULL,NULL,103,'完整测试1',0,NULL,1,'TeinChin健身'),
+	(2,'123456789084','followtest',2,NULL,NULL,3,'少年暑假游泳班',4,'小红书渠道',1,'http://localhost:8080/tienchin/contract/views/2024/02/07/bf8f83f8-4e4d-4a34-8a8f-7e288ead5d18-命题逻辑：Propositional Logic.md',2000,1888,NULL,'51b4dfd3-c5b3-11ee-ac95-3a1825607b0b',8,'admin','2024-02-07 20:20:45',NULL,NULL,103,'完整测试',0,NULL,3,'javaboytest'),
+	(3,'12345678901','审批测试',1,1,'test',1,'爵士舞蹈',1,'百度竞价',1,'http://localhost:8080/tienchin/contract/views/2024/02/08/edf9912f-782e-4dac-94e2-ba548747ce75-快速记忆23种设计模式 - 知乎.pdf',2300,2999,1,'4178b25b-c5dc-11ee-9a08-3a1825607b0b',3,'admin','2024-02-08 01:13:48',NULL,NULL,100,NULL,0,NULL,7,'合同审批员'),
+	(4,'12345678901','test1',1,1,'test',1,'爵士舞蹈',1,'百度竞价',1,NULL,2000,2999,1,'6ebee8b0-c5e2-11ee-9873-3a1825607b0b',3,'admin','2024-02-08 01:58:01',NULL,NULL,100,NULL,0,NULL,7,'合同审批员'),
+	(5,'12345678901','test2',1,1,'test',1,'爵士舞蹈',1,'百度竞价',1,NULL,2000,2999,1,'824eff13-c5e2-11ee-9873-3a1825607b0b',3,'admin','2024-02-08 01:58:33',NULL,NULL,103,NULL,0,NULL,1,'TeinChin健身'),
+	(6,'12345678901','合同测试1',1,1,'test',1,'爵士舞蹈',1,'百度竞价',1,NULL,2400,2999,1,'ee026c2c-c630-11ee-ba97-3a1825607b0b',3,'admin','2024-02-08 11:19:55',NULL,NULL,100,NULL,0,NULL,7,'合同审批员'),
+	(7,'12345678901','测试follow',1,1,'test',1,'爵士舞蹈',1,'百度竞价',1,NULL,2400,2999,1,'8af210cb-c635-11ee-97c1-3a1825607b0b',3,'admin','2024-02-08 11:52:56',NULL,NULL,100,NULL,0,NULL,7,'contractuser'),
+	(8,'12345678901','合同-admin',1,1,'test',1,'爵士舞蹈',1,'百度竞价',2,NULL,1100,2999,1,'1a913f5e-c6e9-11ee-b469-3a1825607b0b',3,'admin','2024-02-09 09:18:17',NULL,NULL,103,NULL,0,NULL,1,'admin'),
+	(9,'12345678901','拒绝测试',1,1,'test',1,'爵士舞蹈',1,'百度竞价',2,NULL,1500,2999,1,'d42a4941-c97d-11ee-985d-3a1825607b0b',3,'admin','2024-02-12 16:07:56',NULL,NULL,103,NULL,0,NULL,1,'admin'),
+	(10,'12345678901','用户',1,1,'test',1,'爵士舞蹈',1,'百度竞价',2,NULL,1000,2999,1,'b3a90cff-cb40-11ee-a645-725cf86b38c2',3,'admin','2024-02-14 21:55:25',NULL,NULL,103,NULL,0,NULL,1,'admin'),
+	(11,'12345678901','tstedit',1,1,'test',1,'爵士舞蹈',1,'百度竞价',1,NULL,111,2999,1,'113bdd94-cb42-11ee-a645-725cf86b38c2',3,'admin','2024-02-14 22:05:11','admin','2024-02-19 16:40:42',103,NULL,0,NULL,1,'admin');
+
+/*!40000 ALTER TABLE `tienchin_contract` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_course
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_course`;
+
+CREATE TABLE `tienchin_course` (
+  `course_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` int(11) DEFAULT '0' COMMENT '课程类型：1舞蹈2游泳',
+  `name` varchar(64) DEFAULT NULL COMMENT '课程名',
+  `price` double DEFAULT NULL COMMENT '课程价格',
+  `apply_to` int(11) DEFAULT NULL COMMENT '课程适用人群',
+  `info` varchar(255) DEFAULT NULL COMMENT '简介',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `create_time` datetime DEFAULT NULL,
+  `create_by` varchar(255) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `update_by` varchar(255) DEFAULT NULL,
+  `del_flag` int(11) DEFAULT '0',
+  PRIMARY KEY (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `tienchin_course` WRITE;
+/*!40000 ALTER TABLE `tienchin_course` DISABLE KEYS */;
+
+INSERT INTO `tienchin_course` (`course_id`, `type`, `name`, `price`, `apply_to`, `info`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`, `del_flag`)
+VALUES
+	(1,1,'爵士舞蹈',2999,1,'入门',NULL,NULL,NULL,'2023-10-15 20:52:15','admin',0),
+	(2,1,'双人爵士舞',4000,1,'双人入门',NULL,NULL,NULL,NULL,NULL,1),
+	(3,2,'少年暑假游泳班',1888,1,'infomessage',NULL,'2023-10-15 16:56:51','admin','2023-10-15 20:26:57','admin',0),
+	(4,2,'游泳训练课',800,2,'青少年游泳课',NULL,'2023-10-15 17:23:14','admin','2023-10-15 20:52:00','admin',0),
+	(5,3,'测试删除',400,4,'删除测试',NULL,'2023-10-15 20:56:48','admin',NULL,NULL,1);
+
+/*!40000 ALTER TABLE `tienchin_course` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# 转储表 tienchin_follow_record
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tienchin_follow_record`;
+
+CREATE TABLE `tienchin_follow_record` (
+  `record_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` int(11) DEFAULT NULL COMMENT '跟进记录的类型：1线索2商机',
+  `assign_id` int(11) DEFAULT NULL COMMENT '线索或商机的id',
+  `info` varchar(255) DEFAULT NULL,
+  `create_by` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_by` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `del_flag` int(11) DEFAULT NULL,
+  PRIMARY KEY (`record_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='线索、商机的跟踪表。';
+
+LOCK TABLES `tienchin_follow_record` WRITE;
+/*!40000 ALTER TABLE `tienchin_follow_record` DISABLE KEYS */;
+
+INSERT INTO `tienchin_follow_record` (`record_id`, `type`, `assign_id`, `info`, `create_by`, `create_time`, `update_by`, `update_time`, `del_flag`)
+VALUES
+	(1,0,2,'测试follow1','admin','2024-01-20 11:25:58',NULL,NULL,NULL),
+	(2,0,5,NULL,'admin','2024-01-20 11:27:19',NULL,NULL,NULL),
+	(3,0,1,'停机:undefined','admin','2024-01-20 18:00:02',NULL,NULL,NULL),
+	(4,0,1,'空号 :undefined','admin','2024-01-20 18:00:10',NULL,NULL,NULL),
+	(5,0,1,'停机:undefined','admin','2024-01-20 18:00:22',NULL,NULL,NULL),
+	(6,1,1,NULL,'admin','2024-01-29 21:32:59',NULL,NULL,NULL),
+	(7,1,2,NULL,'admin','2024-01-29 21:36:06',NULL,NULL,NULL),
+	(8,1,1,NULL,'admin','2024-01-29 21:38:11',NULL,NULL,NULL),
+	(9,1,1,NULL,'admin','2024-01-29 21:40:37',NULL,NULL,NULL),
+	(10,1,2,NULL,'admin','2024-01-29 21:41:31',NULL,NULL,NULL),
+	(11,1,5,NULL,'admin','2024-01-29 22:22:58',NULL,NULL,NULL),
+	(12,1,5,NULL,'admin','2024-01-29 22:27:51',NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `tienchin_follow_record` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
